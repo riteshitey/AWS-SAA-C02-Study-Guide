@@ -12,38 +12,21 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-import boto3
 
-def fetch_all_lambda_arns():
-    # Create a Lambda client
-    lambda_client = boto3.client('lambda')
+Hi Team,
 
-    all_lambda_arns = []
-    next_marker = None
+This mail is regarding the recent implementation of CloudWatch alarms for resources within our PROD account.
 
-    while True:
-        # List Lambda functions with pagination
-        if next_marker:
-            response = lambda_client.list_functions(MaxItems=50, Marker=next_marker)
-        else:
-            response = lambda_client.list_functions(MaxItems=50)
+Utilizing the AWS CloudWatch Auto-Alarms solution, we've successfully implemented alarms for resources within the PROD account. Below is a summary of our progress:
 
-        # Extract Lambda ARNs from the response
-        functions = response.get('Functions', [])
-        for function in functions:
-            all_lambda_arns.append(function['FunctionArn'])
+Table
 
-        # Check if there are more functions available
-        next_marker = response.get('NextMarker')
-        if not next_marker:
-            break
+Furthermore, there are some resources pending and for some, alarms are optional or for future consideration. We're currently analyzing these resources further to ensure that any additional alarms are implemented as needed. Expect an update on these optional alarms and pending resources in subsequent communication after a thorough analysis.
 
-    return all_lambda_arns
+Should you have any questions or need clarification regarding this implementation, please reach out.
 
-# Fetch all Lambda ARNs
-all_lambda_arns = fetch_all_lambda_arns()
+Best Regards,
 
-print(all_lambda_arns)
 
 ```
 
