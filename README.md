@@ -11,6 +11,45 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. Be sure to also keep up with the ongoing discussions in <a href="https://reddit.com/r/AWSCertifications/">r/AWSCertifications</a> as you will find relevant exam tips, studying material, and advice from other exam takers. Before experimenting with AWS, it's very important to be sure that you know what is <a href="https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">free</a> and what isn't. Relevant Free Tier FAQs can be found <a href="https://aws.amazon.com/free/free-tier-faqs/">here</a>. Finally, Udemy often has their courses go on sale from time to time. It might be worth waiting to purchase either the Tutorial Dojo practice exam or Stephane Maarek's course depending on how urgently you need the content.
 
 
+```
+import boto3
+
+def fetch_all_lambda_arns():
+    # Create a Lambda client
+    lambda_client = boto3.client('lambda')
+
+    all_lambda_arns = []
+    next_marker = None
+
+    while True:
+        # List Lambda functions with pagination
+        if next_marker:
+            response = lambda_client.list_functions(MaxItems=50, Marker=next_marker)
+        else:
+            response = lambda_client.list_functions(MaxItems=50)
+
+        # Extract Lambda ARNs from the response
+        functions = response.get('Functions', [])
+        for function in functions:
+            all_lambda_arns.append(function['FunctionArn'])
+
+        # Check if there are more functions available
+        next_marker = response.get('NextMarker')
+        if not next_marker:
+            break
+
+    return all_lambda_arns
+
+# Fetch all Lambda ARNs
+all_lambda_arns = fetch_all_lambda_arns()
+
+print(all_lambda_arns)
+
+```
+
+
+
+
 
 ## Table of Contents
 1. <a href="#introduction">Introduction</a>
