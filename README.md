@@ -14,41 +14,31 @@ If at any point you find yourself feeling uncertain of your progress and in need
 ```
 import boto3
 
-def get_dynamodb_alarms():
-    # Create CloudWatch client
-    cloudwatch = boto3.client('cloudwatch')
+# Initialize DynamoDB client
+dynamodb = boto3.client('dynamodb')
 
-    # Initialize a list to store DynamoDB table names
-    dynamodb_tables = []
+def fetch_table_info():
+    table_info = []
+    
+    paginator = dynamodb.get_paginator('list_tables')
+    for page in paginator.paginate():
+        for table_name in page['TableNames']:
+            table_desc = dynamodb.describe_table(TableName=table_name)
+            capacity_mode = table_desc['Table']['BillingModeSummary']['BillingMode']
+            table_info.append({
+                "name": table_name,
+                "capacity mode": capacity_mode
+            })
+    
+    return table_info
 
-    # Pagination loop to retrieve all alarms
-    while True:
-        # Get alarms or continue from the last token
-        response = cloudwatch.describe_alarms() if not dynamodb_tables else cloudwatch.describe_alarms(NextToken=next_token)
-        
-        # Iterate through each alarm to check its state and associated resources
-        for alarm in response['MetricAlarms']:
-            if alarm['StateValue'] == 'ALARM':
-                for dimension in alarm['Dimensions']:
-                    # Check if the alarm's resource is a DynamoDB table
-                    if dimension['Name'] == 'TableName':
-                        dynamodb_tables.append(dimension['Value'])
+if __name__ == "__main__":
+    data = fetch_table_info()
 
-        # Check if there are more alarms to fetch
-        if 'NextToken' in response:
-            next_token = response['NextToken']
-        else:
-            break
+    # Save data in the specified format
+    with open('dynamodb_tables_info.json', 'w') as file:
+        file.write(str(data))
 
-    return dynamodb_tables
-
-# Get DynamoDB tables associated with alarms in "ALARM" state
-dynamodb_tables_in_alarm = get_dynamodb_alarms()
-
-# Print the list of DynamoDB tables in alarm state
-print("DynamoDB tables in 'ALARM' state:")
-for table_name in dynamodb_tables_in_alarm:
-    print(table_name)
 
 ```
 
