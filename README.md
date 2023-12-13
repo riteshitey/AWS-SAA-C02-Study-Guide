@@ -12,6 +12,43 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+import boto3
+
+def get_dynamodb_alarms():
+    # Create CloudWatch client
+    cloudwatch = boto3.client('cloudwatch')
+
+    # Initialize a list to store DynamoDB table names
+    dynamodb_tables = []
+
+    # Pagination loop to retrieve all alarms
+    while True:
+        # Get alarms or continue from the last token
+        response = cloudwatch.describe_alarms() if not dynamodb_tables else cloudwatch.describe_alarms(NextToken=next_token)
+        
+        # Iterate through each alarm to check its state and associated resources
+        for alarm in response['MetricAlarms']:
+            if alarm['StateValue'] == 'ALARM':
+                for dimension in alarm['Dimensions']:
+                    # Check if the alarm's resource is a DynamoDB table
+                    if dimension['Name'] == 'TableName':
+                        dynamodb_tables.append(dimension['Value'])
+
+        # Check if there are more alarms to fetch
+        if 'NextToken' in response:
+            next_token = response['NextToken']
+        else:
+            break
+
+    return dynamodb_tables
+
+# Get DynamoDB tables associated with alarms in "ALARM" state
+dynamodb_tables_in_alarm = get_dynamodb_alarms()
+
+# Print the list of DynamoDB tables in alarm state
+print("DynamoDB tables in 'ALARM' state:")
+for table_name in dynamodb_tables_in_alarm:
+    print(table_name)
 
 ```
 
