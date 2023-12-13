@@ -12,33 +12,6 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-import boto3
-
-# Initialize DynamoDB client
-dynamodb = boto3.client('dynamodb')
-
-def fetch_table_info():
-    table_info = []
-    
-    paginator = dynamodb.get_paginator('list_tables')
-    for page in paginator.paginate():
-        for table_name in page['TableNames']:
-            table_desc = dynamodb.describe_table(TableName=table_name)
-            capacity_mode = table_desc['Table']['BillingModeSummary']['BillingMode']
-            table_info.append({
-                "name": table_name,
-                "capacity mode": capacity_mode
-            })
-    
-    return table_info
-
-if __name__ == "__main__":
-    data = fetch_table_info()
-
-    # Save data in the specified format
-    with open('dynamodb_tables_info.json', 'w') as file:
-        file.write(str(data))
-
 
 ```
 
