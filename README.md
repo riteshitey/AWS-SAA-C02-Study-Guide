@@ -12,22 +12,6 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-change 2
-
-Hi Team,
-
-This mail is regarding the recent implementation of CloudWatch alarms for resources within our PROD account.
-
-Utilizing the AWS CloudWatch Auto-Alarms solution, we've successfully implemented alarms for resources within the PROD account. Below is a summary of our progress:
-
-Table
-
-Furthermore, there are some resources pending and for some, alarms are optional or for future consideration. We're currently analyzing these resources further to ensure that any additional alarms are implemented as needed. Expect an update on these optional alarms and pending resources in subsequent communication after a thorough analysis.
-
-Should you have any questions or need clarification regarding this implementation, please reach out.
-
-Best Regards,
-
 
 ```
 
