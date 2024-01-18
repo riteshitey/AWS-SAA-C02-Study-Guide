@@ -12,6 +12,34 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+Hi Josh,
+
+You have mentioned JSON in scParams. The error is because we don't have support for JSON in scParams. If we check the cloudwatch logs the essas subscription filter consumer product couldn't able to parse the JSON.
+
+In our PROD environment, subscription filters for essas on log groups are created through the provisioning of the essas subscription filter consumer product via the AWS console.
+
+For Notification alert we did same and created subscription filter on log group mentioned in confi
+
+Similarly, for notification alerts, we followed the same process and created esaas sub filter on the log group mentioned in the config.
+
+
+
+Subject: Clarification on JSON in scParams
+
+Hi Josh,
+
+I hope this message finds you well.
+
+I noticed that you mentioned JSON in scParams. The error arises due to the absence of support for JSON in scParams, leading to issues with parsing in the essas subscription filter consumer product. Upon reviewing the CloudWatch logs, it became evident that the consumer product faced difficulties parsing the JSON.
+
+
+
+Similarly, for notification alerts, we followed the same process and established a subscription filter on the log group mentioned in the configuration.
+
+Please let me know if you have any questions or if further clarification is needed.
+
+Best regards,
+[Your Name]
 
 ```
 
