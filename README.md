@@ -52,37 +52,67 @@ def lambda_handler(event, context):
 
 
 
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
+
 Parameters:
   SourceTableName:
     Type: String
-    Description: Name of the source table (Table-B)
+    Description: "Name of the source DynamoDB table (Table-B)"
+  
   PITRTimestamp:
     Type: String
-    Description: Point-in-Time Recovery timestamp for Table-B
+    Description: "Timestamp for the point-in-time recovery of Table-B"
+
 Resources:
-  DynamoDBTableA:
+  TableA:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Ref SourceTableName  # Name of the source table (Table-B)
-      AttributeDefinitions:  # Define your attributes if needed
-        - AttributeName: "exampleAttribute"
-          AttributeType: "S"
-      KeySchema:  # Define your key schema
-        - AttributeName: "exampleAttribute"
-          KeyType: "HASH"
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      TableName: "Table-A"
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: false  # Enable PITR for the table
-  DynamoDBFromPITR:
-    Type: Custom::DynamoDBFromPITR
+        PointInTimeRecoveryEnabled: true
+
+  RestoreFunction:
+    Type: AWS::Lambda::Function
     Properties:
-      ServiceToken: "arn:aws:lambda:your-region:your-account-id:function:your-DynamoDBFromPITR-LambdaFunction"  # Replace with the actual Lambda ARN
+      Handler: index.handler
+      Role: !GetAtt [RestoreFunctionRole, Arn]
+      FunctionName: RestoreFunction
+      Code:
+        S3Bucket: YOUR_BUCKET_NAME
+        S3Key: path/to/your/lambda/function.zip
+      Runtime: python3.8
+      Timeout: 300
+
+  RestoreFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: DynamoDBFromPITRPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:RestoreTableToPointInTime
+                  - dynamodb:DescribeTable
+                Resource: "*"
+
+  TableARestoreResource:
+    Type: "Custom::TableARestore"
+    DependsOn: RestoreFunction
+    Properties:
+      ServiceToken: !GetAtt [RestoreFunction, Arn]
       SourceTableName: !Ref SourceTableName
       PITRTimestamp: !Ref PITRTimestamp
-      TargetTableName: !Ref DynamoDBTableA
+      TargetTableName: "Table-A"
+
 
 ```
 
