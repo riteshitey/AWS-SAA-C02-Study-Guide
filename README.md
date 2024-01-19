@@ -12,34 +12,77 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-Hi Josh,
 
-You have mentioned JSON in scParams. The error is because we don't have support for JSON in scParams. If we check the cloudwatch logs the essas subscription filter consumer product couldn't able to parse the JSON.
+import boto3
+import os
 
-In our PROD environment, subscription filters for essas on log groups are created through the provisioning of the essas subscription filter consumer product via the AWS console.
+def lambda_handler(event, context):
+    try:
+        source_table_name = event['ResourceProperties']['SourceTableName']
+        pitr_timestamp = event['ResourceProperties']['PITRTimestamp']
+        target_table_name = event['ResourceProperties']['TargetTableName']
 
-For Notification alert we did same and created subscription filter on log group mentioned in confi
+        dynamodb_client = boto3.client('dynamodb')
 
-Similarly, for notification alerts, we followed the same process and created esaas sub filter on the log group mentioned in the config.
+        # Enable Point-in-Time Recovery for the target table
+        dynamodb_client.update_continuous_backups(
+            TableName=target_table_name,
+            PointInTimeRecoverySpecification={
+                'PointInTimeRecoveryEnabled': True
+            }
+        )
+
+        # Restore the target table from the source table using PITR
+        response = dynamodb_client.restore_table_to_point_in_time(
+            SourceTableName=source_table_name,
+            TargetTableName=target_table_name,
+            RestoreDateTime=pitr_timestamp
+        )
+
+        print("Table restore initiated successfully:", response)
+
+        # Signal success to CloudFormation
+        return {"Status": "SUCCESS", "PhysicalResourceId": target_table_name}
+    except Exception as e:
+        print("Error:", str(e))
+        # Signal failure to CloudFormation
+        return {"Status": "FAILED", "Reason": str(e)}
 
 
 
-Subject: Clarification on JSON in scParams
-
-Hi Josh,
-
-I hope this message finds you well.
-
-I noticed that you mentioned JSON in scParams. The error arises due to the absence of support for JSON in scParams, leading to issues with parsing in the essas subscription filter consumer product. Upon reviewing the CloudWatch logs, it became evident that the consumer product faced difficulties parsing the JSON.
 
 
-
-Similarly, for notification alerts, we followed the same process and established a subscription filter on the log group mentioned in the configuration.
-
-Please let me know if you have any questions or if further clarification is needed.
-
-Best regards,
-[Your Name]
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  SourceTableName:
+    Type: String
+    Description: Name of the source table (Table-B)
+  PITRTimestamp:
+    Type: String
+    Description: Point-in-Time Recovery timestamp for Table-B
+Resources:
+  DynamoDBTableA:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref SourceTableName  # Name of the source table (Table-B)
+      AttributeDefinitions:  # Define your attributes if needed
+        - AttributeName: "exampleAttribute"
+          AttributeType: "S"
+      KeySchema:  # Define your key schema
+        - AttributeName: "exampleAttribute"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: false  # Enable PITR for the table
+  DynamoDBFromPITR:
+    Type: Custom::DynamoDBFromPITR
+    Properties:
+      ServiceToken: "arn:aws:lambda:your-region:your-account-id:function:your-DynamoDBFromPITR-LambdaFunction"  # Replace with the actual Lambda ARN
+      SourceTableName: !Ref SourceTableName
+      PITRTimestamp: !Ref PITRTimestamp
+      TargetTableName: !Ref DynamoDBTableA
 
 ```
 
