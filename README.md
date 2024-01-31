@@ -12,6 +12,39 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+Subject: Issue with PPE File Transfer to S3 Bucket
+
+Hi Team,
+
+Hope this email finds you well.
+
+Following a discussion with Aditya, it was noted that due to the Python upgrade to version 3.11, the 'request' module is no longer available. Consequently, the team has implemented the 'urllib.request' module in the 'sil-dp-nexus-to-s3' lambda function.
+
+However, during testing, we encountered an issue when moving the 'ppe.zip' file to the S3 bucket. The new code utilizing 'urllib.request' is functioning as expected for all Nexus spaces in PPE, except for our specific Nexus space, which is returning a "HTTP Error 401: Unauthorized."
+
+Could you please check if there are any additional certificate checks on the SIL Nexus space that might be causing this authorization error?
+
+Thank you for your prompt attention to this matter.
+
+Best regards,
+[Your Name]
+
+Subject: Problem with Moving Files to S3 Bucket
+
+Hi Team,
+
+I hope you're doing well.
+
+After talking with Aditya, we learned that due to the upgrade to Python 3.11, the 'request' module is no longer available. As a result, we've switched to using the 'urllib.request' module in the 'sil-dp-nexus-to-s3' lambda function.
+
+During testing, we encountered an issue moving the 'ppe.zip' file to the S3 bucket. The new code works for all Nexus spaces in PPE, except for ours, which gives an "HTTP Error 401: Unauthorized."
+
+Could you check if there are additional certificate checks on the SIL Nexus space causing this problem?
+
+Thanks for your help.
+
+Best,
+[Your Name]
 
 import boto3
 import os
