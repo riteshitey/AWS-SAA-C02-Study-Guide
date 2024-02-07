@@ -1,6 +1,5 @@
 # AWS SAA-C02 Study Guide
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
-
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
   2. The FAQs for the most critical services, included in the recommended reading list below
   3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
@@ -12,145 +11,32 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-Subject: Issue with PPE File Transfer to S3 Bucket
-
-Hi Team,
-
-Hope this email finds you well.
-
-Following a discussion with Aditya, it was noted that due to the Python upgrade to version 3.11, the 'request' module is no longer available. Consequently, the team has implemented the 'urllib.request' module in the 'sil-dp-nexus-to-s3' lambda function.
-
-However, during testing, we encountered an issue when moving the 'ppe.zip' file to the S3 bucket. The new code utilizing 'urllib.request' is functioning as expected for all Nexus spaces in PPE, except for our specific Nexus space, which is returning a "HTTP Error 401: Unauthorized."
-
-Could you please check if there are any additional certificate checks on the SIL Nexus space that might be causing this authorization error?
-
-Thank you for your prompt attention to this matter.
-
-Best regards,
-[Your Name]
-
-Subject: Problem with Moving Files to S3 Bucket
-
-Hi Team,
-
-I hope you're doing well.
-
-After talking with Aditya, we learned that due to the upgrade to Python 3.11, the 'request' module is no longer available. As a result, we've switched to using the 'urllib.request' module in the 'sil-dp-nexus-to-s3' lambda function.
-
-During testing, we encountered an issue moving the 'ppe.zip' file to the S3 bucket. The new code works for all Nexus spaces in PPE, except for ours, which gives an "HTTP Error 401: Unauthorized."
-
-Could you check if there are additional certificate checks on the SIL Nexus space causing this problem?
-
-Thanks for your help.
-
-Best,
-[Your Name]
-
-import boto3
+import urllib.request
 import os
+import time
 
-def lambda_handler(event, context):
+def download_zip(url, userId, password):
+    print("start")
+    start = time.time()
+    
     try:
-        source_table_name = event['ResourceProperties']['SourceTableName']
-        pitr_timestamp = event['ResourceProperties']['PITRTimestamp']
-        target_table_name = event['ResourceProperties']['TargetTableName']
-
-        dynamodb_client = boto3.client('dynamodb')
-
-        # Enable Point-in-Time Recovery for the target table
-        dynamodb_client.update_continuous_backups(
-            TableName=target_table_name,
-            PointInTimeRecoverySpecification={
-                'PointInTimeRecoveryEnabled': True
-            }
-        )
-
-        # Restore the target table from the source table using PITR
-        response = dynamodb_client.restore_table_to_point_in_time(
-            SourceTableName=source_table_name,
-            TargetTableName=target_table_name,
-            RestoreDateTime=pitr_timestamp
-        )
-
-        print("Table restore initiated successfully:", response)
-
-        # Signal success to CloudFormation
-        return {"Status": "SUCCESS", "PhysicalResourceId": target_table_name}
+        pass_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+        pass_mgr.add_password(None, url, userId, password)
+        auth_handler = urllib.request.HTTPBasicAuthHandler(pass_mgr)
+        opener = urllib.request.build_opener(auth_handler)
+        urllib.request.install_opener(opener)
+        
+        with urllib.request.urlopen(url) as response, open("tmp/zip_path1.zip", 'wb') as out_file:
+            shutil.copyfileobj(response, out_file)
+        
+        end = time.time()
+        print("Downloading Time:", end - start)
+        
+        return "tmp/zip_path1.zip"
+    
     except Exception as e:
-        print("Error:", str(e))
-        # Signal failure to CloudFormation
-        return {"Status": "FAILED", "Reason": str(e)}
-
-
-
-
-
-AWSTemplateFormatVersion: "2010-09-09"
-
-Parameters:
-  SourceTableName:
-    Type: String
-    Description: "Name of the source DynamoDB table (Table-B)"
-  
-  PITRTimestamp:
-    Type: String
-    Description: "Timestamp for the point-in-time recovery of Table-B"
-
-Resources:
-  TableA:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: "Table-A"
-      PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: true
-
-  RestoreFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      Handler: index.handler
-      Role: !GetAtt [RestoreFunctionRole, Arn]
-      FunctionName: RestoreFunction
-      Code:
-        S3Bucket: YOUR_BUCKET_NAME
-        S3Key: path/to/your/lambda/function.zip
-      Runtime: python3.8
-      Timeout: 300
-
-  RestoreFunctionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      Policies:
-        - PolicyName: DynamoDBFromPITRPolicy
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - dynamodb:RestoreTableToPointInTime
-                  - dynamodb:DescribeTable
-                Resource: "*"
-
-  TableARestoreResource:
-    Type: "Custom::TableARestore"
-    DependsOn: RestoreFunction
-    Properties:
-      ServiceToken: !GetAtt [RestoreFunction, Arn]
-      SourceTableName: !Ref SourceTableName
-      PITRTimestamp: !Ref PITRTimestamp
-      TargetTableName: "Table-A"
-
-
+        print("Error:", e)
 ```
-
-
-
 
 
 ## Table of Contents
