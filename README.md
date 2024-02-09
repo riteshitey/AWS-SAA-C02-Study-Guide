@@ -11,6 +11,12 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+
+I would like to set up cross-region replication in an S3 bucket. For this purpose, I have already provisioned an EC2-Spoke product in the London region. Additionally, I need to provision another EC2-Spoke product in the secondary region, Ireland. I also need to provision an S3 bucket in the Ireland region to enable CRR.
+
+Is the EC2-Spoke globally available within the account, or do I need to provision it for a specific region?
+
+
 import boto3
 
 # Initialize the DynamoDB client
