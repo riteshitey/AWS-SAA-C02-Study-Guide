@@ -11,31 +11,51 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-import urllib.request
-import os
-import time
+import boto3
 
-def download_zip(url, userId, password):
-    print("start")
-    start = time.time()
-    
+# Initialize the DynamoDB client
+dynamodb = boto3.client('dynamodb')
+
+# Specify the name of the table you want to delete
+table_name = 'YourTableName'
+
+# Call the delete_table function with the specified table name
+response = dynamodb.delete_table(
+    TableName=table_name
+)
+
+# Print the response
+print(response)
+
+import boto3
+
+def upload_zip_to_s3(zip_file_path, bucket_name, object_name):
+    """
+    Uploads a zip file to an S3 bucket.
+
+    :param zip_file_path: The local path to the zip file.
+    :param bucket_name: The name of the S3 bucket.
+    :param object_name: The name of the object in S3.
+    :return: True if successful, False otherwise.
+    """
+    s3 = boto3.client('s3')
+
     try:
-        pass_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-        pass_mgr.add_password(None, url, userId, password)
-        auth_handler = urllib.request.HTTPBasicAuthHandler(pass_mgr)
-        opener = urllib.request.build_opener(auth_handler)
-        urllib.request.install_opener(opener)
-        
-        with urllib.request.urlopen(url) as response, open("tmp/zip_path1.zip", 'wb') as out_file:
-            shutil.copyfileobj(response, out_file)
-        
-        end = time.time()
-        print("Downloading Time:", end - start)
-        
-        return "tmp/zip_path1.zip"
-    
+        # Upload the zip file to S3
+        s3.upload_file(zip_file_path, bucket_name, object_name)
+        print(f"{zip_file_path} uploaded successfully to {bucket_name}/{object_name}")
+        return True
     except Exception as e:
-        print("Error:", e)
+        print(f"Failed to upload {zip_file_path} to {bucket_name}/{object_name}: {e}")
+        return False
+
+# Example usage
+zip_file_path = 'path/to/your/zip/file.zip'
+bucket_name = 'your-s3-bucket-name'
+object_name = 'folder/subfolder/your-zip-file.zip'
+
+upload_zip_to_s3(zip_file_path, bucket_name, object_name)
+
 ```
 
 
