@@ -11,56 +11,55 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        ZipFile: |
+          import boto3
+          import json
 
-I would like to set up cross-region replication in an S3 bucket. For this purpose, I have already provisioned an EC2-Spoke product in the London region. Additionally, I need to provision another EC2-Spoke product in the secondary region, Ireland. I also need to provision an S3 bucket in the Ireland region to enable CRR.
+          def handler(event, context):
+              client = boto3.client('stepfunctions')
+              response = client.start_execution(
+                  stateMachineArn='YOUR_STATE_MACHINE_ARN',
+                  input='{}'  # You can provide input here if needed
+              )
+              
+              return {
+                  'statusCode': 200,
+                  'body': json.dumps('State machine execution started successfully!')
+              }
 
-Is the EC2-Spoke globally available within the account, or do I need to provision it for a specific region?
+      Runtime: python3.8
+      Timeout: 30
 
-
-import boto3
-
-# Initialize the DynamoDB client
-dynamodb = boto3.client('dynamodb')
-
-# Specify the name of the table you want to delete
-table_name = 'YourTableName'
-
-# Call the delete_table function with the specified table name
-response = dynamodb.delete_table(
-    TableName=table_name
-)
-
-# Print the response
-print(response)
-
-import boto3
-
-def upload_zip_to_s3(zip_file_path, bucket_name, object_name):
-    """
-    Uploads a zip file to an S3 bucket.
-
-    :param zip_file_path: The local path to the zip file.
-    :param bucket_name: The name of the S3 bucket.
-    :param object_name: The name of the object in S3.
-    :return: True if successful, False otherwise.
-    """
-    s3 = boto3.client('s3')
-
-    try:
-        # Upload the zip file to S3
-        s3.upload_file(zip_file_path, bucket_name, object_name)
-        print(f"{zip_file_path} uploaded successfully to {bucket_name}/{object_name}")
-        return True
-    except Exception as e:
-        print(f"Failed to upload {zip_file_path} to {bucket_name}/{object_name}: {e}")
-        return False
-
-# Example usage
-zip_file_path = 'path/to/your/zip/file.zip'
-bucket_name = 'your-s3-bucket-name'
-object_name = 'folder/subfolder/your-zip-file.zip'
-
-upload_zip_to_s3(zip_file_path, bucket_name, object_name)
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - states:StartExecution
+                Resource: '*'
 
 ```
 
