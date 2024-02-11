@@ -61,6 +61,92 @@ Resources:
                   - states:StartExecution
                 Resource: '*'
 
+
+
+--------------
+
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+
+          def handler(event, context):
+              client = boto3.client('stepfunctions')
+              response = client.start_execution(
+                  stateMachineArn='YOUR_STATE_MACHINE_ARN',
+                  input='{}'  # You can provide input here if needed
+              )
+              
+              return {
+                  'statusCode': 200,
+                  'body': json.dumps('State machine execution started successfully!')
+              }
+
+      Runtime: python3.8
+      Timeout: 30
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - states:StartExecution
+                Resource: '*'
+
+  MyStateMachine:
+    Type: "AWS::StepFunctions::StateMachine"
+    Properties:
+      DefinitionString:
+        Fn::Sub:
+          - |
+            {
+              "Comment": "A Hello World example of the Amazon States Language using a Pass state",
+              "StartAt": "HelloWorld",
+              "States": {
+                "HelloWorld": {
+                  "Type": "Pass",
+                  "Result": "Hello, World!",
+                  "End": true
+                }
+              }
+            }
+          - {}
+
+  InvokeStateMachineLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt MyLambdaFunction.Arn
+      Principal: states.amazonaws.com
+
+Outputs:
+  LambdaFunctionARN:
+    Description: The ARN of the Lambda function
+    Value: !GetAtt MyLambdaFunction.Arn
+
+
 ```
 
 
