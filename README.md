@@ -11,6 +11,66 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation Template for invoking Backup-Restore Lambda
+
+Parameters:
+  RestoreType:
+    Description: Type of restore operation ("On_Demond" or "PITR")
+    Type: String
+    AllowedValues: ["On_Demond", "PITR"]
+    Default: "On_Demond"
+  RestoreArn:
+    Description: ARN of the resource to restore
+    Type: String
+    Default: "complete_ARN_placeholder"
+  SourceTableName:
+    Description: Name of the source table
+    Type: String
+    Default: "Table_A"
+  TargetTableName:
+    Description: Name of the target table
+    Type: String
+    Default: "Table_B"
+  RestoreDateTime:
+    Description: DateTime to restore to
+    Type: String
+    Default: "Time_placeholder"
+
+Conditions:
+  IsPITRRestore: !Equals [!Ref RestoreType, "PITR"]
+  IsOnDemandRestore: !Equals [!Ref RestoreType, "On_Demond"]
+
+Resources:
+  InvokeBackupRestoreLambdaPITR:
+    Type: 'Custom::InvokeLambdaFunction'
+    Condition: IsPITRRestore
+    Properties:
+      ServiceToken: !GetAtt InvokeLambdaFunctionArn.Arn
+      RestoreType: !Ref RestoreType
+      RestoreArn: !Ref RestoreArn
+
+  InvokeBackupRestoreLambdaOnDemand:
+    Type: 'Custom::InvokeLambdaFunction'
+    Condition: IsOnDemandRestore
+    Properties:
+      ServiceToken: !GetAtt InvokeLambdaFunctionArn.Arn
+      RestoreType: !Ref RestoreType
+      SourceTableName: !Ref SourceTableName
+      TargetTableName: !Ref TargetTableName
+      RestoreDateTime: !Ref RestoreDateTime
+
+Outputs:
+  InvocationResultPITR:
+    Description: Result of the Lambda invocation for PITR restore
+    Value: !GetAtt InvokeBackupRestoreLambdaPITR.ReturnValue
+
+  InvocationResultOnDemand:
+    Description: Result of the Lambda invocation for On_Demond restore
+    Value: !GetAtt InvokeBackupRestoreLambdaOnDemand.ReturnValue
+
+
+---
 
 AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS CloudFormation Template for invoking Backup-Restore Lambda
