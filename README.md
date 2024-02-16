@@ -11,6 +11,85 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation Template for invoking Backup-Restore Lambda
+
+Parameters:
+  RestoreType:
+    Description: Type of restore operation ("On_Demond" or "PITR")
+    Type: String
+    AllowedValues: ["On_Demond", "PITR"]
+    Default: "On_Demond"
+  RestoreArn:
+    Description: ARN of the resource to restore - ignore if RestoreType is PITR
+    Type: String
+    Default: "complete_ARN_placeholder"
+  SourceTableName:
+    Description: Name of the source table - ignore if RestoreType is On_Demond
+    Type: String
+    Default: "Table_A"
+  PitrRestoredTableName:
+    Description: Name of the target table - ignore if RestoreType is On_Demond
+    Type: String
+    Default: "Table_B"
+  RestoreDateTime:
+    Description: DateTime give UseLatestRestorableTime value if Latest time needed - ignore if RestoreType is On_Demond
+    Type: String
+    Default: "UseLatestRestorableTime"
+
+Conditions:
+  IsPITRRestore: !Equals [!Ref RestoreType, "PITR"]
+  IsOnDemandRestore: !Equals [!Ref RestoreType, "On_Demond"]
+
+Resources:
+  InvokeBackupRestoreLambda:
+    Conditions: IsPITRRestore
+    Type: 'Custom::InvokeLambdaFunction'
+    Properties:
+      ServiceToken: !GetAtt InvokeLambdaFunctionArn.Arn
+      RestoreType: !Ref RestoreType
+      RestoreArn: !Ref RestoreArn
+
+  InvokeBackupRestoreLambda:
+    Conditions: IsPITRRestore
+    Type: 'Custom::InvokeLambdaFunction'
+    Properties:
+      ServiceToken: !GetAtt InvokeLambdaFunctionArn.Arn
+      RestoreType: !Ref RestoreType
+      SourceTableName: !Ref SourceTableName
+      PitrRestoredTableName: !Ref PitrRestoredTableName
+      RestoreDateTime: !Ref RestoreDateTime
+
+
+  InvokeLambdaFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: LambdaInvokePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: 'lambda:InvokeFunction'
+                Resource: '*' # You might want to restrict this to the specific Lambda function ARN
+
+Outputs:
+  InvocationResult:
+    Description: Result of the Lambda invocation
+    Value: !GetAtt InvokeBackupRestoreLambda.ReturnValue
+
+
+
+
+
 AWSTemplateFormatVersion: '2010-09-09'
 Resources:
   MyLambdaFunction:
