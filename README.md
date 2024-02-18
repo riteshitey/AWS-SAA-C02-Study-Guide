@@ -72,287 +72,43 @@ Outputs:
 
 ---
 
-AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS CloudFormation Template for invoking Backup-Restore Lambda
+import boto3
 
-Parameters:
-  RestoreType:
-    Description: Type of restore operation ("On_Demond" or "PITR")
-    Type: String
-    AllowedValues: ["On_Demond", "PITR"]
-    Default: "On_Demond"
-  RestoreArn:
-    Description: ARN of the resource to restore - ignore if RestoreType is PITR
-    Type: String
-    Default: "complete_ARN_placeholder"
-  SourceTableName:
-    Description: Name of the source table - ignore if RestoreType is On_Demond
-    Type: String
-    Default: "Table_A"
-  PitrRestoredTableName:
-    Description: Name of the target table - ignore if RestoreType is On_Demond
-    Type: String
-    Default: "Table_B"
-  RestoreDateTime:
-    Description: DateTime give UseLatestRestorableTime value if Latest time needed - ignore if RestoreType is On_Demond
-    Type: String
-    Default: "UseLatestRestorableTime"
+def lambda_handler(event, context):
+    source_table_name = event["sourceTableName"]
+    destination_table_name = event["destinationTableName"]
 
-Conditions:
-  IsPITRRestore: !Equals [!Ref RestoreType, "PITR"]
-  IsOnDemandRestore: !Equals [!Ref RestoreType, "On_Demond"]
+    dynamodb = boto3.client("dynamodb")
 
-Resources:
-  InvokeBackupRestoreLambda:
-    Conditions: IsPITRRestore
-    Type: 'Custom::InvokeLambdaFunction'
-    Properties:
-      ServiceToken: !GetAtt InvokeLambdaFunctionArn.Arn
-      RestoreType: !Ref RestoreType
-      RestoreArn: !Ref RestoreArn
+    # Get the configuration of Table A
+    source_table_config = dynamodb.describe_table(TableName=source_table_name)["Table"]
 
-  InvokeBackupRestoreLambda:
-    Conditions: IsPITRRestore
-    Type: 'Custom::InvokeLambdaFunction'
-    Properties:
-      ServiceToken: !GetAtt InvokeLambdaFunctionArn.Arn
-      RestoreType: !Ref RestoreType
-      SourceTableName: !Ref SourceTableName
-      PitrRestoredTableName: !Ref PitrRestoredTableName
-      RestoreDateTime: !Ref RestoreDateTime
+    # Extract relevant configuration details
+    tags = source_table_config.get("Tags", [])
+    pitr_enabled = source_table_config.get("PointInTimeRecoverySpecification", {}).get("PointInTimeRecoveryStatus", "DISABLED")
+    ttl_specification = source_table_config.get("TimeToLiveDescription", {}).get("TimeToLiveStatus", "DISABLED")
+    deletion_protection = source_table_config.get("SSEDescription", {}).get("Status", "DISABLED")
+    stream_specification = source_table_config.get("StreamSpecification", {"StreamEnabled": False})
 
-
-  InvokeLambdaFunctionRole:
-    Type: 'AWS::IAM::Role'
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: 'sts:AssumeRole'
-      Policies:
-        - PolicyName: LambdaInvokePolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action: 'lambda:InvokeFunction'
-                Resource: '*' # You might want to restrict this to the specific Lambda function ARN
-
-Outputs:
-  InvocationResult:
-    Description: Result of the Lambda invocation
-    Value: !GetAtt InvokeBackupRestoreLambda.ReturnValue
-
-
-
-
-
-AWSTemplateFormatVersion: '2010-09-09'
-Resources:
-  MyLambdaFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      Handler: index.handler
-      Role: !GetAtt LambdaExecutionRole.Arn
-      Code:
-        ZipFile: |
-          import boto3
-          import json
-
-          def handler(event, context):
-              client = boto3.client('stepfunctions')
-              response = client.start_execution(
-                  stateMachineArn='YOUR_STATE_MACHINE_ARN',
-                  input='{}'  # You can provide input here if needed
-              )
-              
-              return {
-                  'statusCode': 200,
-                  'body': json.dumps('State machine execution started successfully!')
-              }
-
-      Runtime: python3.8
-      Timeout: 30
-
-  LambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      Policies:
-        - PolicyName: LambdaExecutionPolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                  - states:StartExecution
-                Resource: '*'
-
-
-
---------------
-
-AWSTemplateFormatVersion: '2010-09-09'
-Resources:
-  MyLambdaFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      Handler: index.handler
-      Role: !GetAtt LambdaExecutionRole.Arn
-      Code:
-        ZipFile: |
-          import boto3
-          import json
-
-          def handler(event, context):
-              client = boto3.client('stepfunctions')
-              response = client.start_execution(
-                  stateMachineArn='YOUR_STATE_MACHINE_ARN',
-                  input='{}'  # You can provide input here if needed
-              )
-              
-              return {
-                  'statusCode': 200,
-                  'body': json.dumps('State machine execution started successfully!')
-              }
-
-      Runtime: python3.8
-      Timeout: 30
-
-  LambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      Policies:
-        - PolicyName: LambdaExecutionPolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                  - states:StartExecution
-                Resource: '*'
-
-  MyStateMachine:
-    Type: "AWS::StepFunctions::StateMachine"
-    Properties:
-      DefinitionString:
-        Fn::Sub:
-          - |
-            {
-              "Comment": "A Hello World example of the Amazon States Language using a Pass state",
-              "StartAt": "HelloWorld",
-              "States": {
-                "HelloWorld": {
-                  "Type": "Pass",
-                  "Result": "Hello, World!",
-                  "End": true
-                }
-              }
-            }
-          - {}
-
-  InvokeStateMachineLambdaPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !GetAtt MyLambdaFunction.Arn
-      Principal: states.amazonaws.com
-
-Outputs:
-  LambdaFunctionARN:
-    Description: The ARN of the Lambda function
-    Value: !GetAtt MyLambdaFunction.Arn
-
-
-
-
-
-AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS CloudFormation Template for invoking Backup-Restore Lambda
-
-Parameters:
-  RestoreType:
-    Description: Type of restore operation ("On_Demond" or "PITR")
-    Type: String
-    AllowedValues: ["On_Demond", "PITR"]
-    Default: "On_Demond"
-  RestoreArn:
-    Description: ARN of the resource to restore
-    Type: String
-    Default: "complete_ARN_placeholder"
-  SourceTableName:
-    Description: Name of the source table
-    Type: String
-    Default: "Table_A"
-  TargetTableName:
-    Description: Name of the target table
-    Type: String
-    Default: "Table_B"
-  RestoreDateTime:
-    Description: DateTime to restore to
-    Type: String
-    Default: "Time_placeholder"
-
-Conditions:
-  IsPITRRestore: !Equals [!Ref RestoreType, "PITR"]
-  IsOnDemandRestore: !Equals [!Ref RestoreType, "On_Demond"]
-
-Resources:
-  InvokeBackupRestoreLambda:
-    Type: 'Custom::InvokeLambdaFunction'
-    Properties:
-      ServiceToken: !GetAtt InvokeLambdaFunctionArn.Arn
-      RestoreType: !Ref RestoreType
-      RestoreArn: !If [IsPITRRestore, !Ref RestoreArn, !Ref "AWS::NoValue"]
-      SourceTableName: !If [IsOnDemandRestore, !Ref SourceTableName, !Ref "AWS::NoValue"]
-      TargetTableName: !If [IsOnDemandRestore, !Ref TargetTableName, !Ref "AWS::NoValue"]
-      RestoreDateTime: !If [IsOnDemandRestore, !Ref RestoreDateTime, !Ref "AWS::NoValue"]
-
-  InvokeLambdaFunctionRole:
-    Type: 'AWS::IAM::Role'
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: 'sts:AssumeRole'
-      Policies:
-        - PolicyName: LambdaInvokePolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action: 'lambda:InvokeFunction'
-                Resource: '*' # You might want to restrict this to the specific Lambda function ARN
-
-Outputs:
-  InvocationResult:
-    Description: Result of the Lambda invocation
-    Value: !GetAtt InvokeBackupRestoreLambda.ReturnValue
+    # Update configuration on Table B
+    try:
+        # Update Table B
+        dynamodb.update_table(
+            TableName=destination_table_name,
+            # Copy relevant settings from Table A
+            StreamSpecification=stream_specification,
+            SSESpecification=source_table_config.get("SSEDescription"),
+            PointInTimeRecoverySpecification={
+                "PointInTimeRecoveryEnabled": (pitr_enabled == "ENABLED")
+            },
+            TimeToLiveSpecification={
+                "AttributeName": source_table_config.get("TimeToLiveDescription", {}).get("AttributeName"),
+                "Enabled": (ttl_specification == "ENABLED")
+            },
+        )
+        return {"statusCode": 200, "message": "Configuration updated successfully."}
+    except Exception as e:
+        return {"statusCode": 500, "message": f"Failed to update configuration: {str(e)}"}
 
 ```
 
