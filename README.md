@@ -12,6 +12,32 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 ```
 
+Parameters:
+  RestoreType:
+    Description: Type of restore operation ("On_Demand" or "PITR")
+    Type: String
+    AllowedValues: ["On_Demand", "PITR"]
+    Default: "On_Demand"
+  RestoreArn:
+    Description: ARN of the resource to restore
+    Type: String
+    Default: "complete_ARN_placeholder"
+  SourceTableName:
+    Description: Name of the source table
+    Type: String
+    Default: "Table_A"
+  TargetTableName:
+    Description: Name of the target table
+    Type: String
+    Default: "Table_B"
+  RestoreDateTime:
+    Description: DateTime to restore to
+    Type: String
+    Default: "Time_placeholder"
+    AllowedPattern: "^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z)$"
+    ConstraintDescription: "Must be in the format 'YYYY-MM-DDTHH:MM:SSZ' (e.g., '2024-02-21T10:00:00Z')"
+
+
 import boto3
 
 def check_parameter_exists(parameter_name, ssm_client):
