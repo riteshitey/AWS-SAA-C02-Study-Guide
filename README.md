@@ -12,7 +12,11 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 ```
 IsStartOrStop: !And [!Not !Equals [!Ref OperationType, "PITR"], !Not !Equals [!Ref OperationType, "On_Demand"]]
-
+IsStartOrStop: !And
+  - !Not
+    - !Equals [!Ref OperationType, "PITR"]
+  - !Not
+    - !Equals [!Ref OperationType, "On_Demand"]
 Parameters:
   RestoreType:
     Description: Type of restore operation ("On_Demand" or "PITR")
