@@ -11,6 +11,47 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+
+import boto3
+
+def check_parameter_exists(parameter_name, ssm_client):
+    try:
+        response = ssm_client.get_parameter(Name=parameter_name)
+        return True
+    except ssm_client.exceptions.ParameterNotFound:
+        return False
+
+def update_ssm_parameter(parameter_name, parameter_value, ssm_client):
+    response = ssm_client.put_parameter(
+        Name=parameter_name,
+        Value=parameter_value,
+        Type='String',
+        Overwrite=True
+    )
+    print("SSM parameter updated successfully.")
+
+def main():
+    # Specify the parameter name and value you want to update
+    parameter_name = '/example/parameter'
+    parameter_value = 'new_value'
+
+    # Create an SSM client
+    ssm_client = boto3.client('ssm')
+
+    # Check if the parameter exists
+    if check_parameter_exists(parameter_name, ssm_client):
+        # If it exists, update it
+        update_ssm_parameter(parameter_name, parameter_value, ssm_client)
+    else:
+        print("SSM parameter does not exist.")
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
 AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS CloudFormation Template for invoking Backup-Restore Lambda
 
