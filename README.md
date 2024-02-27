@@ -10,6 +10,21 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+import re
+
+def check_timestamp_format(timestamp):
+    pattern = r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$'
+    if re.match(pattern, timestamp):
+        return True
+    else:
+        return False
+
+# Example usage:
+timestamp1 = '2024-02-27T15:30:00Z'
+timestamp2 = '2024-02-27 15:30:00'  # Not in the specified format
+
+print(check_timestamp_format(timestamp1))  # Output: True
+print(check_timestamp_format(timestamp2))  # Output: False
   
 from PIL import Image
 
