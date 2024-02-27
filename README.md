@@ -1,5 +1,4 @@
-# AWS SAA-C02 Study Guide
-This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
+# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
   2. The FAQs for the most critical services, included in the recommended reading list below
   3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
@@ -11,176 +10,24 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-IsStartOrStop: !And [!Not !Equals [!Ref OperationType, "PITR"], !Not !Equals [!Ref OperationType, "On_Demand"]]
-IsStartOrStop: !And
-  - !Not
-    - !Equals [!Ref OperationType, "PITR"]
-  - !Not
-    - !Equals [!Ref OperationType, "On_Demand"]
-Parameters:
-  RestoreType:
-    Description: Type of restore operation ("On_Demand" or "PITR")
-    Type: String
-    AllowedValues: ["On_Demand", "PITR"]
-    Default: "On_Demand"
-  RestoreArn:
-    Description: ARN of the resource to restore
-    Type: String
-    Default: "complete_ARN_placeholder"
-  SourceTableName:
-    Description: Name of the source table
-    Type: String
-    Default: "Table_A"
-  TargetTableName:
-    Description: Name of the target table
-    Type: String
-    Default: "Table_B"
-  RestoreDateTime:
-    Description: DateTime to restore to
-    Type: String
-    Default: "Time_placeholder"
-    AllowedPattern: "^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z)$"
-    ConstraintDescription: "Must be in the format 'YYYY-MM-DDTHH:MM:SSZ' (e.g., '2024-02-21T10:00:00Z')"
+  
+from PIL import Image
 
-
-import boto3
-
-def check_parameter_exists(parameter_name, ssm_client):
+def convert_png_to_jpg(png_path, jpg_path):
     try:
-        response = ssm_client.get_parameter(Name=parameter_name)
-        return True
-    except ssm_client.exceptions.ParameterNotFound:
-        return False
-
-def update_ssm_parameter(parameter_name, parameter_value, ssm_client):
-    response = ssm_client.put_parameter(
-        Name=parameter_name,
-        Value=parameter_value,
-        Type='String',
-        Overwrite=True
-    )
-    print("SSM parameter updated successfully.")
-
-def main():
-    # Specify the parameter name and value you want to update
-    parameter_name = '/example/parameter'
-    parameter_value = 'new_value'
-
-    # Create an SSM client
-    ssm_client = boto3.client('ssm')
-
-    # Check if the parameter exists
-    if check_parameter_exists(parameter_name, ssm_client):
-        # If it exists, update it
-        update_ssm_parameter(parameter_name, parameter_value, ssm_client)
-    else:
-        print("SSM parameter does not exist.")
-
-if __name__ == "__main__":
-    main()
-
-
-
-
-
-AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS CloudFormation Template for invoking Backup-Restore Lambda
-
-Parameters:
-  RestoreType:
-    Description: Type of restore operation ("On_Demond" or "PITR")
-    Type: String
-    AllowedValues: ["On_Demond", "PITR"]
-    Default: "On_Demond"
-  RestoreArn:
-    Description: ARN of the resource to restore
-    Type: String
-    Default: "complete_ARN_placeholder"
-  SourceTableName:
-    Description: Name of the source table
-    Type: String
-    Default: "Table_A"
-  TargetTableName:
-    Description: Name of the target table
-    Type: String
-    Default: "Table_B"
-  RestoreDateTime:
-    Description: DateTime to restore to
-    Type: String
-    Default: "Time_placeholder"
-
-Conditions:
-  IsPITRRestore: !Equals [!Ref RestoreType, "PITR"]
-  IsOnDemandRestore: !Equals [!Ref RestoreType, "On_Demond"]
-
-Resources:
-  InvokeBackupRestoreLambdaPITR:
-    Type: 'Custom::InvokeLambdaFunction'
-    Condition: IsPITRRestore
-    Properties:
-      ServiceToken: !GetAtt InvokeLambdaFunctionArn.Arn
-      RestoreType: !Ref RestoreType
-      RestoreArn: !Ref RestoreArn
-
-  InvokeBackupRestoreLambdaOnDemand:
-    Type: 'Custom::InvokeLambdaFunction'
-    Condition: IsOnDemandRestore
-    Properties:
-      ServiceToken: !GetAtt InvokeLambdaFunctionArn.Arn
-      RestoreType: !Ref RestoreType
-      SourceTableName: !Ref SourceTableName
-      TargetTableName: !Ref TargetTableName
-      RestoreDateTime: !Ref RestoreDateTime
-
-Outputs:
-  InvocationResultPITR:
-    Description: Result of the Lambda invocation for PITR restore
-    Value: !GetAtt InvokeBackupRestoreLambdaPITR.ReturnValue
-
-  InvocationResultOnDemand:
-    Description: Result of the Lambda invocation for On_Demond restore
-    Value: !GetAtt InvokeBackupRestoreLambdaOnDemand.ReturnValue
-
-
----
-
-import boto3
-
-def lambda_handler(event, context):
-    source_table_name = event["sourceTableName"]
-    destination_table_name = event["destinationTableName"]
-
-    dynamodb = boto3.client("dynamodb")
-
-    # Get the configuration of Table A
-    source_table_config = dynamodb.describe_table(TableName=source_table_name)["Table"]
-
-    # Extract relevant configuration details
-    tags = source_table_config.get("Tags", [])
-    pitr_enabled = source_table_config.get("PointInTimeRecoverySpecification", {}).get("PointInTimeRecoveryStatus", "DISABLED")
-    ttl_specification = source_table_config.get("TimeToLiveDescription", {}).get("TimeToLiveStatus", "DISABLED")
-    deletion_protection = source_table_config.get("SSEDescription", {}).get("Status", "DISABLED")
-    stream_specification = source_table_config.get("StreamSpecification", {"StreamEnabled": False})
-
-    # Update configuration on Table B
-    try:
-        # Update Table B
-        dynamodb.update_table(
-            TableName=destination_table_name,
-            # Copy relevant settings from Table A
-            StreamSpecification=stream_specification,
-            SSESpecification=source_table_config.get("SSEDescription"),
-            PointInTimeRecoverySpecification={
-                "PointInTimeRecoveryEnabled": (pitr_enabled == "ENABLED")
-            },
-            TimeToLiveSpecification={
-                "AttributeName": source_table_config.get("TimeToLiveDescription", {}).get("AttributeName"),
-                "Enabled": (ttl_specification == "ENABLED")
-            },
-        )
-        return {"statusCode": 200, "message": "Configuration updated successfully."}
+        # Open the PNG image
+        png_image = Image.open(png_path)
+        
+        # Convert PNG to JPG
+        png_image.convert("RGB").save(jpg_path, "JPEG")
+        print("Conversion successful!")
     except Exception as e:
-        return {"statusCode": 500, "message": f"Failed to update configuration: {str(e)}"}
+        print(f"Error converting PNG to JPG: {e}")
+
+# Example usage
+png_file_path = "example.png"
+jpg_file_path = "example.jpg"
+convert_png_to_jpg(png_file_path, jpg_file_path)
 
 ```
 
