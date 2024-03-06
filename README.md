@@ -10,39 +10,16 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-import re
 
-def check_timestamp_format(timestamp):
-    pattern = r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$'
-    if re.match(pattern, timestamp):
-        return True
-    else:
-        return False
-
-# Example usage:
-timestamp1 = '2024-02-27T15:30:00Z'
-timestamp2 = '2024-02-27 15:30:00'  # Not in the specified format
-
-print(check_timestamp_format(timestamp1))  # Output: True
-print(check_timestamp_format(timestamp2))  # Output: False
-  
-from PIL import Image
-
-def convert_png_to_jpg(png_path, jpg_path):
-    try:
-        # Open the PNG image
-        png_image = Image.open(png_path)
-        
-        # Convert PNG to JPG
-        png_image.convert("RGB").save(jpg_path, "JPEG")
-        print("Conversion successful!")
-    except Exception as e:
-        print(f"Error converting PNG to JPG: {e}")
-
-# Example usage
-png_file_path = "example.png"
-jpg_file_path = "example.jpg"
-convert_png_to_jpg(png_file_path, jpg_file_path)
+Type: AWS::Logs::MetricFilter
+Properties:
+  LogGroupName: !Sub "/ecs/dpraw/${Environment}/dpraw-${Domain}-pull-adapter-${PAInstance}"
+  FilterPattern: '(8^[0-9](4,4)-[0-9](2,2)-[0-9](1,2) [0-9](2,2)\x3A[0-9][2,2]\x3A[0-9](2,2)\.[0-9](3,3) ERROR 14)(?!(.*\bsoftware\.amazon\.kinesis\b)|(.+\n.+software\.amazon\.kinesis))'
+  MetricTransformations:
+    - MetricValue: "1"
+      MetricNamespace: !Sub "dpraw-${Domain}-pull-adapter-${Environment}"
+      MetricName: !Sub "dpraw-${Domain}-pull-adapter-${PAInstance}-error-${Environment}"
+  DefaultValue: 0
 
 ```
 
