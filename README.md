@@ -11,16 +11,16 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 ```
 
-Type: AWS::Logs::MetricFilter
-Properties:
-  LogGroupName: !Sub "/ecs/dpraw/${Environment}/dpraw-${Domain}-pull-adapter-${PAInstance}"
-  FilterPattern: '(8^[0-9](4,4)-[0-9](2,2)-[0-9](1,2) [0-9](2,2)\x3A[0-9][2,2]\x3A[0-9](2,2)\.[0-9](3,3) ERROR 14)(?!(.*\bsoftware\.amazon\.kinesis\b)|(.+\n.+software\.amazon\.kinesis))'
-  MetricTransformations:
-    - MetricValue: "1"
-      MetricNamespace: !Sub "dpraw-${Domain}-pull-adapter-${Environment}"
-      MetricName: !Sub "dpraw-${Domain}-pull-adapter-${PAInstance}-error-${Environment}"
-  DefaultValue: 0
+latest_id = None
+latest_version = None
 
+for artifact in data["ProvisioningArtifacts"]:
+    artifact_name = artifact["Name"]
+    if artifact_name.startswith("v") and (latest_version is None or artifact_name > latest_version):
+        latest_version = artifact_name
+        latest_id = artifact["id"]
+
+print("Latest ID with version v3:", latest_id)
 ```
 
 
