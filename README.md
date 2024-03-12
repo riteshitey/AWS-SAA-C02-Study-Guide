@@ -11,6 +11,17 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 ```
 
+Type: AWS::Logs::MetricFilter
+Properties:
+  LogGroupName: !Sub "/ecs/dpraw/${Environment}/dpraw-${Domain}-pull-adapter-${PAInstance}"
+  FilterPattern: '8^[0-9](4,4)-[0-9](2,2)-[0-9](1,2) [0-9](2,2)\x3A[0-9][2,2]\x3A[0-9](2,2)\.[0-9](3,3) ERROR 14(?!.*(Encountered an exception while renewing a lease|exception thrown while facing records from kinisys))'
+  MetricTransformations:
+    - MetricValue: "1"
+      MetricNamespace: !Sub "dpraw-${Domain}-pull-adapter-${Environment}"
+      MetricName: !Sub "dpraw-${Domain}-pull-adapter-${PAInstance}-error-${Environment}"
+  DefaultValue: 0
+
+
 latest_id = None
 latest_version = None
 
