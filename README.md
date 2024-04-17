@@ -10,6 +10,25 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+Subject: Clarification Needed on DPRaw Application Deployment
+
+Hi PPEDevOps team,
+
+I hope this email finds you well.
+
+We have a couple of requirements regarding the deployment of DPRaw applications that I'd like to clarify:
+
+1. **First Requirement**: We need to deploy the DPRaw application with manifest-based deployment. For this, there are glue jobs (template) written in Python. These jobs require their zip files to be uploaded to Nexus and then to S3.
+
+2. **Second Requirement**: Similarly, some DPRaw applications have Lambda code written in Python. Like the glue jobs, this code also needs to be uploaded to Nexus and then to S3.
+
+Could you please confirm if our manifest-based deployment solution covers these use cases? If not, could you kindly update us on the progress of addressing this issue?
+
+Looking forward to your prompt response.
+
+Best regards,
+
+[Your Name]
 
 Type: AWS::Logs::MetricFilter
 Properties:
