@@ -10,6 +10,12 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+We're making changes to the Ops team in the upcoming CR-CHG1013944427. We've given permission to create and delete CloudWatch Dashboards. This is important because if a problem comes up, we can prevent it if we have the right monitoring. We can quickly add that monitoring by asking for special permission when there's an issue. 
+
+Thanks, Om
+
+
+
 Subject: Clarification Needed on DPRaw Application Deployment
 
 Hi PPEDevOps team,
