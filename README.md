@@ -10,6 +10,37 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+Subject: Update on OML Launch Backup and Restore Solution
+
+Hi everyone,
+
+I hope you're doing well. I wanted to give you an update on the backup and restore solution we've been working on as part of the NAPA requirement for the OML launch, following the guidelines from the CIO.
+
+We encountered some limitations with the restore solution we had previously created, mainly regarding the handling of new tables as standalone entities outside the Service Catalog's management scope. This meant we couldn't update them further through the Service Catalog.
+
+To address this, we explored several proof-of-concepts and brainstormed ideas. After careful consideration, we settled on one of the provided proof-of-concepts, which we presented in the Design forum and received approval from the CIO.
+
+Here are the main points of the solution:
+
+- It covers both Point-in-Time Recovery (PITR) and On-demand restore.
+- The restored table will have the same name as the original table.
+- Management and updates via the service catalog will be possible on the restored table.
+- All configurations and settings such as primary keys (PK), sort keys (SK), global secondary indexes (GSI), tags, time-to-live (TTL), Key Management Service (KMS), and streams will automatically be imported to the restored table.
+- We've implemented a state machine for restoration, eliminating the timeout constraints present in the previous solution using Lambda functions.
+- The solution creates an intermediate table for quick validation by the operator before restoration.
+
+For more detailed information, please refer to the Confluence page titled "DynamoDB Restore Solution via SC product" under the product template "dynamodb-backup-restore."
+
+If you have any questions or need further clarification, feel free to reach out to me.
+
+Thanks,
+Om
+
+
+
+
+
+
 We're making changes to the Ops team in the upcoming CR-CHG1013944427. We've given permission to create and delete CloudWatch Dashboards. This is important because if a problem comes up, we can prevent it if we have the right monitoring. We can quickly add that monitoring by asking for special permission when there's an issue. 
 
 Thanks, Om
