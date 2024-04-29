@@ -13,6 +13,29 @@ If at any point you find yourself feeling uncertain of your progress and in need
 ```
 🚨 Wake Up, Lambda! CloudWatch Alarms Need You! ⏰
 
+AWS had unveiled an exciting integration that's bound to shake up your cloud operations: CloudWatch alarms can now wake up AWS Lambda directly! 🚀
+
+🚫 Say goodbye to the days of relying on intermediate SNS topics to invoke Lambda functions 
+
+💰 Cut costs by axing those SNS resources. Cha-ching! 💸
+
+🔄 No more delays or complexity. 
+
+💪 CloudWatch alarms + Lambda = unstoppable automation power!  
+Automate resource cleanup, scale dynamically based on custom metrics, handle real-time error handling, deploy scheduled maintenance tasks, Implement proactive cost optimization strategies and even orchestrate complex workflows with ease. 🛠️
+
+
+🎩 Psst... don't forget to check out our POC – 🍰 Here's the link: 
+
+
+⏰ Don't hit snooze – wake up, Lambda! Your CloudWatch alarms are calling.![image](https://github.com/riteshitey/AWS-SAA-C02-Study-Guide/assets/104335776/ce21680e-bee0-4099-9f3c-2dedee55d02a)
+
+
+
+
+
+🚨 Wake Up, Lambda! CloudWatch Alarms Need You! ⏰
+
 AWS has unveiled an exciting integration that's bound to shake up your cloud operations: CloudWatch alarms can now wake up AWS Lambda directly! 🚀
 
 🚫 Say goodbye to the days of relying on intermediate SNS topics to invoke Lambda functions 
