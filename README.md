@@ -10,84 +10,78 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-Subject: Update on OML Launch Backup and Restore Solution
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to create Lambda function, metric filter, and alarm
 
-Hi everyone,
+Resources:
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        ZipFile: |
+          exports.handler = async (event) => {
+              console.log('Hello from Lambda!');
+              return {
+                  statusCode: 200,
+                  body: JSON.stringify('Hello from Lambda!')
+              };
+          };
+      Runtime: nodejs14.x
 
-I hope you're doing well. I wanted to give you an update on the backup and restore solution we've been working on as part of the NAPA requirement for the OML launch, following the guidelines from the CIO.
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
 
-We encountered some limitations with the restore solution we had previously created, mainly regarding the handling of new tables as standalone entities outside the Service Catalog's management scope. This meant we couldn't update them further through the Service Catalog.
+  MyLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${MyLambdaFunction}"
 
-To address this, we explored several proof-of-concepts and brainstormed ideas. After careful consideration, we settled on one of the provided proof-of-concepts, which we presented in the Design forum and received approval from the CIO.
+  MyMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref MyLogGroup
+      FilterPattern: "[timestamp=*Z, request_id=\"*-*\"]"
+      MetricTransformations:
+        - MetricName: MyLambdaErrorCount
+          MetricNamespace: AWS/Lambda
+          MetricValue: "1"
 
-Here are the main points of the solution:
+  MyAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: "Alarm if MyLambdaErrorCount exceeds 0 for 1 minute"
+      Namespace: AWS/Lambda
+      MetricName: MyLambdaErrorCount
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref MyLambdaFunction
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
 
-- It covers both Point-in-Time Recovery (PITR) and On-demand restore.
-- The restored table will have the same name as the original table.
-- Management and updates via the service catalog will be possible on the restored table.
-- All configurations and settings such as primary keys (PK), sort keys (SK), global secondary indexes (GSI), tags, time-to-live (TTL), Key Management Service (KMS), and streams will automatically be imported to the restored table.
-- We've implemented a state machine for restoration, eliminating the timeout constraints present in the previous solution using Lambda functions.
-- The solution creates an intermediate table for quick validation by the operator before restoration.
-
-For more detailed information, please refer to the Confluence page titled "DynamoDB Restore Solution via SC product" under the product template "dynamodb-backup-restore."
-
-If you have any questions or need further clarification, feel free to reach out to me.
-
-Thanks,
-Om
-
-
-
-
-
-
-We're making changes to the Ops team in the upcoming CR-CHG1013944427. We've given permission to create and delete CloudWatch Dashboards. This is important because if a problem comes up, we can prevent it if we have the right monitoring. We can quickly add that monitoring by asking for special permission when there's an issue. 
-
-Thanks, Om
-
-
-
-Subject: Clarification Needed on DPRaw Application Deployment
-
-Hi PPEDevOps team,
-
-I hope this email finds you well.
-
-We have a couple of requirements regarding the deployment of DPRaw applications that I'd like to clarify:
-
-1. **First Requirement**: We need to deploy the DPRaw application with manifest-based deployment. For this, there are glue jobs (template) written in Python. These jobs require their zip files to be uploaded to Nexus and then to S3.
-
-2. **Second Requirement**: Similarly, some DPRaw applications have Lambda code written in Python. Like the glue jobs, this code also needs to be uploaded to Nexus and then to S3.
-
-Could you please confirm if our manifest-based deployment solution covers these use cases? If not, could you kindly update us on the progress of addressing this issue?
-
-Looking forward to your prompt response.
-
-Best regards,
-
-[Your Name]
-
-Type: AWS::Logs::MetricFilter
-Properties:
-  LogGroupName: !Sub "/ecs/dpraw/${Environment}/dpraw-${Domain}-pull-adapter-${PAInstance}"
-  FilterPattern: '8^[0-9](4,4)-[0-9](2,2)-[0-9](1,2) [0-9](2,2)\x3A[0-9][2,2]\x3A[0-9](2,2)\.[0-9](3,3) ERROR 14(?!.*(Encountered an exception while renewing a lease|exception thrown while facing records from kinisys))'
-  MetricTransformations:
-    - MetricValue: "1"
-      MetricNamespace: !Sub "dpraw-${Domain}-pull-adapter-${Environment}"
-      MetricName: !Sub "dpraw-${Domain}-pull-adapter-${PAInstance}-error-${Environment}"
-  DefaultValue: 0
-
-
-latest_id = None
-latest_version = None
-
-for artifact in data["ProvisioningArtifacts"]:
-    artifact_name = artifact["Name"]
-    if artifact_name.startswith("v") and (latest_version is None or artifact_name > latest_version):
-        latest_version = artifact_name
-        latest_id = artifact["id"]
-
-print("Latest ID with version v3:", latest_id)
 ```
 
 
