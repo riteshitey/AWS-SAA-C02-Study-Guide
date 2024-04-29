@@ -1,4 +1,4 @@
-# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
+![image](https://github.com/riteshitey/AWS-SAA-C02-Study-Guide/assets/104335776/7361e7c8-6572-40fa-a0c1-aca31775a522)# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
   2. The FAQs for the most critical services, included in the recommended reading list below
   3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
@@ -9,7 +9,26 @@
 If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. Be sure to also keep up with the ongoing discussions in <a href="https://reddit.com/r/AWSCertifications/">r/AWSCertifications</a> as you will find relevant exam tips, studying material, and advice from other exam takers. Before experimenting with AWS, it's very important to be sure that you know what is <a href="https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">free</a> and what isn't. Relevant Free Tier FAQs can be found <a href="https://aws.amazon.com/free/free-tier-faqs/">here</a>. Finally, Udemy often has their courses go on sale from time to time. It might be worth waiting to purchase either the Tutorial Dojo practice exam or Stephane Maarek's course depending on how urgently you need the content.
 
 
+
 ```
+🚨 Wake Up, Lambda! CloudWatch Alarms Need You! ⏰
+
+AWS has unveiled an exciting integration that's bound to shake up your cloud operations: CloudWatch alarms can now wake up AWS Lambda directly! 🚀
+
+🚫 Say goodbye to the days of relying on intermediate SNS topics to invoke Lambda functions 
+
+💰 Saves on costs by eliminating additional SNS resources. 
+
+🔄 No more delays or complexity. 
+
+💪 CloudWatch alarms + Lambda = unstoppable automation power!  
+Automate resource cleanup, scale dynamically based on custom metrics, handle real-time error handling, deploy scheduled maintenance tasks, Implement proactive cost optimization strategies, and even orchestrate complex workflows with ease. 🛠️
+
+🌟 Don't miss out – wake up, Lambda! Your CloudWatch alarms need you now more than ever.![image](https://github.com/riteshitey/AWS-SAA-C02-Study-Guide/assets/104335776/ec6b90eb-2494-43f8-b2ea-d1e06bcdae70)
+
+
+
+
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CloudFormation template to create Lambda function, metric filter, and alarm
 
