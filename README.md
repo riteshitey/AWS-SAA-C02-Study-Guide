@@ -1,4 +1,4 @@
-![image](https://github.com/riteshitey/AWS-SAA-C02-Study-Guide/assets/104335776/7361e7c8-6572-40fa-a0c1-aca31775a522)# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
+# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
   2. The FAQs for the most critical services, included in the recommended reading list below
   3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
@@ -8,44 +8,12 @@
 *Notes*:
 If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. Be sure to also keep up with the ongoing discussions in <a href="https://reddit.com/r/AWSCertifications/">r/AWSCertifications</a> as you will find relevant exam tips, studying material, and advice from other exam takers. Before experimenting with AWS, it's very important to be sure that you know what is <a href="https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">free</a> and what isn't. Relevant Free Tier FAQs can be found <a href="https://aws.amazon.com/free/free-tier-faqs/">here</a>. Finally, Udemy often has their courses go on sale from time to time. It might be worth waiting to purchase either the Tutorial Dojo practice exam or Stephane Maarek's course depending on how urgently you need the content.
 
-**Title: AWS CloudWatch Alarms Integration with AWS Lambda Documentation**
 
----
 
-**Introduction:**
-AWS (Amazon Web Services) has introduced a groundbreaking feature that revolutionizes cloud operations: the integration of CloudWatch alarms with AWS Lambda. This documentation outlines the seamless integration, its benefits, implementation steps, use cases, and community responses.
-
----
-
-**Feature Overview:**
-Amazon CloudWatch alarms now support AWS Lambda functions as an action for state changes. This feature enables automated remediation actions when detecting unhealthy resources, eliminating the need for intermediate SNS topics.
-
----
-
-**Key Benefits:**
-- **Cost Savings:** Eliminates the need for additional SNS resources, reducing costs.
-- **Streamlined Automation:** Direct triggering of Lambda functions from CloudWatch alarms speeds up workflows and simplifies automation.
-- **Improved Responsiveness:** Instant responses to critical events in the cloud environment without delays or complexity.
-
----
-
-**Implementation Steps:**
-1. Configure CloudWatch Alarm:
-   - Create a new alarm in the CloudWatch service.
-   - Choose monitoring parameters and set thresholds.
-   - Configure actions to trigger Lambda functions directly on state changes.
-2. Create Lambda Function:
-   - Navigate to AWS Lambda in the Console.
-   - Create a new function and define its runtime, code, and permissions.
-   - Test the integration and consider automation options for efficient management.
-3. Add Permissions in Lambda:
-   - Configure resource-based policy statements in the Lambda function's configuration.
-   - Grant permissions for CloudWatch alarms to invoke the Lambda function.
-
----
+```
 Title: ⏰ Don't hit snooze – wake up, Lambda! Your CloudWatch alarms are calling.
 
-AWS has announced a groundbreaking integration that's set to transform the way we manage our cloud environments: CloudWatch alarms can now directly trigger AWS Lambda functions!
+AWS has announced a groundbreaking integration to transform how we manage our cloud environments: CloudWatch alarms can now directly trigger AWS Lambda functions!
 
 🚫 Say goodbye to the days of relying on intermediate SNS topics to invoke Lambda functions 
 
@@ -59,156 +27,10 @@ Automate resource cleanup, scale dynamically based on custom metrics, handle rea
 🎩 Psst... don't forget to check out our POC – 🍰 Here's the link: 
 
 
-
-
-
-
-**Use Cases:**
-1. **Automated Remediation:** Auto-remediate issues such as high CPU usage or resource depletion.
-2. **Dynamic Scaling:** Scale infrastructure based on custom metrics to optimize performance.
-3. **Error Handling:** Handle real-time errors and failures efficiently.
-4. **Scheduled Maintenance:** Automate routine maintenance tasks to ensure system reliability.
-5. **Cost Optimization:** Implement proactive cost optimization strategies to minimize expenses.
-6. **Complex Workflows:** Orchestrate complex workflows seamlessly within the cloud environment.
-
----
-
-**Community Responses:**
-The community has welcomed this integration with enthusiasm:
-- **Principal Engineer at PostNL:** Described the feature as long-awaited and game-changing.
-- **Principal Cloud Engineer at Nordea:** Recognized it as one of the top features awaited for almost a decade.
-- **Reddit User:** Emphasized the significance of the change despite previous workarounds.
-
----
-
-**Conclusion:**
-The integration of CloudWatch alarms with AWS Lambda marks a significant milestone in cloud automation. By simplifying workflows, improving responsiveness, and reducing costs, AWS continues to empower users to optimize their cloud operations effectively.
-
----
-
-**References:**
-- Official AWS Documentation: [Link](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-actions)
-- Additional Resources: [Links to relevant posts and announcements]
-
----
-
-*Note: The documentation provides an overview of the integration. For detailed implementation guidance, refer to the official AWS documentation.*
-
-
-
-
 ```
-🚨 Wake Up, Lambda! CloudWatch Alarms Need You! ⏰
-
-AWS had unveiled an exciting integration that's bound to shake up your cloud operations: CloudWatch alarms can now wake up AWS Lambda directly! 🚀
-
-🚫 Say goodbye to the days of relying on intermediate SNS topics to invoke Lambda functions 
-
-💰 Cut costs by axing those SNS resources. Cha-ching! 💸
-
-🔄 No more delays or complexity. 
-
-💪 CloudWatch alarms + Lambda = unstoppable automation power!  
-Automate resource cleanup, scale dynamically based on custom metrics, handle real-time error handling, deploy scheduled maintenance tasks, Implement proactive cost optimization strategies and even orchestrate complex workflows with ease. 🛠️
-
-
-🎩 Psst... don't forget to check out our POC – 🍰 Here's the link: 
-
-
-⏰ Don't hit snooze – wake up, Lambda! Your CloudWatch alarms are calling.
 
 
 
-
-🚨 Wake Up, Lambda! CloudWatch Alarms Need You! ⏰
-
-AWS has unveiled an exciting integration that's bound to shake up your cloud operations: CloudWatch alarms can now wake up AWS Lambda directly! 🚀
-
-🚫 Say goodbye to the days of relying on intermediate SNS topics to invoke Lambda functions 
-
-💰 Saves on costs by eliminating additional SNS resources. 
-
-🔄 No more delays or complexity. 
-
-💪 CloudWatch alarms + Lambda = unstoppable automation power!  
-Automate resource cleanup, scale dynamically based on custom metrics, handle real-time error handling, deploy scheduled maintenance tasks, Implement proactive cost optimization strategies, and even orchestrate complex workflows with ease. 🛠️
-
-🌟 Don't miss out – wake up, Lambda! Your CloudWatch alarms need you now more than ever.
-
-
-AWSTemplateFormatVersion: '2010-09-09'
-Description: CloudFormation template to create Lambda function, metric filter, and alarm
-
-Resources:
-  MyLambdaFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      Handler: index.handler
-      Role: !GetAtt LambdaExecutionRole.Arn
-      Code:
-        ZipFile: |
-          exports.handler = async (event) => {
-              console.log('Hello from Lambda!');
-              return {
-                  statusCode: 200,
-                  body: JSON.stringify('Hello from Lambda!')
-              };
-          };
-      Runtime: nodejs14.x
-
-  LambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      Policies:
-        - PolicyName: LambdaExecutionPolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource: "arn:aws:logs:*:*:*"
-
-  MyLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: !Sub "/aws/lambda/${MyLambdaFunction}"
-
-  MyMetricFilter:
-    Type: AWS::Logs::MetricFilter
-    Properties:
-      LogGroupName: !Ref MyLogGroup
-      FilterPattern: "[timestamp=*Z, request_id=\"*-*\"]"
-      MetricTransformations:
-        - MetricName: MyLambdaErrorCount
-          MetricNamespace: AWS/Lambda
-          MetricValue: "1"
-
-  MyAlarm:
-    Type: AWS::CloudWatch::Alarm
-    Properties:
-      AlarmDescription: "Alarm if MyLambdaErrorCount exceeds 0 for 1 minute"
-      Namespace: AWS/Lambda
-      MetricName: MyLambdaErrorCount
-      Dimensions:
-        - Name: FunctionName
-          Value: !Ref MyLambdaFunction
-      Statistic: Sum
-      Period: 60
-      EvaluationPeriods: 1
-      Threshold: 0
-      ComparisonOperator: GreaterThanThreshold
-
-```
 
 
 ## Table of Contents
