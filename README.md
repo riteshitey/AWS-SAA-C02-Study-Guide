@@ -11,6 +11,17 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+Hi Team,
+
+I wanted to update you on the recent onboarding we completed for our DevOps team. We've successfully set up two things:
+
+1. **AWS Cloud Inventory:** You can now see all the details and configurations of our AWS resources on our Confluence page. You don't need to log in to our AWS account anymore. The information gets updated every Sunday. Here's the link: [Confluence Link](https://confluence.barcapint.com/display/PUMATECH/DPRAW++Configuration+Management)
+
+2. **Service Quota Monitoring and Alerting Solution:** You'll start getting emails daily or weekly about the usage of your AWS account service quotas. If any service reaches more than 80% of its quota limit, please take action to avoid any incidents. Here's the documentation link: [Documentation Link](https://confluence.barcapint.com/display/PUMATECH/1.+QuotaWatch+%E2%80%93+Service+Quota+Monitoring+and+Alerting+Solution)
+
+
+
+
 Title: ⏰ Don't hit snooze – wake up, Lambda! Your CloudWatch alarms are calling.
 
 AWS has announced a groundbreaking integration to transform how we manage our cloud environments: CloudWatch alarms can now directly trigger AWS Lambda functions!
