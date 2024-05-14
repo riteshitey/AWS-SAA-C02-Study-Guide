@@ -11,6 +11,34 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+import boto3
+
+def check_s3_tag(tag_name):
+    # Create an S3 client
+    s3 = boto3.client('s3')
+
+    # List all S3 buckets
+    response = s3.list_buckets()
+
+    # Check if each bucket has the specified tag
+    for bucket in response['Buckets']:
+        bucket_name = bucket['Name']
+        tags = s3.get_bucket_tagging(Bucket=bucket_name)
+        tag_set = tags.get('TagSet', [])
+        tag_names = [tag['Key'] for tag in tag_set]
+        
+        if tag_name not in tag_names:
+            print(f"Bucket '{bucket_name}' does not have the tag '{tag_name}'")
+            return False
+
+    print(f"All S3 buckets have the tag '{tag_name}'")
+    return True
+
+# Usage
+tag_name = "tag_name"
+check_s3_tag(tag_name)
+
+
 Hi Team,
 
 I wanted to update you on the recent onboarding we completed for our DevOps team. We've successfully set up two things:
