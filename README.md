@@ -1,4 +1,4 @@
-# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
+ji# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
   2. The FAQs for the most critical services, included in the recommended reading list below
   3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
@@ -10,7 +10,43 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 
-```
+```import json
+import boto3
+
+def lambda_handler(event, context):
+    # Initialize a session using Amazon Lambda
+    client = boto3.client('lambda')
+    
+    # The name of the Lambda function to invoke
+    function_name = 'your_target_lambda_function_name'
+    
+    # Payload to send to the Lambda function
+    payload = {
+        "key1": "value1",
+        "key2": "value2",
+        "key3": "value3"
+    }
+    
+    # Invoking the Lambda function
+    response = client.invoke(
+        FunctionName=function_name,
+        InvocationType='RequestResponse',  # 'Event' for asynchronous invocation
+        Payload=json.dumps(payload)
+    )
+    
+    # Read the response
+    response_payload = response['Payload'].read().decode('utf-8')
+    
+    # Log and return the response
+    print(f"Response: {response_payload}")
+    
+    return {
+        'statusCode': 200,
+        'body': json.loads(response_payload)
+    }
+
+
+
 import boto3
 
 def check_s3_tag(tag_name):
