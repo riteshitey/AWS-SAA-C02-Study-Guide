@@ -18,6 +18,49 @@ class LogGroupTagger(TaggingInterface):
     def __init__(self):
         super().__init__('logs')
         self.logger.info(f"Entered {type(self).__name__} execution")
+
+    def get_resources(self):
+        available_log_groups = []
+        boto_response = self.boto_call('describe_log_groups', {})
+        available_log_groups.extend(boto_response.get('logGroups', []))
+        next_token = boto_response.get('nextToken', '')
+
+        while next_token:
+            boto_response = self.boto_call('describe_log_groups', {'nextToken': next_token})
+            available_log_groups.extend(boto_response.get('logGroups', []))
+            next_token = boto_response.get('nextToken', '')
+
+        log_group_names = [log_group['logGroupName'] for log_group in available_log_groups]
+        return log_group_names
+
+    def tag_resources(self, log_group_names, tag_key, tag_value):
+        for log_group_name in log_group_names:
+            boto_params = {
+                'logGroupName': log_group_name,
+                'tags': {
+                    tag_key: tag_value
+                }
+            }
+            self.boto_call('tag_log_group', boto_params)
+
+    def untag_resources(self, log_group_names, tag_key):
+        for log_group_name in log_group_names:
+            boto_params = {
+                'logGroupName': log_group_name,
+                'tags': [tag_key]
+            }
+            self.boto_call('untag_log_group', boto_params)
+
+
+
+
+from base_class import TaggingInterface
+
+class LogGroupTagger(TaggingInterface):
+
+    def __init__(self):
+        super().__init__('logs')
+        self.logger.info(f"Entered {type(self).__name__} execution")
         self.log_group_arn_skeleton = f"arn:aws:logs:{self.aws_region}:{self.aws_account_id}:log-group:"
 
     def get_resources(self):
