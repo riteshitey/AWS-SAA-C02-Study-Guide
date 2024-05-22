@@ -10,7 +10,42 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 
-```import json
+```
+import json
+import boto3
+
+def lambda_handler(event, context):
+    # Initialize a boto3 client for CloudWatch Logs
+    logs_client = boto3.client('logs')
+    
+    # Specify the log group name and the tags you want to add
+    log_group_name = "/aws/lambda/your-log-group-name"
+    tags = {
+        'Environment': 'Production',
+        'Department': 'Finance'
+    }
+    
+    try:
+        # Tag the log group
+        response = logs_client.tag_log_group(
+            logGroupName=log_group_name,
+            tags=tags
+        )
+        
+        return {
+            'statusCode': 200,
+            'body': json.dumps('Successfully tagged log group')
+        }
+    
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps(f'Error tagging log group: {str(e)}')
+        }
+
+
+
+import json
 import boto3
 
 def lambda_handler(event, context):
