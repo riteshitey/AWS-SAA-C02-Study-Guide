@@ -11,6 +11,29 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+Subject: Update: New Feature Added to Tagging Utility for AWS Log Groups
+
+Hi Team,
+
+I am pleased to inform you that we have successfully added a new feature to our existing tagging utility. This enhancement allows us to apply AWS discount tags to all AWS CloudWatch Log Groups, which will help us save on costs.
+
+### Feature Details:
+- **Functionality:** The updated utility can now tag and untag AWS CloudWatch Log Groups.
+- **Benefit:** By adding the AWS discount tag to our Log Groups, we can take advantage of potential cost savings.
+
+### Action Required:
+Please ensure to utilize this updated tagging utility to apply the discount tags to your respective AWS Log Groups.
+
+If you have any questions or need further assistance, feel free to reach out.
+
+Best regards,
+
+[Your Name]
+[Your Position]
+[Your Contact Information]
+
+
+
 from base_class import TaggingInterface
 
 class LogGroupTagger(TaggingInterface):
