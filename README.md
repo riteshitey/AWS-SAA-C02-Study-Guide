@@ -9,6 +9,15 @@ ji# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Cer
 If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. Be sure to also keep up with the ongoing discussions in <a href="https://reddit.com/r/AWSCertifications/">r/AWSCertifications</a> as you will find relevant exam tips, studying material, and advice from other exam takers. Before experimenting with AWS, it's very important to be sure that you know what is <a href="https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">free</a> and what isn't. Relevant Free Tier FAQs can be found <a href="https://aws.amazon.com/free/free-tier-faqs/">here</a>. Finally, Udemy often has their courses go on sale from time to time. It might be worth waiting to purchase either the Tutorial Dojo practice exam or Stephane Maarek's course depending on how urgently you need the content.
 
 
+Hi,
+
+As part of our ongoing efforts to optimize costs associated with our AWS resources, we have been actively leveraging our tagging utility solution to apply discount tags to various AWS services. This proactive approach has already enabled us to efficiently tag numerous resources in bulk.
+
+We are continuously enhancing this utility and have recently expanded its capabilities to include support for CloudWatch Log Groups. For now, I'm pleased to announce that we have completed tagging AWS Log Groups in all SIL non-production accounts. We will proceed with log group tagging in production accounts in the upcoming week.
+
+Thanks,
+Om
+
 
 ### Tag Resource Pro: Maximize Discount on AWS Resources with our Ultimate Tagging Utility! 🎯
 
