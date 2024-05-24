@@ -31,6 +31,52 @@ For more details, check below. 👇
 
 ```
 
+Subject: Business Update: Enhancements to Cost Reduction Measures with AWS Resource Tagging
+
+Dear [Director's Name],
+
+I hope this message finds you well.
+
+I'm pleased to share an update on our ongoing efforts to optimize costs associated with our AWS resources. As part of our strategic initiative to drive efficiency and cost-effectiveness across our cloud infrastructure, we have been actively leveraging our tagging utility to apply discount tags to various AWS services.
+
+In line with our commitment to continuous improvement, I'm excited to announce that we have recently enhanced our tagging utility to include support for CloudWatch Log Groups. This enhancement represents a strategic step forward in our cost optimization journey.
+
+### Current Status:
+- **Non-Production Accounts:** I'm delighted to report that we have successfully completed the tagging of AWS Log Groups in all SIL non-production accounts.
+- **Production Accounts:** We are now gearing up to extend this tagging initiative to our production accounts in the coming week.
+
+By systematically applying discount tags to our AWS resources, we are not only ensuring better cost visibility and accountability but also maximizing our potential savings. This proactive approach aligns perfectly with our overarching goal of optimizing operational expenses while maintaining high standards of performance and reliability.
+
+Thank you for your continued support as we drive forward with our cost optimization initiatives. If you have any questions or require further information, please don't hesitate to reach out.
+
+Best regards,
+
+Om
+
+
+!!!!!!!
+
+Subject: Enhancement to Tagging Utility for Cost Reduction on AWS Resources
+
+Dear [Director's Name],
+
+As part of our ongoing efforts to reduce costs associated with AWS resources, we have been leveraging our tagging utility to apply discount tags across all supported AWS services. This proactive approach has already enabled us to tag numerous resources effectively.
+
+In our commitment to continuously enhance this utility, we have recently expanded its capabilities to include support for CloudWatch Log Groups. I am pleased to inform you that we have successfully implemented this new feature.
+
+### Current Status:
+- **Non-Production Accounts:** We have completed the tagging of AWS Log Groups in all SIL non-production accounts.
+- **Production Accounts:** We are scheduled to extend this tagging to production accounts in the upcoming week.
+
+This enhancement is a significant step towards optimizing our AWS costs further and ensuring we take full advantage of the available discounts.
+
+Thank you for your support.
+
+Best regards,
+
+Om
+
+
 
 
 
