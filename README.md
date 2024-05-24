@@ -11,6 +11,30 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 Hi,
 
+I hope this email finds you well. I wanted to share some updates regarding our ongoing efforts to optimize costs associated with our AWS resources:
+
+1. **Tagging Utility Enhancement:**
+   - We have been actively leveraging our tagging utility solution to apply discount tags to various AWS services.
+   - This proactive approach has already enabled us to efficiently tag numerous resources in bulk.
+
+2. **Expansion to CloudWatch Log Groups:**
+   - In our continuous efforts to enhance this utility, we have recently expanded its capabilities to include support for CloudWatch Log Groups.
+
+3. **Tagging Progress:**
+   - I'm pleased to announce that we have completed tagging AWS Log Groups in all SIL non-production accounts.
+
+4. **Upcoming Plans:**
+   - We are scheduled to proceed with log group tagging in production accounts in the upcoming week.
+
+Thank you for your attention to this update. If you have any questions or require further information, feel free to reach out.
+
+Thanks,  
+Om
+---++++
+
+
+Hi,
+
 As part of our ongoing efforts to optimize costs associated with our AWS resources, we have been actively leveraging our tagging utility solution to apply discount tags to various AWS services. This proactive approach has already enabled us to efficiently tag numerous resources in bulk.
 
 We are continuously enhancing this utility and have recently expanded its capabilities to include support for CloudWatch Log Groups. For now, I'm pleased to announce that we have completed tagging AWS Log Groups in all SIL non-production accounts. We will proceed with log group tagging in production accounts in the upcoming week.
