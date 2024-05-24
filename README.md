@@ -9,6 +9,30 @@ ji# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Cer
 If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. Be sure to also keep up with the ongoing discussions in <a href="https://reddit.com/r/AWSCertifications/">r/AWSCertifications</a> as you will find relevant exam tips, studying material, and advice from other exam takers. Before experimenting with AWS, it's very important to be sure that you know what is <a href="https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">free</a> and what isn't. Relevant Free Tier FAQs can be found <a href="https://aws.amazon.com/free/free-tier-faqs/">here</a>. Finally, Udemy often has their courses go on sale from time to time. It might be worth waiting to purchase either the Tutorial Dojo practice exam or Stephane Maarek's course depending on how urgently you need the content.
 
 
+
+Hi Jigneshkumar,
+
+As we continue our efforts to optimize costs associated with our AWS resources at Barclays UK, we're actively utilizing our tagging utility solution to apply discount tags.
+
+Here are some key updates:
+
+1. **Enhanced Support for Log Groups:**
+   - We've expanded the capabilities of our tagging utility to include support for log groups, fulfilling the requirement for discount tagging.
+
+2. **Completion of Non-Production Environment Tagging:**
+   - I'm pleased to inform you that we've successfully tagged AWS log groups in all SIL non-production environments.
+
+3. **Upcoming Tagging Plans for Production Environment:**
+   - Our next step involves proceeding with log group tagging in the production environment, which is scheduled for the upcoming week.
+
+This feature will soon be adopted by all other domains within our organization.
+
+Thanks for your attention to this update.
+
+Best regards,  
+Om
+
+
 Hi,
 
 I hope this email finds you well. I wanted to share some updates regarding our ongoing efforts to optimize costs associated with our AWS resources:
