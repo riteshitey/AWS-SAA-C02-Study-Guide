@@ -1,3 +1,23 @@
+Subject: Completion of Action Item and Clarification on Incremental Backup Export/Import
+
+Hi Makowania, Narendra,
+
+I hope this message finds you well.
+
+I am pleased to inform you that we have successfully completed the pending action item from our side (Import backup from S3).
+
+The onboarding and operating flow are detailed in the Documentation-Pycume Besture Solution via SC Product, which outlines the steps for restoring using S3 Import. This covers both methods: via Pipeline and Console. You can find the documentation here: bts/karnce barsaaint.com/alex/COELENG/ -Via-Pipeline+with+C.
+
+Additionally, I wanted to clarify that incremental backup export/import is not included in this solution.
+
+The incremental backup export uses Point-in-Time Recovery (PITR), allowing users to export data from any "FROM" to "TO" time within the last 35 days. However, importing incremental backups from S3 requires creating new tables each time, making it challenging to consolidate these backups. Consequently, we found no practical use case for this feature and decided to exclude it from this solution.
+
+Thank you for your understanding.
+
+Best regards,  
+Om
+
+
 ji# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
   2. The FAQs for the most critical services, included in the recommended reading list below
