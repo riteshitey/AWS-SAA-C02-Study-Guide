@@ -9,6 +9,27 @@ ji# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Cer
 If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. Be sure to also keep up with the ongoing discussions in <a href="https://reddit.com/r/AWSCertifications/">r/AWSCertifications</a> as you will find relevant exam tips, studying material, and advice from other exam takers. Before experimenting with AWS, it's very important to be sure that you know what is <a href="https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">free</a> and what isn't. Relevant Free Tier FAQs can be found <a href="https://aws.amazon.com/free/free-tier-faqs/">here</a>. Finally, Udemy often has their courses go on sale from time to time. It might be worth waiting to purchase either the Tutorial Dojo practice exam or Stephane Maarek's course depending on how urgently you need the content.
 
 
+Subject: Clarification on Incremental Backup Export/Import Exclusion
+
+Dear [Recipient's Name],
+
+I wanted to clarify that incremental backup export/import is not included in this solution.
+
+Export to S3:
+The incremental backup export uses Point-in-Time Recovery (PITR) and allows users to export data from any "FROM" to "TO" time within the last 35 days.
+
+Import from S3:
+To import incremental backups from S3, the data needs to be restored into the same table. If incremental backups are stored in S3, they can only be retrieved by importing them into a new table. Each import would create a new table, making it difficult to consolidate these backups. Therefore, we found no practical use case for this feature, which is why it has been excluded from this solution.
+
+Thank you for your understanding.
+
+Best regards,  
+[Your Name]  
+[Your Position]  
+[Your Contact Information]
+
+
+
 
 Hi Jigneshkumar,
 
@@ -54,7 +75,6 @@ Thank you for your attention to this update. If you have any questions or requir
 
 Thanks,  
 Om
----++++
 
 
 Hi,
