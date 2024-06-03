@@ -1,3 +1,5 @@
+https://catalog.us-east-1.prod.workshops.aws/sign-in?redirect=%2Fjoin%3Faccess-code%3Dc3fd-0d306f-da
+
 Hi everyone,
 
 When creating any Lambda function via the console, please ensure you launch it in a VPC. If you don't, it will be marked as non-compliant, creating extra work for me to remediate it.
