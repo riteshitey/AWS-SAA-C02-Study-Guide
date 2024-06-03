@@ -1,3 +1,6 @@
+Hi Dakshinamoorthy and Baskar,As discussed, I have explained the AWS Config Breaches and Auto-AMI Refresh Task processes to Ritvik Sharma from Customer Digital and Data. Starting this week, Ritvik will take over these responsibilities in SIL.Thanks,
+Om
+
 https://catalog.us-east-1.prod.workshops.aws/sign-in?redirect=%2Fjoin%3Faccess-code%3Dc3fd-0d306f-da
 
 Hi everyone,
