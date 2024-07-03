@@ -1,37 +1,4 @@
-Hi Dakshinamoorthy and Baskar,As discussed, I have explained the AWS Config Breaches and Auto-AMI Refresh Task processes to Ritvik Sharma from Customer Digital and Data. Starting this week, Ritvik will take over these responsibilities in SIL.Thanks,
-Om
-
-https://catalog.us-east-1.prod.workshops.aws/sign-in?redirect=%2Fjoin%3Faccess-code%3Dc3fd-0d306f-da
-
-Hi everyone,
-
-When creating any Lambda function via the console, please ensure you launch it in a VPC. If you don't, it will be marked as non-compliant, creating extra work for me to remediate it.
-
-It's just one additional step when setting up your function.
-
-
-
-Subject: Completion of Action Item and Clarification on Incremental Backup Export/Import
-
-Hi Makowania, Narendra,
-
-I hope this message finds you well.
-
-I am pleased to inform you that we have successfully completed the pending action item from our side (Import backup from S3).
-
-The onboarding and operating flow are detailed in the Documentation-Pycume Besture Solution via SC Product, which outlines the steps for restoring using S3 Import. This covers both methods: via Pipeline and Console. You can find the documentation here: bts/karnce barsaaint.com/alex/COELENG/ -Via-Pipeline+with+C.
-
-Additionally, I wanted to clarify that incremental backup export/import is not included in this solution.
-
-The incremental backup export uses Point-in-Time Recovery (PITR), allowing users to export data from any "FROM" to "TO" time within the last 35 days. However, importing incremental backups from S3 requires creating new tables each time, making it challenging to consolidate these backups. Consequently, we found no practical use case for this feature and decided to exclude it from this solution.
-
-Thank you for your understanding.
-
-Best regards,  
-Om
-
-
-ji# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
+# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
   2. The FAQs for the most critical services, included in the recommended reading list below
   3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
@@ -42,11 +9,6 @@ ji# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Cer
 If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. Be sure to also keep up with the ongoing discussions in <a href="https://reddit.com/r/AWSCertifications/">r/AWSCertifications</a> as you will find relevant exam tips, studying material, and advice from other exam takers. Before experimenting with AWS, it's very important to be sure that you know what is <a href="https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">free</a> and what isn't. Relevant Free Tier FAQs can be found <a href="https://aws.amazon.com/free/free-tier-faqs/">here</a>. Finally, Udemy often has their courses go on sale from time to time. It might be worth waiting to purchase either the Tutorial Dojo practice exam or Stephane Maarek's course depending on how urgently you need the content.
 
 
-Subject: Clarification on Incremental Backup Export/Import Exclusion
-
-Dear [Recipient's Name],
-
-I wanted to clarify that incremental backup export/import is not included in this solution.
 
 Export to S3:
 The incremental backup export uses Point-in-Time Recovery (PITR) and allows users to export data from any "FROM" to "TO" time within the last 35 days.
@@ -56,10 +18,7 @@ To import incremental backups from S3, the data needs to be restored into the sa
 
 Thank you for your understanding.
 
-Best regards,  
-[Your Name]  
-[Your Position]  
-[Your Contact Information]
+
 
 
 
@@ -140,6 +99,41 @@ For more details, check below. 👇
 
 
 ```
+from rich.progress import Progress, SpinnerColumn, TextColumn
+import time
+import threading
+
+def fetchList():
+    # Simulate a network call with sleep
+    time.sleep(10)  # Replace with your actual API call
+    return ["item1", "item2", "item3"]
+
+def doing_something():
+    result = []  # Placeholder for the result
+    
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        transient=True,
+    ) as progress:
+        task = progress.add_task("Fetching List...", total=None)
+        
+        def fetch_and_stop():
+            nonlocal result
+            result = fetchList()
+            progress.stop()
+        
+        thread = threading.Thread(target=fetch_and_stop)
+        thread.start()
+        thread.join()
+    
+    return result
+
+if __name__ == "__main__":
+    result = doing_something()
+    print("Fetched List:", result)
+
+
 
 Subject: Business Update: Enhancements to Cost Reduction Measures with AWS Resource Tagging
 
