@@ -11,7 +11,11 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 ```
 
-
+{
+  "cmd": ["C:/Users/YourUsername/Miniconda3/python.exe", "-u", "$file"],
+  "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+  "selector": "source.python"
+}
 
 
 
