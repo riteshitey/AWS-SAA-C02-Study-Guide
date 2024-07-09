@@ -19,6 +19,64 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 
+import json
+import boto3
+
+ecs_client = boto3.client('ecs')
+
+def lambda_handler(event, context):
+    task_definition_name = event['task_definition_name']
+    cpu = event['cpu']
+    memory = event['memory']
+    cluster_name = event['cluster_name']
+    service_name = event['service_name']
+    
+    # Describe the current task definition
+    response = ecs_client.describe_task_definition(taskDefinition=task_definition_name)
+    task_definition = response['taskDefinition']
+    
+    # Create a new task definition revision with updated resources
+    new_task_def = {
+        'family': task_definition['family'],
+        'containerDefinitions': task_definition['containerDefinitions'],
+        'networkMode': task_definition['networkMode'],
+        'volumes': task_definition['volumes'],
+        'taskRoleArn': task_definition['taskRoleArn'],
+        'executionRoleArn': task_definition['executionRoleArn'],
+        'cpu': str(cpu),
+        'memory': str(memory),
+    }
+    
+    for container_def in new_task_def['containerDefinitions']:
+        container_def['cpu'] = cpu
+        container_def['memory'] = memory
+
+    register_response = ecs_client.register_task_definition(
+        family=new_task_def['family'],
+        containerDefinitions=new_task_def['containerDefinitions'],
+        networkMode=new_task_def['networkMode'],
+        volumes=new_task_def['volumes'],
+        taskRoleArn=new_task_def['taskRoleArn'],
+        executionRoleArn=new_task_def['executionRoleArn'],
+        requiresCompatibilities=task_definition['requiresCompatibilities'],
+        cpu=new_task_def['cpu'],
+        memory=new_task_def['memory'],
+    )
+    
+    new_task_definition = register_response['taskDefinition']['taskDefinitionArn']
+    
+    # Update the ECS service to use the new task definition revision
+    ecs_client.update_service(
+        cluster=cluster_name,
+        service=service_name,
+        taskDefinition=new_task_definition
+    )
+    
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Successfully updated ECS service with new task definition')
+    }
+
 ```
 
 
