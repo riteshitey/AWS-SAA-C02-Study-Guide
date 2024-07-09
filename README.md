@@ -17,6 +17,13 @@ If at any point you find yourself feeling uncertain of your progress and in need
   "selector": "source.python"
 }
 
+{
+    "task_definition_name": "your-task-definition",
+    "cpu": "512",
+    "memory": "1024",
+    "cluster_name": "your-cluster-name",
+    "service_name": "your-service-name"
+}
 
 
 import json
