@@ -10,6 +10,60 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+import boto3
+
+client = boto3.client('servicecatalog')
+
+def get_last_record_id(product_name):
+    response = client.list_record_history(
+        SearchFilter={'Key': 'ProvisionedProductName', 'Value': product_name}
+    )
+    return response['RecordDetails'][0]['RecordId']
+
+def get_existing_parameters(record_id):
+    response = client.describe_record(Id=record_id)
+    return response['RecordDetail']['ProvisionedParameters']
+
+def update_parameters(parameters, param_name1, new_value1, param_name2, new_value2):
+    for param in parameters:
+        if param['ParameterKey'] == param_name1:
+            param['ParameterValue'] = new_value1
+        elif param['ParameterKey'] == param_name2:
+            param['ParameterValue'] = new_value2
+    return parameters
+
+def update_service_catalog_product(product_name, updated_parameters):
+    response = client.update_provisioned_product(
+        ProvisionedProductName=product_name,
+        ProvisioningParameters=updated_parameters
+    )
+    return response
+
+def main():
+    product_name = 'your_provision_product_name'
+    param_name1 = 'Parameter1Name'
+    new_value1 = 'NewValue1'
+    param_name2 = 'Parameter2Name'
+    new_value2 = 'NewValue2'
+    
+    # Fetch last record ID
+    last_record_id = get_last_record_id(product_name)
+    
+    # Fetch existing parameters
+    existing_parameters = get_existing_parameters(last_record_id)
+    
+    # Update parameters
+    updated_parameters = update_parameters(existing_parameters, param_name1, new_value1, param_name2, new_value2)
+    
+    # Update service catalog product
+    response = update_service_catalog_product(product_name, updated_parameters)
+    
+    print(response)
+
+if __name__ == "__main__":
+    main()
+
+
 
 {
   "cmd": ["C:/Users/YourUsername/Miniconda3/python.exe", "-u", "$file"],
