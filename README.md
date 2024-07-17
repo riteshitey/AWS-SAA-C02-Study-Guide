@@ -10,133 +10,25 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
-import boto3
+import pandas as pd
 
-client = boto3.client('servicecatalog')
+# Load the Excel file
+file_path = 'path_to_your_file.xlsx'  # Replace with your file path
+sheet_name = 'Sheet1'  # Replace with your sheet name if necessary
+df = pd.read_excel(file_path, sheet_name=sheet_name)
 
-def get_last_record_id(product_name):
-    response = client.list_record_history(
-        SearchFilter={'Key': 'ProvisionedProductName', 'Value': product_name}
-    )
-    return response['RecordDetails'][0]['RecordId']
+# Display the original DataFrame
+print("Original DataFrame:")
+print(df)
 
-def get_existing_parameters(record_id):
-    response = client.describe_record(Id=record_id)
-    return response['RecordDetail']['ProvisionedParameters']
+# Filter out rows where 'abcd' is present in the specified column
+column_name = 'your_column_name'  # Replace with your column name
+filtered_df = df[~df[column_name].str.contains('abcd', na=False)]
 
-def update_parameters(parameters, param_name1, new_value1, param_name2, new_value2):
-    for param in parameters:
-        if param['ParameterKey'] == param_name1:
-            param['ParameterValue'] = new_value1
-        elif param['ParameterKey'] == param_name2:
-            param['ParameterValue'] = new_value2
-    return parameters
+# Display the filtered DataFrame
+print("\nFiltered DataFrame:")
+print(filtered_df)
 
-def update_service_catalog_product(product_name, updated_parameters):
-    response = client.update_provisioned_product(
-        ProvisionedProductName=product_name,
-        ProvisioningParameters=updated_parameters
-    )
-    return response
-
-def main():
-    product_name = 'your_provision_product_name'
-    param_name1 = 'Parameter1Name'
-    new_value1 = 'NewValue1'
-    param_name2 = 'Parameter2Name'
-    new_value2 = 'NewValue2'
-    
-    # Fetch last record ID
-    last_record_id = get_last_record_id(product_name)
-    
-    # Fetch existing parameters
-    existing_parameters = get_existing_parameters(last_record_id)
-    
-    # Update parameters
-    updated_parameters = update_parameters(existing_parameters, param_name1, new_value1, param_name2, new_value2)
-    
-    # Update service catalog product
-    response = update_service_catalog_product(product_name, updated_parameters)
-    
-    print(response)
-
-if __name__ == "__main__":
-    main()
-
-
-
-{
-  "cmd": ["C:/Users/YourUsername/Miniconda3/python.exe", "-u", "$file"],
-  "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-  "selector": "source.python"
-}
-
-{
-    "task_definition_name": "your-task-definition",
-    "cpu": "512",
-    "memory": "1024",
-    "cluster_name": "your-cluster-name",
-    "service_name": "your-service-name"
-}
-
-
-import json
-import boto3
-
-ecs_client = boto3.client('ecs')
-
-def lambda_handler(event, context):
-    task_definition_name = event['task_definition_name']
-    cpu = event['cpu']
-    memory = event['memory']
-    cluster_name = event['cluster_name']
-    service_name = event['service_name']
-    
-    # Describe the current task definition
-    response = ecs_client.describe_task_definition(taskDefinition=task_definition_name)
-    task_definition = response['taskDefinition']
-    
-    # Create a new task definition revision with updated resources
-    new_task_def = {
-        'family': task_definition['family'],
-        'containerDefinitions': task_definition['containerDefinitions'],
-        'networkMode': task_definition['networkMode'],
-        'volumes': task_definition['volumes'],
-        'taskRoleArn': task_definition['taskRoleArn'],
-        'executionRoleArn': task_definition['executionRoleArn'],
-        'cpu': str(cpu),
-        'memory': str(memory),
-    }
-    
-    for container_def in new_task_def['containerDefinitions']:
-        container_def['cpu'] = cpu
-        container_def['memory'] = memory
-
-    register_response = ecs_client.register_task_definition(
-        family=new_task_def['family'],
-        containerDefinitions=new_task_def['containerDefinitions'],
-        networkMode=new_task_def['networkMode'],
-        volumes=new_task_def['volumes'],
-        taskRoleArn=new_task_def['taskRoleArn'],
-        executionRoleArn=new_task_def['executionRoleArn'],
-        requiresCompatibilities=task_definition['requiresCompatibilities'],
-        cpu=new_task_def['cpu'],
-        memory=new_task_def['memory'],
-    )
-    
-    new_task_definition = register_response['taskDefinition']['taskDefinitionArn']
-    
-    # Update the ECS service to use the new task definition revision
-    ecs_client.update_service(
-        cluster=cluster_name,
-        service=service_name,
-        taskDefinition=new_task_definition
-    )
-    
-    return {
-        'statusCode': 200,
-        'body': json.dumps('Successfully updated ECS service with new task definition')
-    }
 
 ```
 
