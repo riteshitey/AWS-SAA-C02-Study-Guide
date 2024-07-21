@@ -10,6 +10,12 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+
+fields @timestamp, @message
+| filter @message like /Moving File Inbound\/Confirmation\/.* to Processed/
+| parse @message "Moving File Inbound/Confirmation/* to Processed" as fileName
+| stats count(*) as fileMovedCount
+
 import pandas as pd
 
 # Load the Excel file
