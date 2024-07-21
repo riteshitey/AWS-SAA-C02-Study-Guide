@@ -25,6 +25,19 @@ If at any point you find yourself feeling uncertain of your progress and in need
 fields @timestamp, @message
 | filter @message like /Moving File Inbound\/.*\/.* to Processed/
 | parse @message "Moving File Inbound/*/* to Processed" as originalAppName, fileName
+| stats count(*) as fileMovedCount by (
+    case(
+        originalAppName == "Welcome", "reward-welcome",
+        originalAppName == "Confirmation", "reward-confirmation",
+        originalAppName // Default case where originalAppName is used if it doesn't match any of the specified cases
+    ) as appName
+)
+| sort fileMovedCount desc
+
+
+fields @timestamp, @message
+| filter @message like /Moving File Inbound\/.*\/.* to Processed/
+| parse @message "Moving File Inbound/*/* to Processed" as originalAppName, fileName
 | display (
     case(
         originalAppName == "Welcome", "reward-welcome",
