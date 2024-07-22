@@ -23,6 +23,12 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 ```
 fields @timestamp, @message
+| filter @message like /totalProcessedEvents/
+| parse @message /"totalProcessedEvents": (?<totalProcessedEvents>\d+),/
+| stats sum(totalProcessedEvents) as totalProcessedEventsSum
+
+
+fields @timestamp, @message
 | filter @message like /Moving File Inbound\/.*\/.* to Processed/
 | parse @message "Moving File Inbound/*/* to Processed" as originalAppName, fileName
 | stats count(*) as fileMovedCount by (
