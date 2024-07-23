@@ -1,14 +1,4 @@
-fields @timestamp, @message
-| filter @message like /Moving File Inbound\/.*\/.* to Processed/
-| parse @message "Moving File Inbound/*/* to Processed" as originalAppName, fileName
-| stats count(*) as fileMovedCount by (
-    case(
-        originalAppName == "Welcome", "reward-welcome",
-        originalAppName == "Confirmation", "reward-confirmation",
-        originalAppName // Default case where originalAppName is used if it doesn't match any of the specified cases
-    ) as appName
-)
-| sort fileMovedCount desc
+
 
 # AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
@@ -22,6 +12,12 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+fields @timestamp, @message
+| filter @message like /Move files Outbound\/.*\/.*\/.* to processing dir/
+| parse @message "Move files Outbound/*/*/* to processing dir" as date, appName, fileName
+| stats count(*) as fileMovedCount
+
+
 fields @timestamp, @message
 | filter @message like /totalEvents/ and /totalProcessedEvents/
 | parse @message /"totalEvents": (?<totalEvents>\d+).*"totalProcessedEvents": (?<totalProcessedEvents>\d+)/
