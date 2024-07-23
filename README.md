@@ -23,6 +23,14 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 ```
 fields @timestamp, @message
+| filter @message like /totalEvents/ and /totalProcessedEvents/
+| parse @message /"totalEvents": (?<totalEvents>\d+).*"totalProcessedEvents": (?<totalProcessedEvents>\d+)/
+| stats sum(totalEvents) as totalEventsSum, sum(totalProcessedEvents) as totalProcessedEventsSum
+| stats (totalEventsSum - totalProcessedEventsSum) as eventsDifference
+
+
+
+fields @timestamp, @message
 | filter @message like /totalProcessedEvents/
 | parse @message /"totalProcessedEvents": (?<totalProcessedEvents>\d+),/
 | stats sum(totalProcessedEvents) as totalProcessedEventsSum
