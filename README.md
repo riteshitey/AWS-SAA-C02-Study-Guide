@@ -12,6 +12,35 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+Here’s a revised version of your email reply:
+
+---
+
+**Subject:** Re: Request to Modify "Treat Missing Data" Configuration in Alarm Utility Framework
+
+Hi Prabhakar,
+
+Thank you for bringing this to our attention. Based on our discussion, I understand the requirement to customize the "Treat Missing Data" configuration for specific resource alarms. While the majority of alarms should continue to use "Treat Missing Data as Missing," a few alarms need to be set as "notBreaching."
+
+Here are two approaches to address this:
+
+**Approach 1: No Code Changes Required**  
+We can update the "TreatMissingData" value in the base configuration SSM Parameter. After this update, any new alarms will be created with the revised value. However, this approach requires frequent changes to the SSM Parameter based on the specific resource alarm being created.
+
+**Approach 2: Code Changes Required**  
+We can modify the code to store the "TreatMissingData" value in the default CloudWatch alarm configuration SSM Parameter. This value will then be extracted before creating each alarm, allowing for more flexibility and reducing the need for manual updates.
+
+Please let me know which approach you would prefer or if you'd like to discuss this further.
+
+Thanks,  
+Om
+
+---
+
+This version is clear, concise, and professional, making it easy for your teammate to understand the options and decide on the next steps.
+
+
+
 fields @timestamp, @message
 | filter @message like /Move files Outbound\/.*\/.*\/.* to processing dir/
 | parse @message "Move files Outbound/*/*/* to processing dir" as date, appName, fileName
