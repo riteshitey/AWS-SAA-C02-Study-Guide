@@ -16,6 +16,22 @@ Here’s a revised version of your email reply:
 
 ---
 
+Here’s a simplified version:
+
+---
+
+Thank you for bringing this up, Prabhakar. We understand your need to customize the "Treat Missing Data" setting for CloudWatch alarms. In your case, most alarms should continue with "Treat Missing Data as Missing," but a few need to be set as "notBreaching," which isn’t possible with the current framework.
+
+We’ll analyze the required code changes and will provide you with a final ETA in the next 1 or 2 days.
+
+Thanks,  
+Om
+
+--- 
+
+This version is straightforward and easy to understand.
+
+
 **Subject:** Re: Request to Modify "Treat Missing Data" Configuration in Alarm Utility Framework
 
 Hi Prabhakar,
