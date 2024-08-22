@@ -1,3 +1,14 @@
+Here's a more polished version:
+
+As you may know, we have established a separate `dpraw-jenkins-common` repository, which is an exact replica of the `ppe-jenkins-common` repository. Based on this, we have created a new pipeline specifically for our use.
+
+Please ensure that, moving forward, you use the pipeline from the Jenkins space provided below.
+
+Best regards,  
+On
+
+
+
 Subject: Trek Location Updated to Andharban
 
 Hi Everyone,
