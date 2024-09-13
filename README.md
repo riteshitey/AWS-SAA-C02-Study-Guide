@@ -41,6 +41,24 @@ If at any point you find yourself feeling uncertain of your progress and in need
 
 
 ```
+Hi Everyone,
+
+As you may be aware, we recently created a new repository, dpraw-jenkins-common, which is a clone of the existing ppe-jenkins-common repository.
+
+Following this, we have updated the current pipelines in the following space: Jenkins Link, and tested them with the new system.
+
+These pipelines have been built using:
+
+1. The dpraw-jenkins-common repository
+
+
+2. New system accounts
+
+
+
+Please feel free to reach out if you encounter any issues with the builds.
+
+
 Here’s a revised version of your email reply:
 
 ---
