@@ -2,6 +2,27 @@ B -701, Goodwill Fabian ,Lohegaon ,Pune
 
 Flat no 308 G Wing, Tanish Srushti, Alandi Markal Road, Alandi Devachi, Pune
 
+
+Hi Srini,
+
+As you're aware, we've created new system accounts on CSM Safe and granted them access to Jenkins, Stash, and Nexus, which we've already begun using.
+
+I'm currently assessing the changes needed for the on-prem Datasync gateway server, which is still using the old system account. So far, I've added access to the gateway servers and Powerbroker for the new system accounts.
+
+We have a few questions:
+
+1. Are any changes required on the MFT side?
+
+
+2. Should we update the ownership of the folders/files?
+
+
+
+Could you assist us in connecting with someone from the MFT team to get further clarification?
+
+Thanks,
+Om
+
 Hi Srini,
 
 As you’re aware, we’ve created new system accounts on CSM Safe and provided them with access to Jenkins, Stash, and Nexus, which we’ve already started using.
