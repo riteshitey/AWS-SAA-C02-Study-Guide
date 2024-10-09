@@ -1,3 +1,24 @@
+
+Pros and Cons w.r.t custom DynamoDB native backup approach and AWS Backup service for Dynamodb.
+
+Points | Native (OnDemand / S3 / PITR)  | AWS Backup
+
+ChatGPT: 
+
+Here's a comparison table for **DynamoDB Native Backup (OnDemand/S3/PITR)**  vs **AWS Backup**  for DynamoDB:| Points | Native (OnDemand / S3 / PITR) | AWS Backup | 
+| --- | --- | --- | 
+| Ease of Use | Requires manual setup and configuration for each table | Centralized, automated, and easy to manage | 
+| Backup Consistency | Separate backups for DynamoDB (OnDemand, PITR) and S3 | Consistent management across AWS services | 
+| Retention Management | Manual configuration for long-term retention | Automatic retention policies with vault locks | 
+| Security | Basic security (IAM permissions) | Enhanced with vault locks and encryption | 
+| Automation | Limited automation (requires scripting for S3 imports) | Fully automated backups and restores | 
+| Cost | Only pay for specific DynamoDB features | Additional cost for AWS Backup service | 
+| Granular Recovery | Point-In-Time Recovery (PITR) for continuous backups | Granular recovery with additional controls | 
+| Monitoring | Native DynamoDB metrics and logs | Centralized monitoring and reporting | 
+| Cross-service Integration | DynamoDB-specific backups | Unified across multiple AWS services | 
+| Restore Complexity | Separate processes for S3 and DynamoDB restores | Single platform for managing restores | 
+| Customizability | Flexible, but requires more manual work | Less customization, but simpler to use | 
+
 Here's a comparison table for DynamoDB Native Backup (OnDemand/S3/PITR) vs AWS Backup for DynamoDB:
 
 Let me know if you need further details or adjustments!
