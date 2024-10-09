@@ -1,4 +1,10 @@
-Description: I
+Here's a comparison table for DynamoDB Native Backup (OnDemand/S3/PITR) vs AWS Backup for DynamoDB:
+
+Let me know if you need further details or adjustments!
+
+
+
+Description: 
 
 Earlier we were using on demand and s3 import option provided by DynamoDB for taking backup for longer retention.
 
