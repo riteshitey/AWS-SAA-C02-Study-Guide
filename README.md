@@ -1,71 +1,8 @@
-B -701, Goodwill Fabian ,Lohegaon ,Pune
+Description: I
 
-Flat no 308 G Wing, Tanish Srushti, Alandi Markal Road, Alandi Devachi, Pune
+Earlier we were using on demand and s3 import option provided by DynamoDB for taking backup for longer retention.
 
-
-Hi Srini,
-
-As you're aware, we've created new system accounts on CSM Safe and granted them access to Jenkins, Stash, and Nexus, which we've already begun using.
-
-I'm currently assessing the changes needed for the on-prem Datasync gateway server, which is still using the old system account. So far, I've added access to the gateway servers and Powerbroker for the new system accounts.
-
-We have a few questions:
-
-1. Are any changes required on the MFT side?
-
-
-2. Should we update the ownership of the folders/files?
-
-
-
-Could you assist us in connecting with someone from the MFT team to get further clarification?
-
-Thanks,
-Om
-
-Hi Srini,
-
-As you’re aware, we’ve created new system accounts on CSM Safe and provided them with access to Jenkins, Stash, and Nexus, which we’ve already started using.
-
-I’m currently analyzing the changes required for Datasync. So far, I’ve added access to the gateway servers and Powerbroker for the new system accounts.
-
-However, we have a few questions:
-
-1. Are any changes needed on the MFT side?
-
-
-2. Should we change the ownership of the folders?
-
-
-
-Thanks,
-Om
-
-Here's a more polished version:
-
-As you may know, we have established a separate `dpraw-jenkins-common` repository, which is an exact replica of the `ppe-jenkins-common` repository. Based on this, we have created a new pipeline specifically for our use.
-
-Please ensure that, moving forward, you use the pipeline from the Jenkins space provided below.
-
-Best regards,  
-On
-
-
-
-Subject: Trek Location Updated to Andharban
-
-Hi Everyone,
-
-As we were getting many offline requests to change the location to Andharban, we’ve decided to go with this new trek spot.
-
-Please continue with the payment process and share the screenshot with Srinivas Katari as previously mentioned.
-
-For more details, refer to the Confluence page: https://confluence.barcapint.com/display/~G01246968/Trek++24th+Aug.
-
-Looking forward to an amazing experience with you all!
-
-Regards,  
-Om
+AWS Backup has been whitelisted for all BLZ accounts. AWS Backup is the preferred method of managing backups in AWS because it provides extra security for backups via vault locks and also provides a consistent management process across each AWS service. AWS Backup is a fully-managed service that makes it easy to centralize and automate data protection across AWS services. Using AWS Backup allows for management, monitoring and restores to be managed in one place.
 
 # AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
