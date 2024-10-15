@@ -1,3 +1,51 @@
+I hope you're doing well. I would like to inform you that the Dpraw domain has successfully completed the migration of Non-Pacer noncompliant accounts from unmanaged Cyber Ark to managed CSM. Please refer to the following Jira for more details: NGCBPGM-153.
+
+Key Updates:
+
+1. Old vs. New System AD Accounts:
+
+Non-Prod:
+
+Old: sysnacbpromannp
+
+New: sysngcbprodmannp
+
+
+Prod:
+
+Old: sysnacbpromanprod
+
+New: sysngcbprodmanprod
+
+
+
+
+2. Provisioning:
+
+The new system AD accounts have been provisioned with the necessary access.
+
+Pipeline scripts have been updated and successfully tested in production.
+
+Both Non-Prod and Prod pipelines have been validated with no errors during the recent release.
+
+
+
+3. Backup Accounts:
+
+The old system AD accounts have been moved to the CSM safe to serve as backup accounts for Proman.
+
+The same process is ongoing for the Non-Prod system account. Once completed, we will notify the Program team and close the feature for this BO.
+
+
+
+
+Please let me know if you need any additional details.
+
+Thanks,
+Aswini R
+
+
+
 
 Pros and Cons w.r.t custom DynamoDB native backup approach and AWS Backup service for Dynamodb.
 
