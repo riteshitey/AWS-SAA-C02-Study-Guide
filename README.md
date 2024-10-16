@@ -1,266 +1,71 @@
-I hope you're doing well. I would like to inform you that the Dpraw domain has successfully completed the migration of Non-Pacer noncompliant accounts from unmanaged Cyber Ark to managed CSM. Please refer to the following Jira for more details: NGCBPGM-153.
-
-Key Updates:
-
-1. Old vs. New System AD Accounts:
-
-Non-Prod:
-
-Old: sysnacbpromannp
-
-New: sysngcbprodmannp
-
-
-Prod:
-
-Old: sysnacbpromanprod
-
-New: sysngcbprodmanprod
-
-
-
-
-2. Provisioning:
-
-The new system AD accounts have been provisioned with the necessary access.
-
-Pipeline scripts have been updated and successfully tested in production.
-
-Both Non-Prod and Prod pipelines have been validated with no errors during the recent release.
-
-
-
-3. Backup Accounts:
-
-The old system AD accounts have been moved to the CSM safe to serve as backup accounts for Proman.
-
-The same process is ongoing for the Non-Prod system account. Once completed, we will notify the Program team and close the feature for this BO.
-
-
-
-
-Please let me know if you need any additional details.
-
-Thanks,
-Aswini R
-
-
-
-
-Pros and Cons w.r.t custom DynamoDB native backup approach and AWS Backup service for Dynamodb.
-
-Points | Native (OnDemand / S3 / PITR)  | AWS Backup
-
-ChatGPT: 
-
-Here's a comparison table for **DynamoDB Native Backup (OnDemand/S3/PITR)**  vs **AWS Backup**  for DynamoDB:| Points | Native (OnDemand / S3 / PITR) | AWS Backup | 
-| --- | --- | --- | 
-| Ease of Use | Requires manual setup and configuration for each table | Centralized, automated, and easy to manage | 
-| Backup Consistency | Separate backups for DynamoDB (OnDemand, PITR) and S3 | Consistent management across AWS services | 
-| Retention Management | Manual configuration for long-term retention | Automatic retention policies with vault locks | 
-| Security | Basic security (IAM permissions) | Enhanced with vault locks and encryption | 
-| Automation | Limited automation (requires scripting for S3 imports) | Fully automated backups and restores | 
-| Cost | Only pay for specific DynamoDB features | Additional cost for AWS Backup service | 
-| Granular Recovery | Point-In-Time Recovery (PITR) for continuous backups | Granular recovery with additional controls | 
-| Monitoring | Native DynamoDB metrics and logs | Centralized monitoring and reporting | 
-| Cross-service Integration | DynamoDB-specific backups | Unified across multiple AWS services | 
-| Restore Complexity | Separate processes for S3 and DynamoDB restores | Single platform for managing restores | 
-| Customizability | Flexible, but requires more manual work | Less customization, but simpler to use | 
-
-Here's a comparison table for DynamoDB Native Backup (OnDemand/S3/PITR) vs AWS Backup for DynamoDB:
-
-Let me know if you need further details or adjustments!
-
-
-
-Description: 
-
-Earlier we were using on demand and s3 import option provided by DynamoDB for taking backup for longer retention.
-
-AWS Backup has been whitelisted for all BLZ accounts. AWS Backup is the preferred method of managing backups in AWS because it provides extra security for backups via vault locks and also provides a consistent management process across each AWS service. AWS Backup is a fully-managed service that makes it easy to centralize and automate data protection across AWS services. Using AWS Backup allows for management, monitoring and restores to be managed in one place.
-
-# AWS SAA-C02 Study GuideThis study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
-  1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
-  2. The FAQs for the most critical services, included in the recommended reading list below
-  3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
-  4. Andrew Brown's <a href="https://www.youtube.com/watch?v=Ia-UEYYR44s">AWS Certified Solutions Architect - Associate 2020 (PASS THE EXAM!) | Ad-Free Course
-</a> 
-
-*Notes*:
-If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. Be sure to also keep up with the ongoing discussions in <a href="https://reddit.com/r/AWSCertifications/">r/AWSCertifications</a> as you will find relevant exam tips, studying material, and advice from other exam takers. Before experimenting with AWS, it's very important to be sure that you know what is <a href="https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">free</a> and what isn't. Relevant Free Tier FAQs can be found <a href="https://aws.amazon.com/free/free-tier-faqs/">here</a>. Finally, Udemy often has their courses go on sale from time to time. It might be worth waiting to purchase either the Tutorial Dojo practice exam or Stephane Maarek's course depending on how urgently you need the content.
-
-
-```
-Hi Everyone,
-
-As you may be aware, we recently created a new repository, dpraw-jenkins-common, which is a clone of the existing ppe-jenkins-common repository.
-
-Following this, we have updated the current pipelines in the following space: Jenkins Link, and tested them with the new system.
-
-These pipelines have been built using:
-
-1. The dpraw-jenkins-common repository
-
-
-2. New system accounts
-
-
-
-Please feel free to reach out if you encounter any issues with the builds.
-
-
-Here’s a revised version of your email reply:
-
----
-
-Here’s a simplified version:
-
----
-
-Thank you for bringing this up, Prabhakar. We understand your need to customize the "Treat Missing Data" setting for CloudWatch alarms. In your case, most alarms should continue with "Treat Missing Data as Missing," but a few need to be set as "notBreaching," which isn’t possible with the current framework.
-
-We’ll analyze the required code changes and will provide you with a final ETA in the next 1 or 2 days.
-
-Thanks,  
-Om
-
---- 
-
-This version is straightforward and easy to understand.
-
-
-**Subject:** Re: Request to Modify "Treat Missing Data" Configuration in Alarm Utility Framework
-
-Hi Prabhakar,
-
-Thank you for bringing this to our attention. Based on our discussion, I understand the requirement to customize the "Treat Missing Data" configuration for specific resource alarms. While the majority of alarms should continue to use "Treat Missing Data as Missing," a few alarms need to be set as "notBreaching."
-
-Here are two approaches to address this:
-
-**Approach 1: No Code Changes Required**  
-We can update the "TreatMissingData" value in the base configuration SSM Parameter. After this update, any new alarms will be created with the revised value. However, this approach requires frequent changes to the SSM Parameter based on the specific resource alarm being created.
-
-**Approach 2: Code Changes Required**  
-We can modify the code to store the "TreatMissingData" value in the default CloudWatch alarm configuration SSM Parameter. This value will then be extracted before creating each alarm, allowing for more flexibility and reducing the need for manual updates.
-
-Please let me know which approach you would prefer or if you'd like to discuss this further.
-
-Thanks,  
-Om
-
----
-
-This version is clear, concise, and professional, making it easy for your teammate to understand the options and decide on the next steps.
-
-
-
-fields @timestamp, @message
-| filter @message like /Move files Outbound\/.*\/.*\/.* to processing dir/
-| parse @message "Move files Outbound/*/*/* to processing dir" as date, appName, fileName
-| stats count(*) as fileMovedCount
-
-
-fields @timestamp, @message
-| filter @message like /totalEvents/ and /totalProcessedEvents/
-| parse @message /"totalEvents": (?<totalEvents>\d+).*"totalProcessedEvents": (?<totalProcessedEvents>\d+)/
-| stats sum(totalEvents) as totalEventsSum, sum(totalProcessedEvents) as totalProcessedEventsSum
-| stats (totalEventsSum - totalProcessedEventsSum) as eventsDifference
-
-
-
-fields @timestamp, @message
-| filter @message like /totalProcessedEvents/
-| parse @message /"totalProcessedEvents": (?<totalProcessedEvents>\d+),/
-| stats sum(totalProcessedEvents) as totalProcessedEventsSum
-
-
-fields @timestamp, @message
-| filter @message like /Moving File Inbound\/.*\/.* to Processed/
-| parse @message "Moving File Inbound/*/* to Processed" as originalAppName, fileName
-| stats count(*) as fileMovedCount by (
-    originalAppName = "Welcome" ? "reward-welcome" :
-    originalAppName = "Confirmation" ? "reward-confirmation" :
-    originalAppName
-)
-| sort fileMovedCount desc
-
-
-fields @timestamp, @message
-| filter @message like /Moving File Inbound\/.*\/.* to Processed/
-| parse @message "Moving File Inbound/*/* to Processed" as originalAppName, fileName
-| filter originalAppName = "Welcome" or originalAppName = "Confirmation"
-| stats count(*) as fileMovedCount by appName = (
-    if(originalAppName == "Welcome", "reward-welcome",
-    if(originalAppName == "Confirmation", "reward-confirmation",
-    originalAppName))
-| sort fileMovedCount desc
-
-
-fields @timestamp, @message
-| filter @message like /Moving File Inbound\/.*\/.* to Processed/
-| parse @message "Moving File Inbound/*/* to Processed" as originalAppName, fileName
-| stats count(*) as fileMovedCount by (
-    case(
-        originalAppName == "Welcome", "reward-welcome",
-        originalAppName == "Confirmation", "reward-confirmation",
-        originalAppName // Default case where originalAppName is used if it doesn't match any of the specified cases
-    ) as appName
-)
-| sort fileMovedCount desc
-
-
-fields @timestamp, @message
-| filter @message like /Moving File Inbound\/.*\/.* to Processed/
-| parse @message "Moving File Inbound/*/* to Processed" as originalAppName, fileName
-| display (
-    case(
-        originalAppName == "Welcome", "reward-welcome",
-        originalAppName == "Confirmation", "reward-confirmation",
-        originalAppName, originalAppName
-    ) as appName
-)
-| stats count(*) as fileMovedCount by appName
-| sort fileMovedCount desc
-
-fields @timestamp, @message
-| filter @message like /Moving File Inbound\/.*\/.* to Processed/
-| parse @message "Moving File Inbound/*/* to Processed" as appName, fileName
-| stats count(*) as fileMovedCount by appName
-| sort fileMovedCount desc
-
-fields @timestamp, @message
-| filter @message like /Moving File Inbound\/Confirmation\/.* to Processed/
-| parse @message "Moving File Inbound/Confirmation/*/* to Processed" as appName, fileName
-| stats count(*) as fileMovedCount by appName
-| sort fileMovedCount desc
-
-fields @timestamp, @message
-| filter @message like /Moving File Inbound\/Confirmation\/.* to Processed/
-| parse @message "Moving File Inbound/Confirmation/* to Processed" as fileName
-| stats count(*) as fileMovedCount
-
-import pandas as pd
-
-# Load the Excel file
-file_path = 'path_to_your_file.xlsx'  # Replace with your file path
-sheet_name = 'Sheet1'  # Replace with your sheet name if necessary
-df = pd.read_excel(file_path, sheet_name=sheet_name)
-
-# Display the original DataFrame
-print("Original DataFrame:")
-print(df)
-
-# Filter out rows where 'abcd' is present in the specified column
-column_name = 'your_column_name'  # Replace with your column name
-filtered_df = df[~df[column_name].str.contains('abcd', na=False)]
-
-# Display the filtered DataFrame
-print("\nFiltered DataFrame:")
-print(filtered_df)
-
-
-```
-
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  # CloudWatch Alarm
+  BackupJobsFailedAlarm:
+    Type: "AWS::CloudWatch::Alarm"
+    Properties:
+      AlarmName: "Testing-AWS-Backup-Service-Alarm"
+      MetricName: "NumberOfBackupJobsFailed"
+      Namespace: "AWS/Backup"
+      Statistic: "Sum"
+      Period: 60  # 1 minute in seconds
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: "GreaterThanThreshold"
+      TreatMissingData: "missing"
+      DatapointsToAlarm: 1
+      ActionsEnabled: True
+      AlarmActions:
+        - !Ref LambdaInvokeFunctionArn # Add your Lambda ARN or SNS Topic ARN if required
+      Dimensions:
+        - Name: "BackupVaultName"  # Optional, add the dimension if required
+          Value: "<your-backup-vault-name>"  # Replace with the actual Backup Vault Name
+
+  # Lambda Function to handle alarm actions (if needed)
+  BackupFailureFunction:
+    Type: "AWS::Lambda::Function"
+    Properties: 
+      FunctionName: "BackupFailureHandler"
+      Handler: "index.handler"
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        ZipFile: |
+          def lambda_handler(event, context):
+              print("Backup job failed!")
+              # Add your logic here
+      Runtime: "python3.9"
+      Timeout: 60
+
+  # Lambda Execution Role
+  LambdaExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: "LambdaBackupFailurePolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: 
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "arn:aws:logs:*:*:*"
+
+  # Lambda Permission to allow CloudWatch Alarm to invoke it
+  LambdaInvokePermission:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      FunctionName: !Ref BackupFailureFunction
+      Action: "lambda:InvokeFunction"
+      Principal: "cloudwatch.amazonaws.com"
 
 
 ## Table of Contents
