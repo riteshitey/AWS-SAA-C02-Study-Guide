@@ -1,3 +1,4 @@
+```
 AWSTemplateFormatVersion: "2010-09-09"
 Resources:
   # CloudWatch Alarm
@@ -67,6 +68,7 @@ Resources:
       Action: "lambda:InvokeFunction"
       Principal: "cloudwatch.amazonaws.com"
 
+```
 
 ## Table of Contents
 1. <a href="#introduction">Introduction</a>
