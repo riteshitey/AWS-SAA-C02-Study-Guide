@@ -1,5 +1,40 @@
 ```
 AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  NetcoolSNSTopicName:
+    Description: "The SNS topic name for Netcool to receive alarm notifications"
+    Type: "String"
+
+Resources:
+  # CloudWatch Alarm
+  BackupJobsFailedAlarm:
+    Type: "AWS::CloudWatch::Alarm"
+    Properties:
+      AlarmName: "BackupService-FailedJobs-Alarm"
+      MetricName: "NumberOfBackupJobsFailed"
+      Namespace: "AWS/Backup"
+      Statistic: "Sum"
+      Period: 60  # 1 minute in seconds
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: "GreaterThanThreshold"
+      TreatMissingData: "missing"
+      DatapointsToAlarm: 1
+      ActionsEnabled: True
+      AlarmActions:
+        - Fn::Sub: "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${NetcoolSNSTopicName}"  # Construct SNS ARN dynamically
+      Dimensions:
+        - Name: "BackupVaultName"
+          Value: "<your-backup-vault-name>"  # Replace with the actual Backup Vault Name
+
+Outputs:
+  AlarmName:
+    Description: "The name of the CloudWatch alarm created"
+    Value: !Ref BackupJobsFailedAlarm
+
+
+
+AWSTemplateFormatVersion: "2010-09-09"
 Resources:
   # CloudWatch Alarm
   BackupJobsFailedAlarm:
