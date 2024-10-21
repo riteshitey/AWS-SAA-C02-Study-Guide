@@ -1,4 +1,38 @@
 ```
+Here’s how you can align the four points with the first objective, "Drive simplicity and efficiency, seek out every opportunity to automate":
+
+
+---
+
+DynamoDB Restore Solution & Alerting Solution
+I worked on delivering a strategic DynamoDB backup and restore solution, which was recommended and approved by the CTO. By automating the backup and restore processes, this solution has become a mandated item for the NGCB Platform, ensuring simplicity and efficiency in disaster recovery. Additionally, it is being adopted across teams and has the potential to be a strategic product within the Barclays world. The ongoing enhancement work, including integrating AWS Backup Service, further streamlines this process, reducing manual intervention and making the solution more robust.
+
+
+---
+
+Alerting & Monitoring Enhancement
+I created a utility solution that automatically adds or removes subscription filters for log groups, ensuring efficient monitoring without manual configuration. This enhancement significantly reduced the time and effort needed to manage log subscriptions, simplifying operations for multiple teams. By automating these processes, I was able to drive operational efficiency and eliminate manual tasks during launches, further contributing to streamlined monitoring and alerting.
+
+
+---
+
+Auto Alarm Solution
+Developed an auto-alarm creation solution that automatically provisions CloudWatch alarms when resources are deployed. This automation reduced the need for manual alarm configurations, enhancing efficiency for cross-team resource monitoring. The bulk update feature allowed teams to quickly adopt the solution, eliminating the need for repetitive manual setups. Additionally, I addressed throttling errors and enhanced the solution for recurring alarms, further driving reliability and efficiency.
+
+
+---
+
+Tagging Utility Solution
+I enhanced a tagging utility that allows for the automated creation, updating, or deletion of tags for AWS services. This utility simplified the management of tags across resources, making it easier for teams to maintain consistency. By leveraging this tool to add cost-saving tags, we were able to optimize AWS costs, driving efficiency and simplifying resource management across multiple teams.
+
+
+---
+
+This highlights how your contributions drove automation, simplified complex processes, and enhanced efficiency, aligning perfectly with the first objective.
+
+
+
+
 AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   NetcoolSNSTopicName:
