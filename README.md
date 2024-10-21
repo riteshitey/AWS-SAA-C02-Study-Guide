@@ -1,4 +1,12 @@
 ```
+Cloud Inventory Enhancement:
+
+Enhanced the Cloud Inventory by automating the process of updating AWS resource details and configurations on Confluence, eliminating the need to manually log into AWS accounts. Updates are automatically refreshed every Sunday, ensuring up-to-date information.
+
+Implemented version control for ECS and Lambda applications, creating a pipeline to compare application versions in OAT and Prod environments. The comparison results are automatically updated on the Confluence page for easy reference.
+
+Assisted other teams in adopting and optimizing the Cloud Inventory Pipeline, tailoring the solution to meet their specific needs and improving resource management across teams.
+
 
 Quickly adapted to and understood the PPE team's pipeline structure, enabling efficient management and maintenance of their DevOps processes.
 
