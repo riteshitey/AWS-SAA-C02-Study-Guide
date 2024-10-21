@@ -1,91 +1,18 @@
 ```
-DynamoDB Restore Solution & Alerting Solution
-
-Delivered a strategic DynamoDB backup and restore solution, which was recommended and approved by the CTO.
-
-Automated the DynamoDB backup and restore process, significantly reducing manual intervention and improving reliability.
-
-Collaborated with cross-functional teams to ensure successful horizontal delivery across the entire NGCB platform.
-
-Ongoing enhancement work, including the integration of AWS Backup Service, further streamlines and strengthens the solution, making it more scalable and robust.
-
-
-Here’s how you can present the points for the first objective:
-
-
----
-
-Objective: Drive simplicity and efficiency, seek out every opportunity to automate
-
-DynamoDB Restore Solution & Alerting Solution:
-
-Automated the DynamoDB backup and restore process, reducing manual intervention.
-
-Enabled whole NGCB Platform adoption, with plans to extend across BUK.
-
-Integrated AWS Backup Service for further enhancement, simplifying disaster recovery.
-
-
-Alerting & Monitoring Enhancement:
-
-Created a subscription filter utility that automates the addition and deletion of filters for log groups.
-
-Streamlined log monitoring across multiple teams, reducing manual configurations.
-
-Enabled quick deployment of subscription filters during OML launches, enhancing efficiency.
-
-
-Auto Alarm Solution:
-
-Developed a solution to automatically create CloudWatch alarms when resources are provisioned.
-
-Implemented bulk update functionality for alarms, reducing manual efforts.
-
-Supported cross-team adoption and resolved throttling issues, improving alarm accuracy and system monitoring.
-
-
-Tagging Utility Solution:
-
-Automated tagging for AWS services, simplifying resource management.
-
-Enabled the creation, updating, and deletion of tags with minimal manual input.
-
-Leveraged the utility to add discounted AWS tags, significantly reducing cloud costs.
-
-
-
-
----
-
-This format keeps your key contributions clear and focused on how they align with the first objective.
-
-
-
-Here’s how you can align the four points with the first objective, "Drive simplicity and efficiency, seek out every opportunity to automate":
-
-
----
-
-DynamoDB Restore Solution & Alerting Solution
-I worked on delivering a strategic DynamoDB backup and restore solution, which was recommended and approved by the CTO. By automating the backup and restore processes, this solution has become a mandated item for the NGCB Platform, ensuring simplicity and efficiency in disaster recovery. Additionally, it is being adopted across teams and has the potential to be a strategic product within the Barclays world. The ongoing enhancement work, including integrating AWS Backup Service, further streamlines this process, reducing manual intervention and making the solution more robust.
-
-
----
-
-Alerting & Monitoring Enhancement
-I created a utility solution that automatically adds or removes subscription filters for log groups, ensuring efficient monitoring without manual configuration. This enhancement significantly reduced the time and effort needed to manage log subscriptions, simplifying operations for multiple teams. By automating these processes, I was able to drive operational efficiency and eliminate manual tasks during launches, further contributing to streamlined monitoring and alerting.
-
-
----
 
 Auto Alarm Solution
-Developed an auto-alarm creation solution that automatically provisions CloudWatch alarms when resources are deployed. This automation reduced the need for manual alarm configurations, enhancing efficiency for cross-team resource monitoring. The bulk update feature allowed teams to quickly adopt the solution, eliminating the need for repetitive manual setups. Additionally, I addressed throttling errors and enhanced the solution for recurring alarms, further driving reliability and efficiency.
 
+Drove the adoption and delivery of the Auto Alarm Solution across multiple teams, ensuring its smooth implementation for resource monitoring.
 
----
+Facilitated the automatic creation of CloudWatch alarms when resources were provisioned, reducing the need for manual alarm configuration.
 
-Tagging Utility Solution
-I enhanced a tagging utility that allows for the automated creation, updating, or deletion of tags for AWS services. This utility simplified the management of tags across resources, making it easier for teams to maintain consistency. By leveraging this tool to add cost-saving tags, we were able to optimize AWS costs, driving efficiency and simplifying resource management across multiple teams.
+Supported bulk alarm updates, enabling teams to efficiently manage and apply alarms across numerous resources.
+
+Assisted cross-functional teams (dpraw Rewards, PPE Billing, Apply) in adopting the Auto Alarm Solution, improving system monitoring and alerting processes.
+
+Resolved throttling issues related to PutMetricAlarm, enhancing the reliability of bulk alarm creation.
+
+Analyzed recurring alarm cases (CPUUtilization & Memory Alarms) and corrected configurations to reduce false alarms and improve monitoring accuracy.
 
 
 ---
