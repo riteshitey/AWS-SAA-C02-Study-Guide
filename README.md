@@ -1,5 +1,30 @@
 ```
 
+Here’s a refined version of your points to align with the objective:
+
+
+---
+
+Addressing Non-Compliant Issues for AWS Accounts:
+
+1. Regularly performed remediation for AWS Config issues for SIL and dpraw teams, ensuring compliance across AWS resources and maintaining secure, compliant environments.
+
+
+2. Facilitated the migration of multiple Lambda functions to runtime versions 3.11/3.12, ahead of the deprecation of 3.7 and 3.8, ensuring continued support and operational efficiency.
+
+
+3. Led the migration of non-compliant system accounts from CyberArk to CSM, creating new system accounts with all required access (Stash, AWS, Nexus, Jenkins), improving security and compliance.
+
+
+
+
+---
+
+This version highlights your contributions more clearly and emphasizes the outcomes, such as compliance, security, and operational efficiency.
+
+
+
+
 Multi-region for Arrow Card:
 
 Conducted AWS service-level Proof of Concepts (POCs) for multi-region support, helping to finalize patterns and gather evidence for deployment.
