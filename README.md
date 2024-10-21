@@ -1,4 +1,48 @@
 ```
+Here’s a refined version of your points with improved clarity and flow:
+
+
+---
+
+Auto Alarm Solution:
+
+Contributed to the creation of 1500+ infrastructure alarms for SIL based on the approved tag-based approach, ensuring comprehensive monitoring across AWS resources.
+
+Resolved throttling issues with PutMetricAlarm, improving the reliability and scalability of bulk alarm creation.
+
+Supported cross-functional teams in adopting the Auto Alarm Solution, enhancing their ability to monitor systems and respond to alerts effectively.
+
+Analyzed recurring alarm cases and optimized configurations, reducing false alarms and improving overall monitoring accuracy.
+
+
+
+---
+
+Alerting & Monitoring Enhancement:
+
+Developed a subscription filter utility that automates the addition and removal of Netcool/ESaaS subscription filters for log groups, ensuring efficient and accurate application monitoring.
+
+Enabled teams to manage subscription filters on-demand during the OML launch of the Arrow Card, significantly improving operational efficiency.
+
+Enhanced the Netcool alerting solution by implementing a limited-time suppression logic in the Netcool Lambda function, reducing false positive incidents and improving alert accuracy.
+
+
+
+---
+
+Tagging Utility Solution:
+
+Enhanced the tagging utility to automate the creation, updating, and deletion of tags for AWS services, streamlining resource management.
+
+Facilitated the adoption of the tagging utility across teams, enabling the addition of cost-saving tags and significantly reducing AWS costs through optimized resource tagging.
+
+
+
+---
+
+These revisions improve clarity and emphasize the impact of your contributions while aligning them with the objective of driving automation and efficiency.
+
+
 
 Auto Alarm Solution
 
