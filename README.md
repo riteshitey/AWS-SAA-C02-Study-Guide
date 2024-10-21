@@ -1,4 +1,14 @@
 ```
+DynamoDB Restore Solution & Alerting Solution
+
+Delivered a strategic DynamoDB backup and restore solution, which was recommended and approved by the CTO.
+
+Automated the DynamoDB backup and restore process, significantly reducing manual intervention and improving reliability.
+
+Collaborated with cross-functional teams to ensure successful horizontal delivery across the entire NGCB platform.
+
+Ongoing enhancement work, including the integration of AWS Backup Service, further streamlines and strengthens the solution, making it more scalable and robust.
+
 
 Here’s how you can present the points for the first objective:
 
