@@ -1,5 +1,19 @@
 ```
 
+Quickly adapted to and understood the PPE team's pipeline structure, enabling efficient management and maintenance of their DevOps processes.
+
+Assisted the dpraw team with the segregation of pipelines from PPE, taking ownership of managing their Jenkins projects for better pipeline organization.
+
+Onboarded the dpraw team to ESaaS by adding the necessary subscription filters, improving application monitoring and alerting.
+
+Facilitated the adoption of the Service Quota Monitor Utility for dpraw, ensuring they received daily and weekly updates on AWS service quota usage, enabling proactive management of resource limits.
+
+Implemented the dpraw health infrastructure dashboard in preparation for the Arrow launch, ensuring comprehensive monitoring and readiness.
+
+Created and onboarded the dpraw team onto SonarQube and Veracode pipelines, enhancing their code quality and security practices.
+
+Led the adoption of Cloud Inventory for dpraw, improving visibility and management of cloud resources.
+
 Here’s a refined version of your points to align with the objective:
 
 
