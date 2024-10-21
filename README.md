@@ -1,4 +1,56 @@
 ```
+
+Here’s how you can present the points for the first objective:
+
+
+---
+
+Objective: Drive simplicity and efficiency, seek out every opportunity to automate
+
+DynamoDB Restore Solution & Alerting Solution:
+
+Automated the DynamoDB backup and restore process, reducing manual intervention.
+
+Enabled whole NGCB Platform adoption, with plans to extend across BUK.
+
+Integrated AWS Backup Service for further enhancement, simplifying disaster recovery.
+
+
+Alerting & Monitoring Enhancement:
+
+Created a subscription filter utility that automates the addition and deletion of filters for log groups.
+
+Streamlined log monitoring across multiple teams, reducing manual configurations.
+
+Enabled quick deployment of subscription filters during OML launches, enhancing efficiency.
+
+
+Auto Alarm Solution:
+
+Developed a solution to automatically create CloudWatch alarms when resources are provisioned.
+
+Implemented bulk update functionality for alarms, reducing manual efforts.
+
+Supported cross-team adoption and resolved throttling issues, improving alarm accuracy and system monitoring.
+
+
+Tagging Utility Solution:
+
+Automated tagging for AWS services, simplifying resource management.
+
+Enabled the creation, updating, and deletion of tags with minimal manual input.
+
+Leveraged the utility to add discounted AWS tags, significantly reducing cloud costs.
+
+
+
+
+---
+
+This format keeps your key contributions clear and focused on how they align with the first objective.
+
+
+
 Here’s how you can align the four points with the first objective, "Drive simplicity and efficiency, seek out every opportunity to automate":
 
 
