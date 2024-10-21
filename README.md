@@ -1,4 +1,16 @@
 ```
+
+Multi-region for Arrow Card:
+
+Conducted AWS service-level Proof of Concepts (POCs) for multi-region support, helping to finalize patterns and gather evidence for deployment.
+
+Assisted in various POCs, including AWS Glue, ECS Cluster, DynamoDB, S3, KMS, and IAM, ensuring readiness for multi-region architecture.
+
+Currently supporting the Repayments Journey, which is the first application to go multi-region, by bootstrapping the CIT AWS account from scratch in the secondary Ireland region.
+
+Made key modifications to product templates and existing pipelines, enabling seamless application deployment and infrastructure support across multiple regions.
+
+
 Here’s a refined version of your points with improved clarity and flow:
 
 
