@@ -1,3 +1,25 @@
+
+Here’s how you can structure How Summary Comments for your self-review:
+
+
+---
+
+How Summary Comments
+
+Over the past year, I have demonstrated a strong commitment to the company's Values and Mindset, particularly in fostering collaboration, innovation, and accountability. In line with the value of Driving Simplicity and Efficiency, I consistently sought opportunities to automate processes and reduce manual interventions, such as in the DynamoDB Backup and Restore Solution and the Auto Alarm Solution, which directly improved operational efficiency across teams. By proactively addressing issues like throttling in PutMetricAlarm, I showed a dedication to resolving challenges and ensuring solutions were scalable and reliable.
+
+I embraced diversity of thought and challenged the status quo while working on the multi-region deployment for the Arrow Card project. Through continuous feedback loops with stakeholders and cross-functional teams, I facilitated discussions that led to innovative approaches for ensuring smooth deployment across multiple regions. This demonstrated my openness to new ideas and my ability to engage effectively with different perspectives.
+
+Accountability and ownership have been central to my work, as shown in the AWS Config remediation and Lambda function migrations. I took full ownership of tasks that were critical to maintaining compliance and operational continuity, ensuring deadlines were met and risks mitigated. My contributions have been recognized by my peers for improving the monitoring and alerting process across projects, reflecting a positive team-oriented mindset.
+
+Furthermore, I have consistently demonstrated collaborative leadership when onboarding teams to new solutions, such as the Tagging Utility and the Cloud Inventory Pipeline. My ability to clearly communicate the benefits of these solutions and assist teams with adoption exemplifies a mindset of helping others succeed and elevating the overall performance of the organization.
+
+
+---
+
+This comment effectively highlights how you have embodied the company’s values and demonstrated key behaviors while achieving your objectives.
+
+
 Here’s how you can structure the What Summary Comments and Precision Summary Comments sections for your self-review:
 
 
