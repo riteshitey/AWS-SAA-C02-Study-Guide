@@ -1,4 +1,31 @@
 ```
+Bootstrapping of AWS Accounts:
+
+Played a key role in bootstrapping the AWS account for the dpraw team, facilitating the onboarding of the DIH product and ensuring a smooth transition to cloud services.
+
+Assisted in the bootstrapping process for the Partner Domain, establishing foundational AWS infrastructure for efficient operations.
+
+Successfully bootstrapped the SIL CIT AWS account in the Ireland region to support multi-region initiatives, enhancing the organization's ability to operate across various geographic locations.
+
+
+11) Bootstrapping of AWS account
+
+Helped in Boostrapping of AWS account in dpraw for onboarding DIH product.
+
+Partner Domain boostrapping
+
+SIL Cit AWS Irland region for multiregion Boostrapping
+
+CloudWatch Dashboard for Application:
+
+Developed expertise in creating ad-hoc CloudWatch dashboards to monitor application performance and health.
+
+Successfully delivered a comprehensive CloudWatch Application Dashboard for SIL journeys, including Onboarding Notifications, Amazon Partner App, Repayments, Rewards, Statements, and the AWS Health Dashboard.
+
+This dashboard provided critical insights and support during the Arrow Card onboarding day, enhancing visibility and operational readiness.
+
+
+
 
 Non-Prod Auto AMI Refresh Enhancement in SIL and Adoption in dpraw:
 
