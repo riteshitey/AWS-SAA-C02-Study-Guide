@@ -1,3 +1,60 @@
+Apologies for the mix-up. Here’s the corrected version with distinct measures under each objective:
+
+
+---
+
+The What - Individual Objectives
+
+Objective 1: Automate AWS Backup and Monitoring Systems
+Category: Individual Objectives
+
+Measure Taken:
+
+Delivered a strategic DynamoDB backup and restore solution, automating the backup and restore process.
+
+Integrated AWS Backup Service to enhance scalability and reliability of the solution.
+
+Collaborated with cross-functional teams for horizontal delivery of the solution across the NGCB platform.
+
+
+
+---
+
+Objective 2: Ensure Multi-region Deployment Readiness for Key Projects
+Category: Global Objectives
+
+Measure Taken:
+
+Conducted AWS service-level Proof of Concepts (POCs) for multi-region support on the Arrow Card project, finalizing patterns for deployment.
+
+Bootstrapped the AWS account for CIT in Ireland, enabling multi-region capabilities.
+
+Supported the Repayments Journey, which was the first application to go multi-region.
+
+
+
+---
+
+Objective 3: Improve Compliance and Operational Continuity Across Teams
+Category: Performance Improvement Objectives
+
+Measure Taken:
+
+Performed regular remediation of AWS Config issues to ensure compliance and security.
+
+Migrated multiple Lambda functions to newer runtime versions ahead of deprecation.
+
+Led the migration of non-compliant system accounts from CyberArk to CSM, improving security and access management.
+
+
+
+---
+
+Each objective now has distinct, relevant measures based on your previous points, with no overlap.
+
+
+
+
 Here’s the revised "What - Individual Objectives" section with the correct categories and measures:
 
 
