@@ -1,3 +1,32 @@
+Here’s how you can structure the What Summary Comments and Precision Summary Comments sections for your self-review:
+
+
+---
+
+What Summary Comments
+
+Throughout the past year, I successfully delivered on key objectives that focused on enhancing efficiency, automation, and multi-region readiness for critical projects. One of the major accomplishments was delivering the DynamoDB Backup and Restore Solution, automating the process to reduce manual interventions and ensure seamless recovery. Additionally, the Auto Alarm Solution, which automated the creation of over 1500 alarms, improved monitoring accuracy and reduced manual configuration across various AWS resources.
+
+I also played a critical role in ensuring multi-region deployment readiness for the Arrow Card project by conducting AWS service-level POCs and bootstrapping the CIT AWS account in Ireland, which helped support business continuity and enhanced operational resilience. My contributions to compliance efforts, including remediation of AWS Config issues and Lambda function migrations, ensured the team stayed aligned with security and governance standards.
+
+Through ongoing collaboration with cross-functional teams, I helped optimize monitoring and alerting processes and successfully enabled cost efficiencies across projects by leveraging the enhanced Tagging Utility Solution. Feedback from stakeholders has highlighted the impact of these solutions on improving system reliability and reducing operational risks.
+
+
+---
+
+Precision Summary Comments
+
+In managing risks and strengthening controls, I proactively ensured the remediation of AWS Config issues across multiple teams, ensuring we met compliance and governance standards. By migrating Lambda functions ahead of deprecation deadlines and leading the migration of non-compliant system accounts from CyberArk to CSM, I reduced security risks and improved operational continuity.
+
+I also worked on enhancing controls in the Netcool Alerting Solution by introducing a suppression logic that minimized false alarms, improving incident response efficiency. The Cloud Inventory Enhancement further automated and strengthened the tracking of AWS resources, reducing manual intervention and increasing the accuracy of resource monitoring. These efforts helped reinforce the security and reliability of our cloud infrastructure, ensuring that risks were identified and mitigated in a timely manner.
+
+
+---
+
+These comments provide a clear reflection of your achievements and how you’ve managed risks and controls, aligned with the company’s expectations for this section of the review.
+
+
+
 Apologies for the mix-up. Here’s the corrected version with distinct measures under each objective:
 
 
