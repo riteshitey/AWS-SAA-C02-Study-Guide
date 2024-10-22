@@ -2,6 +2,17 @@
 Here’s how you can structure How Summary Comments for your self-review:
 
 
+This year, I’ve made a conscious effort to align my work with the company’s values, especially around efficiency and simplicity. I always try to spot opportunities where automation can take the place of manual processes, and that’s what led me to work on things like the DynamoDB Backup and Restore Solution and the Auto Alarm Solution. I wanted to ensure the team spent less time on manual tasks and more time on higher-priority projects. When I ran into issues, like the throttling with PutMetricAlarm, I worked through them to improve the overall process, which made everything run more smoothly.
+
+One of the biggest areas where I focused on challenging the status quo was during the multi-region deployment for the Arrow Card project. I worked closely with different teams to test out ideas and finalize solutions that would work across regions. It was important for me to bring different viewpoints together and find the best path forward. I really valued the feedback loops we had, which helped us deliver a solution that was ready for multi-region operations.
+
+I’ve also made it a point to take full ownership of compliance-related tasks, like AWS Config remediation and Lambda function migrations. These were critical to ensuring that we stayed compliant, and I made sure everything was completed ahead of deadlines. The feedback I’ve gotten from peers has been positive, especially when it comes to how we’ve improved monitoring and alerting across our systems.
+
+Finally, when working with other teams on new tools like the Tagging Utility or the Cloud Inventory Pipeline, I focused on helping them understand how these tools would benefit them. I spent time guiding them through the onboarding process, making sure they were comfortable with the new systems. It’s been rewarding to see these solutions adopted and make a real difference in the way we work.
+
+
+
+
 ---
 
 How Summary Comments
