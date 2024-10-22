@@ -1,3 +1,98 @@
+Here’s a structured self-evaluation for your annual performance review, categorizing your contributions under each of the four objectives. I've highlighted key points in bold as requested:
+
+
+---
+
+Self-Evaluation Annual Performance Review
+
+Name: Om
+Position: DevOps Engineer
+Review Period: [Insert review period]
+
+Objective 1: Drive simplicity and efficiency, seek out every opportunity to automate
+
+1. DynamoDB Backup Restore Solution & Alerting:
+Delivered a strategic DynamoDB backup and restore solution via SC, which was recommended and approved by the CTO. Automated the DynamoDB backup and restore process, significantly reducing manual intervention and improving reliability. Ongoing enhancement work, including the integration of AWS Backup Service, further streamlines and strengthens the solution, making it more scalable and robust.
+
+
+2. Auto Alarm Solution:
+Worked on Infra Alarms creation for SIL as part of an approved TAG-based approach. Created a total of 1500+ alarms on AWS resources successfully. Resolved throttling issues with PutMetricAlarm, improving the reliability and scalability of bulk alarm creation. Analyzed recurring alarm cases and optimized infra alarms configurations, reducing false alarms and improving overall monitoring accuracy.
+
+
+3. Alerting & Monitoring Enhancement:
+Enhanced the Netcool Alerting Solution by creating a limited-time suppression logic in the Netcool Lambda function, reducing false positive incidents and improving alert accuracy. Created a Subscription Filter utility solution that automates the addition and removal of Netcool/Esaas subscription filters for log groups, ensuring efficient monitoring of applications.
+
+
+4. Tagging Utility Solution:
+Enhanced the tagging utility by adding support for AWS services that allow for the creation, updating, or deletion of tags on AWS services. Helped in adopting and leveraging this tool across teams to add cost-saving tags, significantly reducing AWS costs.
+
+
+5. Cloud Inventory Enhancement:
+Enhanced the Cloud Inventory by automating the process of updating AWS resource details and configurations on Confluence. Implemented a logic to add ECS and Lambda application versions in the code.
+
+
+
+
+---
+
+Objective 2: Focus on businesses and projects where we can excel
+
+1. Multi-region for Arrow Card:
+Conducted AWS service-level Proof of Concepts (POCs) for multi-region support, helping to finalize patterns and gather evidence for deployment. Currently supporting the Repayments Journey, which is the first application to go multi-region, by bootstrapping the CIT AWS account from scratch in the secondary Ireland region.
+
+
+2. Supporting Dpraw Team with DevOps Activities:
+Quickly adapted to and understood the PPE team's pipeline structure, enabling efficient management and maintenance of their DevOps processes. Onboarded the dpraw team to ESaaS by adding the necessary subscription filters, improving application monitoring and alerting.
+
+
+3. Partner Domain GitLab Adoption:
+Led the onboarding of GitLab for the Partner domain. Created a comprehensive Quick Starter Guide on Confluence to help teams understand and implement GitLab CI pipelines effectively.
+
+
+
+
+---
+
+Objective 3: Have precision in our operations, risk management, and controls
+
+1. Ensuring Compliance and Operational Continuity:
+Regularly performed remediation for AWS Config issues for SIL and dpraw teams, ensuring compliance across AWS resources. Facilitated the migration of multiple Lambda functions to runtime versions 3.11/3.12, ahead of the deprecation of 3.7 and 3.8.
+
+
+2. Bootstrapping of AWS Accounts:
+Played a key role in bootstrapping the AWS account for the dpraw team, facilitating the onboarding of the DIH product Portfolio. Successfully bootstrapped the SIL CIT AWS account in the Ireland region to support multi-region initiatives.
+
+
+
+
+---
+
+Objective 4: Promote diversity of thought, champion new thinking, and challenge the status quo
+
+1. Non-Prod Auto AMI Refresh Enhancement in SIL and Adoption in dpraw:
+Identified and resolved issues with the Non-Prod Auto AMI refresh process in SIL. Independently learned the Auto AMI refresh solution implemented by PPE and successfully facilitated its adoption within the dpraw team.
+
+
+2. CloudWatch Dashboard for Application:
+Quickly learned creating CloudWatch dashboards during the Arrow Card OMI launch. Successfully delivered a comprehensive CloudWatch Application Dashboard for SIL, enhancing visibility and operational readiness.
+
+
+
+
+---
+
+Conclusion:
+Throughout the year, I have strived to drive efficiency, promote best practices, and foster a collaborative environment. My contributions have not only enhanced our operational capabilities but have also aligned with the company's strategic objectives. I look forward to continuing to add value in the coming year.
+
+
+---
+
+Feel free to adjust any sections or add any specific metrics or outcomes you want to include!
+
+
+
+
+
 ```
 Bootstrapping of AWS Accounts:
 
