@@ -1,3 +1,84 @@
+Here’s a well-structured "What - Individual Objectives" section based on your previous work:
+
+
+---
+
+The What - Individual Objectives
+
+Objective 1: Automate AWS Backup and Monitoring Systems to Enhance Operational Efficiency
+
+Measure Taken:
+
+Delivered a strategic DynamoDB backup and restore solution that automated the backup and restore process, reducing manual interventions.
+
+Enhanced the Auto Alarm Solution, creating 1500+ alarms and improving the reliability of alarm creation through optimization efforts such as resolving throttling issues with PutMetricAlarm.
+
+Created a Subscription Filter utility solution, which automated the addition/removal of filters for efficient log monitoring and incident management.
+
+
+Impact:
+
+Achieved significant reductions in manual overhead, allowing for faster recovery and increased system uptime.
+
+Enhanced monitoring accuracy, reducing false alarms and improving team response times to incidents.
+
+Provided scalable solutions that increased the reliability of the AWS environment across multiple projects.
+
+
+
+---
+
+Objective 2: Ensure Multi-region Deployment Readiness for Key Projects
+
+Measure Taken:
+
+Conducted AWS service-level Proof of Concepts (POCs) for multi-region support for the Arrow Card project, gathering critical evidence for finalizing deployment patterns.
+
+Bootstrapped AWS accounts in the Ireland region for the CIT AWS environment to enable seamless multi-region operations.
+
+Supported the Repayments Journey, ensuring the application was the first to go live across multiple regions with fully automated deployment pipelines.
+
+
+Impact:
+
+Enabled business continuity and operational resilience through multi-region support.
+
+Improved the speed and ease of multi-region deployments, leading to more efficient operations and greater flexibility in the infrastructure.
+
+Played a pivotal role in strengthening global operations, directly supporting mission-critical business processes.
+
+
+
+---
+
+Objective 3: Enhance AWS Compliance and Cost Efficiency Across Teams
+
+Measure Taken:
+
+Regularly remediated AWS Config compliance issues, ensuring alignment with security and governance standards across SIL and dpraw teams.
+
+Enhanced the Tagging Utility Solution, allowing teams to automate the tagging of AWS resources, which significantly reduced overall costs by improving cost visibility and tracking.
+
+Migrated legacy Lambda functions to updated runtime versions, ensuring operational continuity and alignment with security requirements before older versions were deprecated.
+
+
+Impact:
+
+Achieved full compliance with AWS security best practices, improving the governance of cloud resources.
+
+Enabled a cost-saving culture by promoting the adoption of tagging standards across multiple teams, leading to measurable AWS cost reductions.
+
+Prevented potential operational disruptions by proactively updating resources ahead of deprecation timelines.
+
+
+
+---
+
+These objectives capture the key initiatives you worked on throughout the year and the tangible measures you took to drive progress. They also align well with the impact your contributions had on the business.
+
+
+
+
 Here’s a structured self-evaluation for your annual performance review, categorizing your contributions under each of the four objectives. I've highlighted key points in bold as requested:
 
 
