@@ -1,4 +1,27 @@
 ```
+
+Non-Prod Auto AMI Refresh Enhancement in SIL and Adoption in dpraw:
+
+Identified and resolved issues with the Non-Prod Auto AMI refresh process in SIL, ensuring smooth and timely AMI updates.
+
+Enhanced the existing Auto AMI refresh solution for SIL, improving the efficiency and reliability of the process.
+
+Independently learned the Auto AMI refresh solution implemented by PPE and successfully facilitated its adoption within the dpraw team, streamlining their AMI refresh process.
+
+
+
+---
+
+Partner Domain GitLab Adoption:
+
+Led the onboarding of GitLab for the Partner domain, enabling teams to utilize GitLab CI/CD for their development processes.
+
+Created a comprehensive Quick Starter Guide on Confluence to help teams understand and implement GitLab CI pipelines effectively.
+
+Implemented the first GitLab build pipeline for a Java project using Maven, integrating SonarQube, Veracode, and Nexus for code quality analysis and artifact management.
+
+
+
 Cloud Inventory Enhancement:
 
 Enhanced the Cloud Inventory by automating the process of updating AWS resource details and configurations on Confluence, eliminating the need to manually log into AWS accounts. Updates are automatically refreshed every Sunday, ensuring up-to-date information.
@@ -23,39 +46,7 @@ Created and onboarded the dpraw team onto SonarQube and Veracode pipelines, enha
 Led the adoption of Cloud Inventory for dpraw, improving visibility and management of cloud resources.
 
 Here’s a refined version of your points to align with the objective:
-
-
----
-
-Addressing Non-Compliant Issues for AWS Accounts:
-
-1. Regularly performed remediation for AWS Config issues for SIL and dpraw teams, ensuring compliance across AWS resources and maintaining secure, compliant environments.
-
-
-2. Facilitated the migration of multiple Lambda functions to runtime versions 3.11/3.12, ahead of the deprecation of 3.7 and 3.8, ensuring continued support and operational efficiency.
-
-
-3. Led the migration of non-compliant system accounts from CyberArk to CSM, creating new system accounts with all required access (Stash, AWS, Nexus, Jenkins), improving security and compliance.
-
-
-
-
----
-
-This version highlights your contributions more clearly and emphasizes the outcomes, such as compliance, security, and operational efficiency.
-
-
-
-
-Multi-region for Arrow Card:
-
-Conducted AWS service-level Proof of Concepts (POCs) for multi-region support, helping to finalize patterns and gather evidence for deployment.
-
-Assisted in various POCs, including AWS Glue, ECS Cluster, DynamoDB, S3, KMS, and IAM, ensuring readiness for multi-region architecture.
-
-Currently supporting the Repayments Journey, which is the first application to go multi-region, by bootstrapping the CIT AWS account from scratch in the secondary Ireland region.
-
-Made key modifications to product templates and existing pipelines, enabling seamless application deployment and infrastructure support across multiple regions.
+mless application deployment and infrastructure support across multiple regions.
 
 
 Here’s a refined version of your points with improved clarity and flow:
@@ -71,44 +62,7 @@ Resolved throttling issues with PutMetricAlarm, improving the reliability and sc
 
 Supported cross-functional teams in adopting the Auto Alarm Solution, enhancing their ability to monitor systems and respond to alerts effectively.
 
-Analyzed recurring alarm cases and optimized configurations, reducing false alarms and improving overall monitoring accuracy.
-
-
-
----
-
-Alerting & Monitoring Enhancement:
-
-Developed a subscription filter utility that automates the addition and removal of Netcool/ESaaS subscription filters for log groups, ensuring efficient and accurate application monitoring.
-
-Enabled teams to manage subscription filters on-demand during the OML launch of the Arrow Card, significantly improving operational efficiency.
-
-Enhanced the Netcool alerting solution by implementing a limited-time suppression logic in the Netcool Lambda function, reducing false positive incidents and improving alert accuracy.
-
-
-
----
-
-Tagging Utility Solution:
-
-Enhanced the tagging utility to automate the creation, updating, and deletion of tags for AWS services, streamlining resource management.
-
-Facilitated the adoption of the tagging utility across teams, enabling the addition of cost-saving tags and significantly reducing AWS costs through optimized resource tagging.
-
-
-
----
-
-These revisions improve clarity and emphasize the impact of your contributions while aligning them with the objective of driving automation and efficiency.
-
-
-
-Auto Alarm Solution
-
-Drove the adoption and delivery of the Auto Alarm Solution across multiple teams, ensuring its smooth implementation for resource monitoring.
-
-Facilitated the automatic creation of CloudWatch alarms when resources were provisioned, reducing the need for manual alarm configuration.
-
+Analyzed recurring alarm cases and optimized configurations, l
 Supported bulk alarm updates, enabling teams to efficiently manage and apply alarms across numerous resources.
 
 Assisted cross-functional teams (dpraw Rewards, PPE Billing, Apply) in adopting the Auto Alarm Solution, improving system monitoring and alerting processes.
