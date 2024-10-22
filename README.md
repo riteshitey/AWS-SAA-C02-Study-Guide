@@ -1,3 +1,60 @@
+Here’s the revised "What - Individual Objectives" section with the correct categories and measures:
+
+
+---
+
+The What - Individual Objectives
+
+Objective 1: Automate AWS Backup and Monitoring Systems to Enhance Operational Efficiency
+Category: Individual Objectives
+
+Measure Taken:
+
+Delivered a strategic DynamoDB backup and restore solution that automated the process, reducing manual interventions.
+
+Enhanced the Auto Alarm Solution, creating 1500+ alarms and resolving throttling issues to improve scalability.
+
+Created a Subscription Filter utility solution, automating log monitoring and incident management.
+
+
+
+---
+
+Objective 2: Ensure Multi-region Deployment Readiness for Key Projects
+Category: Global Objectives
+
+Measure Taken:
+
+Conducted AWS service-level POCs for multi-region support on the Arrow Card project, gathering critical evidence for deployment patterns.
+
+Bootstrapped AWS accounts in the Ireland region for multi-region operations.
+
+Supported the Repayments Journey, the first multi-region deployment with fully automated pipelines.
+
+
+
+---
+
+Objective 3: Enhance AWS Compliance and Cost Efficiency Across Teams
+Category: Performance Improvement Objectives
+
+Measure Taken:
+
+Regularly remediated AWS Config compliance issues, ensuring security and governance across SIL and dpraw teams.
+
+Enhanced the Tagging Utility Solution to automate tagging and significantly reduce AWS costs.
+
+Migrated legacy Lambda functions to updated runtime versions to maintain operational continuity and security compliance.
+
+
+
+---
+
+These objectives and measures align with the provided categories and focus on your key contributions.
+
+
+
+
 Here’s a well-structured "What - Individual Objectives" section based on your previous work:
 
 
