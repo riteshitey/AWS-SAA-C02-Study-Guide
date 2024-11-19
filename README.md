@@ -3,6 +3,31 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 
 
 ```
+Here’s an updated version of your message to include that point:
+
+
+---
+
+Hey team,
+
+I’ve created a generic Service Catalog product to make it easier to create both Interface and Gateway VPC Endpoints.
+
+This should help streamline the process and reduce the hassle of constantly appending new VPC endpoint resources to the existing template. I noticed that when we added a new endpoint in SIL, the existing VPC endpoint product went into a "tended" state. If something like this happens, it could cause issues, especially if we can’t roll back the changes.
+
+Going forward, each endpoint we need to create can be managed as a separate Service Catalog provisioned product, which will make things smoother and more manageable!
+
+Feel free to reach out if you have any questions!
+
+Cheers,
+Om
+
+
+---
+
+This version emphasizes the potential issues and explains how the new approach helps avoid them.
+
+
+
 
 Here’s a more casual and friendly version of the message:
 
