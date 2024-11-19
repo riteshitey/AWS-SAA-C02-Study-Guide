@@ -7,6 +7,39 @@ As for the issue, the product went into a tainted state in non-prod, which led p
 
 
 ```
+version = 0.1
+
+[default]
+[default.deploy]
+region = "us-east-1"  # Specify your target region here
+stack_name = "aws-health-dashboard-stack"
+capabilities = "CAPABILITY_IAM"  # Needed if your template creates IAM resources
+parameter_overrides = "Env=dev ServicesList='ec2,s3' RegionsList='us-east-1,us-west-2' AccountIdList='123456789012,987654321098' FriendlyStackName=aws-health-dashboard NetcoolServerURL=https://example.com LambdaSecurityGroup='/app/securitygroups' Subnets='/app/network/subnets' DiscountMigratedTagKey='/app/awsDiscount/MigratedTagKey' DiscountMigratedTagValue='/app/awsDiscount/MigratedTagValue'"
+s3_bucket = "your-s3-bucket"  # Specify the bucket for SAM to store the packaged Lambda zip
+
+
+
+Resources:
+  AWSHealthDashboardAlertLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: lambda_function.lambda_handler
+      FunctionName: !Sub "${FriendlyStackName}-monitor-lambda-${Env}"
+      MemorySize: 1024
+      Role: !GetAtt LambdaIAM.Arn
+      Runtime: python3.12
+      Timeout: 840
+      CodeUri: ./src  # Local path to your Lambda code directory
+      VpcConfig:
+        SecurityGroupIds: !Ref LambdaSecurityGroup
+        SubnetIds: !Ref Subnets
+      Environment:
+        Variables:
+          NetcoolServerURL: !Ref NetcoolServerURL
+          Key: !Ref DiscountMigratedTagKey
+          Value: !Ref DiscountMigratedTagValue
+
+
 AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS Health Dashboard with Lambda Trigger and CloudWatch Log Group for monitoring AWS Health events.
 
