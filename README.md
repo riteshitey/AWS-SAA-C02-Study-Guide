@@ -7,6 +7,165 @@ As for the issue, the product went into a tainted state in non-prod, which led p
 
 
 ```
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS Health Dashboard with Lambda Trigger and CloudWatch Log Group for monitoring AWS Health events.
+
+Parameters:
+  Env:
+    Description: "Application environment name (e.g., dev, prod)"
+    Type: String
+    Default: dev
+
+  ServicesList:
+    Description: "Comma-separated list of AWS services to filter AWS Health AHA events on."
+    Type: List<String>
+
+  RegionsList:
+    Description: "Comma-separated list of AWS regions to filter AWS Health AHA events on."
+    Type: List<String>
+
+  AccountIdList:
+    Description: "Comma-separated list of AWS account IDs to filter AWS Health AHA events on."
+    Type: List<String>
+
+  FriendlyStackName:
+    Description: "Friendly name for the stack (used for resource naming)."
+    Type: String
+    Default: "aws-health-dashboard"
+
+  NetcoolServerURL:
+    Description: "URL for Netcool server integration."
+    Type: String
+    Default: "https://example.com"
+
+  LambdaSecurityGroup:
+    Description: "Security groups for the Lambda function (SSM parameter)."
+    Type: AWS::SSM::Parameter::Value<List<String>>
+    Default: /app/securitygroups
+
+  Subnets:
+    Description: "List of subnets for the Lambda VPC configuration (SSM parameter)."
+    Type: AWS::SSM::Parameter::Value<List<String>>
+    Default: /app/network/subnets
+
+  DiscountMigratedTagKey:
+    Description: "Key for the discount migrated tag."
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /app/awsDiscount/MigratedTagKey
+
+  DiscountMigratedTagValue:
+    Description: "Value for the discount migrated tag."
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /app/awsDiscount/MigratedTagValue
+
+Resources:
+  AWSHealthDashboardAlertLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Description: "Lambda function to handle AWS Health Dashboard alerts."
+      Handler: "lambda_function.lambda_handler"
+      Code:
+        S3Bucket: !Sub "your-s3-bucket-name"
+        S3Key: !Sub "your-lambda-code.zip"
+      FunctionName: !Sub "${FriendlyStackName}-monitor-lambda-${Env}"
+      MemorySize: 1024
+      Role: !GetAtt LambdaIAMRole.Arn
+      Runtime: python3.12
+      Timeout: 840
+      VpcConfig:
+        SecurityGroupIds: !Ref LambdaSecurityGroup
+        SubnetIds: !Ref Subnets
+      Environment:
+        Variables:
+          NetcoolServerURL: !Ref NetcoolServerURL
+      Tags:
+        - Key: !Ref DiscountMigratedTagKey
+          Value: !Ref DiscountMigratedTagValue
+
+  AWSHealthEventBridgeLambdaTriggerPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt AWSHealthDashboardAlertLambda.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: !GetAtt AHAEventBridgeLambdaTriggerRule.Arn
+
+  AHAEventBridgeLambdaTriggerRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
+      EventPattern:
+        source:
+          - "aws.health"
+        detail:
+          eventTypeCategory:
+            - "issue"
+          services: !Split [",", !Ref ServicesList]
+          region: !Split [",", !Ref RegionsList]
+          accountId: !Split [",", !Ref AccountIdList]
+      Name: !Sub "${FriendlyStackName}-monitor-rule-${Env}"
+      State: "ENABLED"
+      Targets:
+        - Id: "AWSHealthDashboardAlertLambdaTrigger"
+          Arn: !GetAtt AWSHealthDashboardAlertLambda.Arn
+
+  AHACloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/events/aws-health-${FriendlyStackName}-logGroup"
+      RetentionInDays: 30
+      Tags:
+        - Key: !Ref DiscountMigratedTagKey
+          Value: !Ref DiscountMigratedTagValue
+
+  LambdaIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: "IAM role for Lambda function execution with required permissions."
+      RoleName: !Sub "${FriendlyStackName}-Lambda-Role-${Env}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+      PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/core-ServiceRolePermissionsBoundary"
+      Tags:
+        - Key: !Ref DiscountMigratedTagKey
+          Value: !Ref DiscountMigratedTagValue
+
+  EventBridgeToCloudWatchLogsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: "EventBridgeToCloudWatchLogsPolicy"
+      Roles:
+        - !Ref EventBridgeExecutionRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - "logs:PutLogEvents"
+              - "logs:CreateLogStream"
+              - "logs:CreateLogGroup"
+            Resource: !GetAtt AHACloudWatchLogGroup.Arn
+
+  EventBridgeExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: "IAM role for EventBridge rule to invoke CloudWatch Logs."
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "events.amazonaws.com"
+            Action: "sts:AssumeRole"
+
+
 Here’s an updated version of your message to include that point:
 
 
@@ -53,35 +212,6 @@ Om
 This version has a relaxed tone and is friendly while still conveying the key points.
 
 
-
-Here's a short message you can send to your team:
-
-
----
-
-Hi Team,
-
-I’ve created a generic CloudFormation product that allows us to easily create both Interface and Gateway VPC Endpoints. The template is flexible, enabling dynamic selection of the service (e.g., DynamoDB, S3, Lambda) and supports multiple VPC configurations. This should streamline the process and reduce manual effort in provisioning VPC Endpoints.
-
-Feel free to check it out and let me know if you have any questions or suggestions!
-
-Best,
-Om
-
-
----
-
-This message is concise and highlights the key features of the product while encouraging feedback.
-
-
-Parameters:
-  ServiceName:
-    Description: 'The AWS service name for the VPC Endpoint (e.g., dynamodb, s3, lambda)'
-    Type: String
-    Default: dynamodb
-    AllowedValues:
-      - s3
-      - dynamodb
       - lambda
       - ec2
       - sns
