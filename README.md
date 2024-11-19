@@ -4,6 +4,26 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 
 ```
 
+Here’s a more casual and friendly version of the message:
+
+
+---
+
+Hey Team,
+
+Just wanted to let you know that I’ve put together a super flexible CloudFormation template to create VPC Endpoints (both Interface and Gateway types). You can easily choose the service (like DynamoDB, S3, Lambda, etc.) and customize the VPC settings. Should save us some time and effort moving forward!
+
+Take a look when you get a chance and let me know if you have any thoughts or questions!
+
+Cheers,
+Om
+
+
+---
+
+This version has a relaxed tone and is friendly while still conveying the key points.
+
+
 
 Here's a short message you can send to your team:
 
