@@ -1,6 +1,42 @@
 # AWS SAA-C02 Study Guide
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
+
+```
+Metadata:
+  AWS::CloudFormation::Interface:
+    Description: "CloudFormation template for creating Interface or Gateway VPC Endpoints based on user input."
+    ParameterGroups:
+      - Label:
+          default: "VPC Endpoint Configuration"
+        Parameters:
+          - ServiceName
+          - VpcEndpointType
+      - Label:
+          default: "VPC and Networking Configuration"
+        Parameters:
+          - VpcId
+          - Subnet1
+          - Subnet2
+          - Subnet3
+          - SecurityGroupId
+    ParameterLabels:
+      ServiceName:
+        default: "AWS Service Name for the VPC Endpoint"
+      VpcEndpointType:
+        default: "VPC Endpoint Type (Interface or Gateway)"
+      VpcId:
+        default: "VPC ID (retrieved from SSM Parameter Store)"
+      Subnet1:
+        default: "First Subnet for Interface Endpoints"
+      Subnet2:
+        default: "Second Subnet for Interface Endpoints"
+      Subnet3:
+        default: "Third Subnet for Interface Endpoints"
+      SecurityGroupId:
+        default: "Security Group ID for Interface Endpoints"
+```
+
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
   2. The FAQs for the most critical services, included in the recommended reading list below
   3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
