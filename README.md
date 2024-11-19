@@ -3,6 +3,26 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 
 
 ```
+
+Parameters:
+  ServiceName:
+    Description: 'The AWS service name for the VPC Endpoint (e.g., dynamodb, s3, lambda)'
+    Type: String
+    Default: dynamodb
+    AllowedValues:
+      - s3
+      - dynamodb
+      - lambda
+      - ec2
+      - sns
+      - sqs
+      - secretsmanager
+      - ecr.api
+      - ecr.dkr
+      - kinesis
+      - elasticloadbalancing
+    ConstraintDescription: 'Must be a valid AWS service for VPC Endpoints (e.g., s3, dynamodb, lambda, etc.).'
+
 Metadata:
   AWS::CloudFormation::Interface:
     Description: "CloudFormation template for creating Interface or Gateway VPC Endpoints based on user input."
