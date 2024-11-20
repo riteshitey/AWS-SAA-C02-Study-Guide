@@ -17,6 +17,22 @@ AHACloudWatchLogGroup:
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 ```
+AHAEventBridgeLambdaTriggerRuleRegionalService:
+  Type: AWS::Events::Rule
+  Properties:
+    Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
+    EventPattern: 
+      '{"source":["aws.health"],"account":${AccountIdList},"detail":{"eventTypeCategory":["issue"],"service":${RegionalServicesList},"eventRegion":${RegionsList}}}'
+    Name: !Sub "${FriendlyStackName}-monitor-RegionalService-rule-${Env}"
+    State: ENABLED
+    Targets:
+      - Id: AWSHealthAlertLambdaTrigger
+        Arn: !GetAtt AWSHealthAlertLambda.Arn
+      - Id: CloudWatchLogsTarget
+        Arn: !GetAtt AHACloudWatchLogGroup.Arn
+
+
+
 Dear HR,
 
 I recently created a new bank account and updated it in the salary section on Workday on 21st November at 12 AM. Could you please confirm if updating it on Workday is sufficient? Additionally, will my salary for this month be credited to the new account or the previous one?
