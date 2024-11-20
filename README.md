@@ -18,6 +18,42 @@ As for the issue, the product went into a tainted state in non-prod, which led p
 
 ```
 Resources:
+  CloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/events/${FriendlyStackName}-logGroup"
+      RetentionInDays: 14
+
+  LogGroupPolicy:
+    Type: AWS::Logs::ResourcePolicy
+    Properties:
+      PolicyName: !Sub "${FriendlyStackName}-LogGroupPolicy"
+      PolicyDocument: !Sub |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "TrustEventsToStoreLogEvent",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "events.amazonaws.com",
+                  "delivery.logs.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "${CloudWatchLogGroup.Arn}:*"
+            }
+          ]
+        }
+
+
+
+
+Resources:
   LogGroupPolicy:
     Type: AWS::Logs::ResourcePolicy
     Properties:
