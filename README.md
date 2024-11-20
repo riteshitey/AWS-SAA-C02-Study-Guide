@@ -21,6 +21,29 @@ AHAEventBridgeLambdaTriggerRuleRegionalService:
   Type: AWS::Events::Rule
   Properties:
     Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
+    EventPattern:
+      source: 
+        - aws.health
+      account: !Ref AccountIdList
+      detail:
+        eventTypeCategory: 
+          - issue
+        service: !Ref RegionalServicesList
+        eventRegion: !Ref RegionsList
+    Name: !Sub "${FriendlyStackName}-monitor-RegionalService-rule-${Env}"
+    State: ENABLED
+    Targets:
+      - Id: AWSHealthAlertLambdaTrigger
+        Arn: !GetAtt AWSHealthAlertLambda.Arn
+      - Id: CloudWatchLogsTarget
+        Arn: !GetAtt AHACloudWatchLogGroup.Arn
+
+
+
+AHAEventBridgeLambdaTriggerRuleRegionalService:
+  Type: AWS::Events::Rule
+  Properties:
+    Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
     EventPattern: 
       '{"source":["aws.health"],"account":${AccountIdList},"detail":{"eventTypeCategory":["issue"],"service":${RegionalServicesList},"eventRegion":${RegionsList}}}'
     Name: !Sub "${FriendlyStackName}-monitor-RegionalService-rule-${Env}"
