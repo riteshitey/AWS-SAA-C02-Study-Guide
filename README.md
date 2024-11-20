@@ -17,6 +17,28 @@ AHACloudWatchLogGroup:
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 ```
+# Construct the SUMMARY field based on the event type and description
+summary = f"{event_type_code.replace('_', ' ').capitalize()} - {latest_description}"
+
+# Ensure it's within the allowed character length and format
+if len(summary) > 1024:
+    summary = summary[:1024]  # Truncate if it exceeds the maximum length
+
+parameter_dict = {
+    "SEV": os.environ.get('SEV', 'DEFAULT_SEV'),
+    "NETCOOL_ENV": os.environ.get('NETCOOL_ENV', 'DEFAULT_ENV'),
+    "CI": f"AWS-{account}",
+    "ALERTCONTEXT": f"aws-health-{service}",
+    "ALERTINSTANCE": f"{region}-{account}",
+    "AWSCLEAR": "FALSE",
+    "SUMMARY": summary,  # Updated SUMMARY
+    "ERRTYPE": err_type,
+    "COMPID": os.environ.get('COMPID', 'DEFAULT_COMPID'),
+    "ALERTKEY": alert_key
+}
+
+
+
 import os
 import json
 import logging
