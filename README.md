@@ -3,6 +3,17 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 
 Regarding the tainted state, I reviewed it last year, but I don’t quite recall the exact reason. However, after some discussions, Baskar advised against modifying the product at that time.
 
+AHACloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/events/aws-health-${FriendlyStackName}-logGroup"
+      RetentionInDays: 90
+      Tags:
+        - Key: !Ref DiscountMigratedTagKey
+          Value: !Ref DiscountMigratedTagValue
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 
