@@ -17,164 +17,54 @@ AHACloudWatchLogGroup:
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 ```
-AWSTemplateFormatVersion: '2010-09-09'
-Transfora: AWS::Serverless-2016-10-31
-
-Description: AWS Health Dashboard with Lambda Trigger and CloudWatch Log Group for monitoring AWS Health events.
-
-Parameters:
-  Env:
-    Description: "Application environment name (e.g., dev, prod)"
-    Type: String
-    Default: dev
-  ServicesList:
-    Description: "Comma-separated List of AWS services to filter AWS Health events on."
-    Type: List<String>
-  RegionsList:
-    Description: "Comma-separated list of AWS regions to filter AWS Health events on."
-    Type: List<String>
-  AccountIdList:
-    Description: "Comma-separated List of AWS account IDs to filter AWS Health events on."
-    Type: List<String>
-  FriendlyStackName:
-    Description: "Friendly name for the stack (used for resource naming)."
-    Type: String
-    Default: "aha-dashboard"
-  NetcoolServerURL:
-    Description: "URL for Netcool server integration."
-    Type: String
-    Default: "https://example.com"
-  LambdaSecurityGroup:
-    Description: "Security groups for the Lambda function (SSM parameter)."
-    Type: AWS::SSM::Parameter::Value<List<String>>
-    Default: /app/securitygroups
-  Subnets:
-    Description: "List of subnets for the Lambda VPC configuration (SSM parameter)."
-    Type: AWS::SSM::Parameter::Value<List<String>>
-    Default: /app/network/subnets
-  DiscountMigratedTagKey:
-    Description: "Key for the discount migrated tag."
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /app/awsDiscount/MigratedTagKey
-  DiscountMigratedTagValue:
-    Description: "Value for the discount migrated tag."
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /app/awsDiscount/MigratedTagValue
-
 Resources:
-  AWSHealthDashboardAlertLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Description: "Lambda function to handle AWS Health Dashboard alerts."
-      Handler: "lambda_function.lambda_handler"
-      CodeUri: ./src
-      FunctionName: !Sub "${FriendlyStackName}-monitor-lambda-${Env}"
-      MemorySize: 1024
-      Role: !GetAtt LambdaIAMRole.Arn
-      Runtime: python3.11
-      Timeout: 848
-      VpcConfig:
-        SecurityGroupIds: !Ref LambdaSecurityGroup
-        SubnetIds: !Ref Subnets
-      Environment:
-        Variables:
-          NetcoolServerURL: !Ref NetcoolServerURL
-
-  AWSHealthEventBridgeLambdaTriggerPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !GetAtt AWSHealthDashboardAlertLambda.Arn
-      Action: "lambda:InvokeFunction"
-      Principal: "events.amazonaws.com"
-      SourceArn: !GetAtt AWSHealthEventBridgeLambdaTriggerRule.Arn
-
-  AWSHealthEventBridgeLambdaTriggerRule:
-    Type: AWS::Events::Rule
-    Properties:
-      Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
-      EventPattern:
-        source:
-          - "aws.health"
-        detail:
-          eventTypeCategory:
-            - "issue"
-          service:
-            - !Ref ServicesList
-          region:
-            - !Ref RegionsList
-          accountId:
-            - !Ref AccountIdList
-      Name: !Sub "${FriendlyStackName}-monitor-rule-${Env}"
-      State: "ENABLED"
-      Targets:
-        - Id: "AWSHealthDashboardAlertLambdaTrigger"
-          Arn: !GetAtt AWSHealthDashboardAlertLambda.Arn
-        - Id: "CloudWatchLogsTarget"
-          Arn: !GetAtt AWSCloudWatchLogGroup.Arn
-
-  AWSCloudWatchLogGroup:
+  AHACloudWatchLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub "/aws/events/aws-health-${FriendlyStackName}-logGroup"
+      LogGroupName: !Sub "/aws/events/${FriendlyStackName}-logGroup"
       RetentionInDays: 30
       Tags:
-        Key: !Ref DiscountMigratedTagKey
-        Value: !Ref DiscountMigratedTagValue
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
+        - Key: !Ref DiscountMigratedTagKey
+          Value: !Ref DiscountMigratedTagValue
 
-  EventBridgeToCloudWatchIAMRole:
-    Type: AWS::IAM::Role
+  AHACloudWatchLogGroupPolicy:
+    Type: AWS::Logs::ResourcePolicy
     Properties:
-      Description: "IAM role for EventBridge rule to invoke CloudWatch Logs."
-      RoleName: !Sub "svc-${FriendlyStackName}-EventBridge-To-CloudWatch-Role-${Env}"
-      AssumeRolePolicyDocument:
+      PolicyName: !Sub "${FriendlyStackName}-LogGroupPolicy"
+      PolicyDocument:
         Version: "2012-10-17"
         Statement:
-          - Effect: "Allow"
+          - Sid: "TrustEventsToStoreLogEvent"
+            Effect: Allow
             Principal:
-              Service: "events.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Policies:
-        - PolicyName: "PutLogEventsPolicy"
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: "Allow"
-                Action:
-                  - "logs:PutLogEvents"
-                  - "logs:CreateLogStream"
-                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/events/*:*"
+              Service:
+                - events.amazonaws.com
+                - delivery.logs.amazonaws.com
+            Action:
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+            Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/events/${FriendlyStackName}-logGroup:*"
 
-  LambdaIAMRole:
-    Type: AWS::IAM::Role
-    Properties:
-      Description: "IAM role for Lambda function execution with required permissions."
-      RoleName: !Sub "svc-${FriendlyStackName}-Lambda-Role-${Env}"
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service: "lambda.amazonaws.com"
-            Action: "sts:AssumeRole"
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      Policies:
-        - PolicyName: "CloudWatchLogsPolicy"
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: "Allow"
-                Action:
-                  - "logs:CreateLogGroup"
-                  - "logs:CreateLogStream"
-                  - "logs:PutLogEvents"
-                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/events/aws-health-${FriendlyStackName}-logGroup:*"
-      Tags:
-        Key: !Ref DiscountMigratedTagKey
-        Value: !Ref DiscountMigratedTagValue
+AHAEventBridgeLambdaTriggerRule:
+  Type: AWS::Events::Rule
+  Properties:
+    Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
+    EventPattern:
+      source:
+        - "aws.health"
+      detail:
+        eventTypeCategory:
+          - "issue"
+        services: !Ref ServicesList
+        region: !Ref RegionsList
+        accountId: !Ref AccountIdList
+    Name: !Sub "${FriendlyStackName}-monitor-rule-${Env}"
+    State: "ENABLED"
+    Targets:
+      - Id: "AWSHealthDashboardAlertLambdaTrigger"
+        Arn: !GetAtt AWSHealthDashboardAlertLambda.Arn
+      - Id: "CloudWatchLogsTarget"
+        Arn: !GetAtt AHACloudWatchLogGroup.Arn
 
 ```
 
