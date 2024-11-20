@@ -18,6 +18,19 @@ As for the issue, the product went into a tainted state in non-prod, which led p
 
 
 ```
+AHACloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/events/aws-health-${FriendlyStackName}-logGroup"
+      RetentionInDays: 90
+      Tags:
+        - Key: !Ref DiscountMigratedTagKey
+          Value: !Ref DiscountMigratedTagValue
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+
+
+
 Resources:
   AHAEventBridgeLambdaTriggerRule:
     Type: AWS::Events::Rule
