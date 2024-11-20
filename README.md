@@ -17,6 +17,77 @@ AHACloudWatchLogGroup:
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 ```
+import os
+import json
+import logging
+import requests
+
+# Configure logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+def postNetcoolAlert(parameter_dict):
+    """
+    Post the alert to the Netcool on-prem API.
+    """
+    netcool_api_url = os.environ.get('NETCOOL_API_URL')
+    if not netcool_api_url:
+        logger.error("NETCOOL_API_URL environment variable not set.")
+        return False
+
+    try:
+        response = requests.post(netcool_api_url, json=parameter_dict, timeout=10)
+        if response.status_code == 200:
+            logger.info("Alert posted successfully to Netcool API.")
+            return True
+        else:
+            logger.error(f"Failed to post alert: {response.status_code}, {response.text}")
+            return False
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error posting alert to Netcool API: {e}")
+        return False
+
+def lambda_handler(event, context):
+    logger.info("Health Event received from Event Bridge: %s", json.dumps(event))
+
+    try:
+        # Extract values from the event with default fallbacks
+        account = event.get('account', 'UnknownAccount')
+        source = event.get('source', 'UnknownSource')
+        event_time = event.get('time', 'UnknownTime')
+        detail = event.get('detail', {})
+        
+        # Extract details safely
+        event_type_code = detail.get('eventTypeCode', 'UnknownType')
+        service = detail.get('service', 'UnknownService')
+        latest_description = detail.get('eventDescription', [{}])[0].get('latestDescription', 'No description available')
+        region = detail.get('eventRegion', 'GlobalEvent')
+
+        # Create parameter dictionary
+        parameter_dict = {
+            "SEV": os.environ.get('SEV', 'DEFAULT_SEV'),
+            "NETCOOL_ENV": os.environ.get('NETCOOL_ENV', 'DEFAULT_ENV'),
+            "CI": f"AWS-{account}",
+            "ALERTCONTEXT": f"aws-health-{service}",
+            "ALERTINSTANCE": f"{region}-{account}",
+            "AWSCLEAR": "FALSE",
+            "SUMMARY": f"{event_type_code} - {latest_description}",
+            "ERRTYPE": f"CloudWatch-{event_type_code.replace('_', '')}-{account}",
+            "COMPID": os.environ.get('COMPID', 'DEFAULT_COMPID'),
+            "ALERTKEY": f"{event_type_code}-{account}"
+        }
+
+        # Log the parameter dictionary
+        logger.info("Parameter Dictionary: %s", json.dumps(parameter_dict))
+
+        # Post the alert
+        postNetcoolAlert(parameter_dict)
+    except Exception as e:
+        logger.error("Error processing the event: %s", e)
+        raise
+
+
+
 AHAEventBridgeLambdaTriggerRuleRegionalService:
   Type: AWS::Events::Rule
   Properties:
