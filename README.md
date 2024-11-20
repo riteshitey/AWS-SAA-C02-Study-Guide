@@ -17,6 +17,63 @@ AHACloudWatchLogGroup:
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 ```
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "CloudFormation Template to set Netcool Server URL as an environment variable"
+
+Parameters:
+  NetcoolEnv:
+    Type: String
+    Description: "ENV for Netcool server integration."
+    Default: "DEV"
+    AllowedValues:
+      - DEV
+      - UAT
+      - PROD
+    ConstraintDescription: "Must be one of the allowed values: DEV, UAT, or PROD"
+
+Resources:
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: "MyFunction"
+      Handler: "index.handler"
+      Role: arn:aws:iam::123456789012:role/MyLambdaExecutionRole
+      Runtime: python3.8
+      Code:
+        S3Bucket: "my-bucket"
+        S3Key: "my-function-code.zip"
+      Environment:
+        Variables:
+          NetcoolServerURL: !If
+            - IsDevEnv
+            - "https://dev-netcool.example.com"
+            - !If
+              - IsUatEnv
+              - "https://uat-netcool.example.com"
+              - "https://prod-netcool.example.com"
+
+Conditions:
+  IsDevEnv:
+    Fn::Equals: 
+      - !Ref NetcoolEnv
+      - DEV
+  IsUatEnv:
+    Fn::Equals: 
+      - !Ref NetcoolEnv
+      - UAT
+  IsProdEnv:
+    Fn::Equals: 
+      - !Ref NetcoolEnv
+      - PROD
+
+Outputs:
+  NetcoolServerURL:
+    Description: "The URL for the Netcool server"
+    Value: !Ref NetcoolServerURL
+
+
+
+
 # Construct the SUMMARY field based on the event type and description
 summary = f"{event_type_code.replace('_', ' ').capitalize()} - {latest_description}"
 
