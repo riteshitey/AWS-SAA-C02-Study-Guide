@@ -7,6 +7,64 @@ As for the issue, the product went into a tainted state in non-prod, which led p
 
 
 ```
+Resources:
+  AHAEventBridgeLambdaTriggerRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
+      EventPattern:
+        source:
+          - "aws.health"
+        detail:
+          eventTypeCategory:
+            - "issue"
+          services: 
+            - !Ref ServicesList
+          region: 
+            - !Ref RegionsList
+          accountId: 
+            - !Ref AccountIdList
+      Name: !Sub "${FriendlyStackName}-monitor-rule-${Env}"
+      State: "ENABLED"
+      Targets:
+        - Id: "AWSHealthDashboardAlertLambdaTrigger"
+          Arn: !GetAtt AWSHealthDashboardAlertLambda.Arn
+        - Id: "CloudWatchLogsTarget"
+          Arn: !GetAtt AHACloudWatchLogGroup.Arn
+          RoleArn: !GetAtt EventBridgeToCloudWatchIAMRole.Arn
+
+  AHACloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/events/aws-health-${FriendlyStackName}-logGroup"
+      RetentionInDays: 90
+      Tags:
+        - Key: !Ref DiscountMigratedTagKey
+          Value: !Ref DiscountMigratedTagValue
+
+  EventBridgeToCloudWatchIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "events.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: "PutLogEventsPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "logs:PutLogEvents"
+                  - "logs:CreateLogStream"
+                Resource: !GetAtt AHACloudWatchLogGroup.Arn
+
+
+
 version = 0.1
 
 [default]
