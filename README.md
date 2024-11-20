@@ -16,120 +16,79 @@ AHACloudWatchLogGroup:
 
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
-
 ```
+AWSTemplateFormatVersion: '2010-09-09'
+Transfora: AWS::Serverless-2016-10-31
+
+Description: AWS Health Dashboard with Lambda Trigger and CloudWatch Log Group for monitoring AWS Health events.
 
 Parameters:
-  ServiceName:
-    Description: 'The AWS service name for the VPC Endpoint (e.g., dynamodb, s3, lambda)'
+  Env:
+    Description: "Application environment name (e.g., dev, prod)"
     Type: String
-    Default: dynamodb
-
-  VpcEndpointType:
-    Description: 'The type of VPC endpoint to create (Interface or Gateway)'
+    Default: dev
+  ServicesList:
+    Description: "Comma-separated List of AWS services to filter AWS Health events on."
+    Type: List<String>
+  RegionsList:
+    Description: "Comma-separated list of AWS regions to filter AWS Health events on."
+    Type: List<String>
+  AccountIdList:
+    Description: "Comma-separated List of AWS account IDs to filter AWS Health events on."
+    Type: List<String>
+  FriendlyStackName:
+    Description: "Friendly name for the stack (used for resource naming)."
     Type: String
-    AllowedValues:
-      - Interface
-      - Gateway
-
-  SecurityGroupId:
-    Description: 'The Security Group ID for the current VPC (required for Interface endpoints)'
+    Default: "aha-dashboard"
+  NetcoolServerURL:
+    Description: "URL for Netcool server integration."
     Type: String
-    Default: sg-123456
-    AllowedPattern: '^sg-[0-9a-fA-F]{8,17}$'
-    ConstraintDescription: 'Security Group ID must be in the format sg-xxxxxxxx or sg-xxxxxxxxxxxxxxxxx, where x is a hexadecimal character (0-9 or a-f).'
-
-  VpcId:
-    Description: 'VPC ID retrieved from SSM Parameter Store'
+    Default: "https://example.com"
+  LambdaSecurityGroup:
+    Description: "Security groups for the Lambda function (SSM parameter)."
+    Type: AWS::SSM::Parameter::Value<List<String>>
+    Default: /app/securitygroups
+  Subnets:
+    Description: "List of subnets for the Lambda VPC configuration (SSM parameter)."
+    Type: AWS::SSM::Parameter::Value<List<String>>
+    Default: /app/network/subnets
+  DiscountMigratedTagKey:
+    Description: "Key for the discount migrated tag."
     Type: AWS::SSM::Parameter::Value<String>
-    Default: /app/network/VPCId
-
-  Subnet1:
-    Description: 'First Subnet ID to be used for Interface endpoints'
+    Default: /app/awsDiscount/MigratedTagKey
+  DiscountMigratedTagValue:
+    Description: "Value for the discount migrated tag."
     Type: AWS::SSM::Parameter::Value<String>
-    Default: /app/network/Sub1Id
-
-  Subnet2:
-    Description: 'Second Subnet ID to be used for Interface endpoints'
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /app/network/Sub2Id
-
-  Subnet3:
-    Description: 'Third Subnet ID to be used for Interface endpoints'
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /app/network/Sub3Id
-
-  PrivateDNSenabled:
-    Description: 'Enable or disable private DNS for the VPC endpoint'
-    Type: String
-    AllowedValues:
-      - true
-      - false
-    Default: true
+    Default: /app/awsDiscount/MigratedTagValue
 
 Resources:
-  InterfaceVpcEndpoint:
-    Condition: CreateInterfaceEndpoint
-    Type: AWS::EC2::VPCEndpoint
+  AWSHealthDashboardAlertLambda:
+    Type: AWS::Serverless::Function
     Properties:
-      ServiceName: !Sub "com.amazonaws.${AWS::Region}.${ServiceName}"
-      VpcId: !Ref VpcId
-      VpcEndpointType: Interface
-      SecurityGroupIds: 
-        - !Ref SecurityGroupId
-      PrivateDnsEnabled: !Ref PrivateDNSenabled
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              AWS: "*"
-            Action: "*"
-            Resource: "*"
-      SubnetIds:
-        - !Ref Subnet1
-        - !Ref Subnet2
-        - !Ref Subnet3
+      Description: "Lambda function to handle AWS Health Dashboard alerts."
+      Handler: "lambda_function.lambda_handler"
+      CodeUri: ./src
+      FunctionName: !Sub "${FriendlyStackName}-monitor-lambda-${Env}"
+      MemorySize: 1024
+      Role: !GetAtt LambdaIAMRole.Arn
+      Runtime: python3.11
+      Timeout: 848
+      VpcConfig:
+        SecurityGroupIds: !Ref LambdaSecurityGroup
+        SubnetIds: !Ref Subnets
+      Environment:
+        Variables:
+          NetcoolServerURL: !Ref NetcoolServerURL
 
-  GatewayVpcEndpoint:
-    Condition: CreateGatewayEndpoint
-    Type: AWS::EC2::VPCEndpoint
+  AWSHealthEventBridgeLambdaTriggerPermission:
+    Type: AWS::Lambda::Permission
     Properties:
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              AWS: "*"
-            Action: "*"
-            Resource: "*"
-      VpcEndpointType: Gateway
-      VpcId: !Ref VpcId
-      RouteTableIds:
-        - !Sub '{{resolve:ssm:/app/network/PrivateRouteTableArn:1}}'
-      ServiceName: !Sub "com.amazonaws.${AWS::Region}.${ServiceName}"
+      FunctionName: !GetAtt AWSHealthDashboardAlertLambda.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: !GetAtt AWSHealthEventBridgeLambdaTriggerRule.Arn
 
-Conditions:
-  CreateInterfaceEndpoint: !Equals [!Ref VpcEndpointType, 'Interface']
-  CreateGatewayEndpoint: !Equals [!Ref VpcEndpointType, 'Gateway']
-
-
-
-AHACloudWatchLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: !Sub "/aws/events/aws-health-${FriendlyStackName}-logGroup"
-      RetentionInDays: 90
-      Tags:
-        - Key: !Ref DiscountMigratedTagKey
-          Value: !Ref DiscountMigratedTagValue
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-
-
-
-Resources:
-  AHAEventBridgeLambdaTriggerRule:
+  AWSHealthEventBridgeLambdaTriggerRule:
     Type: AWS::Events::Rule
     Properties:
       Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
@@ -139,11 +98,11 @@ Resources:
         detail:
           eventTypeCategory:
             - "issue"
-          services: 
+          service:
             - !Ref ServicesList
-          region: 
+          region:
             - !Ref RegionsList
-          accountId: 
+          accountId:
             - !Ref AccountIdList
       Name: !Sub "${FriendlyStackName}-monitor-rule-${Env}"
       State: "ENABLED"
@@ -151,21 +110,24 @@ Resources:
         - Id: "AWSHealthDashboardAlertLambdaTrigger"
           Arn: !GetAtt AWSHealthDashboardAlertLambda.Arn
         - Id: "CloudWatchLogsTarget"
-          Arn: !GetAtt AHACloudWatchLogGroup.Arn
-          RoleArn: !GetAtt EventBridgeToCloudWatchIAMRole.Arn
+          Arn: !GetAtt AWSCloudWatchLogGroup.Arn
 
-  AHACloudWatchLogGroup:
+  AWSCloudWatchLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub "/aws/events/aws-health-${FriendlyStackName}-logGroup"
-      RetentionInDays: 90
+      RetentionInDays: 30
       Tags:
-        - Key: !Ref DiscountMigratedTagKey
-          Value: !Ref DiscountMigratedTagValue
+        Key: !Ref DiscountMigratedTagKey
+        Value: !Ref DiscountMigratedTagValue
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
 
   EventBridgeToCloudWatchIAMRole:
     Type: AWS::IAM::Role
     Properties:
+      Description: "IAM role for EventBridge rule to invoke CloudWatch Logs."
+      RoleName: !Sub "svc-${FriendlyStackName}-EventBridge-To-CloudWatch-Role-${Env}"
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -182,159 +144,13 @@ Resources:
                 Action:
                   - "logs:PutLogEvents"
                   - "logs:CreateLogStream"
-                Resource: !GetAtt AHACloudWatchLogGroup.Arn
-
-
-
-version = 0.1
-
-[default]
-[default.deploy]
-region = "us-east-1"  # Specify your target region here
-stack_name = "aws-health-dashboard-stack"
-capabilities = "CAPABILITY_IAM"  # Needed if your template creates IAM resources
-parameter_overrides = "Env=dev ServicesList='ec2,s3' RegionsList='us-east-1,us-west-2' AccountIdList='123456789012,987654321098' FriendlyStackName=aws-health-dashboard NetcoolServerURL=https://example.com LambdaSecurityGroup='/app/securitygroups' Subnets='/app/network/subnets' DiscountMigratedTagKey='/app/awsDiscount/MigratedTagKey' DiscountMigratedTagValue='/app/awsDiscount/MigratedTagValue'"
-s3_bucket = "your-s3-bucket"  # Specify the bucket for SAM to store the packaged Lambda zip
-
-
-
-Resources:
-  AWSHealthDashboardAlertLambda:
-    Type: AWS::Lambda::Function
-    Properties:
-      Handler: lambda_function.lambda_handler
-      FunctionName: !Sub "${FriendlyStackName}-monitor-lambda-${Env}"
-      MemorySize: 1024
-      Role: !GetAtt LambdaIAM.Arn
-      Runtime: python3.12
-      Timeout: 840
-      CodeUri: ./src  # Local path to your Lambda code directory
-      VpcConfig:
-        SecurityGroupIds: !Ref LambdaSecurityGroup
-        SubnetIds: !Ref Subnets
-      Environment:
-        Variables:
-          NetcoolServerURL: !Ref NetcoolServerURL
-          Key: !Ref DiscountMigratedTagKey
-          Value: !Ref DiscountMigratedTagValue
-
-
-AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS Health Dashboard with Lambda Trigger and CloudWatch Log Group for monitoring AWS Health events.
-
-Parameters:
-  Env:
-    Description: "Application environment name (e.g., dev, prod)"
-    Type: String
-    Default: dev
-
-  ServicesList:
-    Description: "Comma-separated list of AWS services to filter AWS Health AHA events on."
-    Type: List<String>
-
-  RegionsList:
-    Description: "Comma-separated list of AWS regions to filter AWS Health AHA events on."
-    Type: List<String>
-
-  AccountIdList:
-    Description: "Comma-separated list of AWS account IDs to filter AWS Health AHA events on."
-    Type: List<String>
-
-  FriendlyStackName:
-    Description: "Friendly name for the stack (used for resource naming)."
-    Type: String
-    Default: "aws-health-dashboard"
-
-  NetcoolServerURL:
-    Description: "URL for Netcool server integration."
-    Type: String
-    Default: "https://example.com"
-
-  LambdaSecurityGroup:
-    Description: "Security groups for the Lambda function (SSM parameter)."
-    Type: AWS::SSM::Parameter::Value<List<String>>
-    Default: /app/securitygroups
-
-  Subnets:
-    Description: "List of subnets for the Lambda VPC configuration (SSM parameter)."
-    Type: AWS::SSM::Parameter::Value<List<String>>
-    Default: /app/network/subnets
-
-  DiscountMigratedTagKey:
-    Description: "Key for the discount migrated tag."
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /app/awsDiscount/MigratedTagKey
-
-  DiscountMigratedTagValue:
-    Description: "Value for the discount migrated tag."
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /app/awsDiscount/MigratedTagValue
-
-Resources:
-  AWSHealthDashboardAlertLambda:
-    Type: AWS::Lambda::Function
-    Properties:
-      Description: "Lambda function to handle AWS Health Dashboard alerts."
-      Handler: "lambda_function.lambda_handler"
-      Code:
-        S3Bucket: !Sub "your-s3-bucket-name"
-        S3Key: !Sub "your-lambda-code.zip"
-      FunctionName: !Sub "${FriendlyStackName}-monitor-lambda-${Env}"
-      MemorySize: 1024
-      Role: !GetAtt LambdaIAMRole.Arn
-      Runtime: python3.12
-      Timeout: 840
-      VpcConfig:
-        SecurityGroupIds: !Ref LambdaSecurityGroup
-        SubnetIds: !Ref Subnets
-      Environment:
-        Variables:
-          NetcoolServerURL: !Ref NetcoolServerURL
-      Tags:
-        - Key: !Ref DiscountMigratedTagKey
-          Value: !Ref DiscountMigratedTagValue
-
-  AWSHealthEventBridgeLambdaTriggerPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !GetAtt AWSHealthDashboardAlertLambda.Arn
-      Action: "lambda:InvokeFunction"
-      Principal: "events.amazonaws.com"
-      SourceArn: !GetAtt AHAEventBridgeLambdaTriggerRule.Arn
-
-  AHAEventBridgeLambdaTriggerRule:
-    Type: AWS::Events::Rule
-    Properties:
-      Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
-      EventPattern:
-        source:
-          - "aws.health"
-        detail:
-          eventTypeCategory:
-            - "issue"
-          services: !Split [",", !Ref ServicesList]
-          region: !Split [",", !Ref RegionsList]
-          accountId: !Split [",", !Ref AccountIdList]
-      Name: !Sub "${FriendlyStackName}-monitor-rule-${Env}"
-      State: "ENABLED"
-      Targets:
-        - Id: "AWSHealthDashboardAlertLambdaTrigger"
-          Arn: !GetAtt AWSHealthDashboardAlertLambda.Arn
-
-  AHACloudWatchLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: !Sub "/aws/events/aws-health-${FriendlyStackName}-logGroup"
-      RetentionInDays: 30
-      Tags:
-        - Key: !Ref DiscountMigratedTagKey
-          Value: !Ref DiscountMigratedTagValue
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/events/*:*"
 
   LambdaIAMRole:
     Type: AWS::IAM::Role
     Properties:
       Description: "IAM role for Lambda function execution with required permissions."
-      RoleName: !Sub "${FriendlyStackName}-Lambda-Role-${Env}"
+      RoleName: !Sub "svc-${FriendlyStackName}-Lambda-Role-${Env}"
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -343,130 +159,23 @@ Resources:
               Service: "lambda.amazonaws.com"
             Action: "sts:AssumeRole"
       ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
-      PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/core-ServiceRolePermissionsBoundary"
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: "CloudWatchLogsPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/events/aws-health-${FriendlyStackName}-logGroup:*"
       Tags:
-        - Key: !Ref DiscountMigratedTagKey
-          Value: !Ref DiscountMigratedTagValue
+        Key: !Ref DiscountMigratedTagKey
+        Value: !Ref DiscountMigratedTagValue
 
-  EventBridgeToCloudWatchLogsPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: "EventBridgeToCloudWatchLogsPolicy"
-      Roles:
-        - !Ref EventBridgeExecutionRole
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Action:
-              - "logs:PutLogEvents"
-              - "logs:CreateLogStream"
-              - "logs:CreateLogGroup"
-            Resource: !GetAtt AHACloudWatchLogGroup.Arn
-
-  EventBridgeExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      Description: "IAM role for EventBridge rule to invoke CloudWatch Logs."
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service: "events.amazonaws.com"
-            Action: "sts:AssumeRole"
-
-
-Here’s an updated version of your message to include that point:
-
-
----
-
-Hey team,
-
-I’ve created a generic Service Catalog product to make it easier to create both Interface and Gateway VPC Endpoints.
-
-This should help streamline the process and reduce the hassle of constantly appending new VPC endpoint resources to the existing template. I noticed that when we added a new endpoint in SIL, the existing VPC endpoint product went into a "tended" state. If something like this happens, it could cause issues, especially if we can’t roll back the changes.
-
-Going forward, each endpoint we need to create can be managed as a separate Service Catalog provisioned product, which will make things smoother and more manageable!
-
-Feel free to reach out if you have any questions!
-
-Cheers,
-Om
-
-
----
-
-This version emphasizes the potential issues and explains how the new approach helps avoid them.
-
-
-
-
-Here’s a more casual and friendly version of the message:
-
-
----
-
-Hey Team,
-
-Just wanted to let you know that I’ve put together a super flexible CloudFormation template to create VPC Endpoints (both Interface and Gateway types). You can easily choose the service (like DynamoDB, S3, Lambda, etc.) and customize the VPC settings. Should save us some time and effort moving forward!
-
-Take a look when you get a chance and let me know if you have any thoughts or questions!
-
-Cheers,
-Om
-
-
----
-
-This version has a relaxed tone and is friendly while still conveying the key points.
-
-
-      - lambda
-      - ec2
-      - sns
-      - sqs
-      - secretsmanager
-      - ecr.api
-      - ecr.dkr
-      - kinesis
-      - elasticloadbalancing
-    ConstraintDescription: 'Must be a valid AWS service for VPC Endpoints (e.g., s3, dynamodb, lambda, etc.).'
-
-Metadata:
-  AWS::CloudFormation::Interface:
-    Description: "CloudFormation template for creating Interface or Gateway VPC Endpoints based on user input."
-    ParameterGroups:
-      - Label:
-          default: "VPC Endpoint Configuration"
-        Parameters:
-          - ServiceName
-          - VpcEndpointType
-      - Label:
-          default: "VPC and Networking Configuration"
-        Parameters:
-          - VpcId
-          - Subnet1
-          - Subnet2
-          - Subnet3
-          - SecurityGroupId
-    ParameterLabels:
-      ServiceName:
-        default: "AWS Service Name for the VPC Endpoint"
-      VpcEndpointType:
-        default: "VPC Endpoint Type (Interface or Gateway)"
-      VpcId:
-        default: "VPC ID (retrieved from SSM Parameter Store)"
-      Subnet1:
-        default: "First Subnet for Interface Endpoints"
-      Subnet2:
-        default: "Second Subnet for Interface Endpoints"
-      Subnet3:
-        default: "Third Subnet for Interface Endpoints"
-      SecurityGroupId:
-        default: "Security Group ID for Interface Endpoints"
 ```
 
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
