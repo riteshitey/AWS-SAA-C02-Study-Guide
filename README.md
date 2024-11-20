@@ -17,6 +17,29 @@ AHACloudWatchLogGroup:
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 ```
+AHAEventBridgeLambdaTriggerRule:
+  Type: AWS::Events::Rule
+  Properties:
+    Description: !Sub "EventBridge rule to trigger Lambda for ${FriendlyStackName} - ${Env}"
+    EventPattern:
+      {
+        "source": ["aws.health"],
+        "detail-type": ["AWS Health Event"],
+        "detail": {
+          "eventTypeCategory": ["issue"],
+          "service": [!Ref ServicesList],
+          "eventRegion": [!Ref RegionsList]
+        }
+      }
+    Name: !Sub "${FriendlyStackName}-monitor-rule-${Env}"
+    State: "ENABLED"
+    Targets:
+      - Id: "AWSHealthAlertLambdaTrigger"
+        Arn: !GetAtt AWSHealthAlertLambda.Arn
+      - Id: "CloudWatchLogsTarget"
+        Arn: !GetAtt AHACloudWatchLogGroup.Arn
+
+
 Resources:
   CloudWatchLogGroup:
     Type: AWS::Logs::LogGroup
