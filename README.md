@@ -17,6 +17,13 @@ AHACloudWatchLogGroup:
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 ```
+Dear HR,
+
+I recently created a new bank account and updated it in the salary section on Workday on 21st November at 12 AM. Could you please confirm if updating it on Workday is sufficient? Additionally, will my salary for this month be credited to the new account or the previous one?
+
+Thank you for your assistance.
+
+
 AHAEventBridgeLambdaTriggerRule:
   Type: AWS::Events::Rule
   Properties:
