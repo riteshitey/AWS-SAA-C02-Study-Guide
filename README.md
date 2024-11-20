@@ -18,6 +18,103 @@ As for the issue, the product went into a tainted state in non-prod, which led p
 
 
 ```
+
+Parameters:
+  ServiceName:
+    Description: 'The AWS service name for the VPC Endpoint (e.g., dynamodb, s3, lambda)'
+    Type: String
+    Default: dynamodb
+
+  VpcEndpointType:
+    Description: 'The type of VPC endpoint to create (Interface or Gateway)'
+    Type: String
+    AllowedValues:
+      - Interface
+      - Gateway
+
+  SecurityGroupId:
+    Description: 'The Security Group ID for the current VPC (required for Interface endpoints)'
+    Type: String
+    Default: sg-123456
+    AllowedPattern: '^sg-[0-9a-fA-F]{8,17}$'
+    ConstraintDescription: 'Security Group ID must be in the format sg-xxxxxxxx or sg-xxxxxxxxxxxxxxxxx, where x is a hexadecimal character (0-9 or a-f).'
+
+  VpcId:
+    Description: 'VPC ID retrieved from SSM Parameter Store'
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /app/network/VPCId
+
+  Subnet1:
+    Description: 'First Subnet ID to be used for Interface endpoints'
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /app/network/Sub1Id
+
+  Subnet2:
+    Description: 'Second Subnet ID to be used for Interface endpoints'
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /app/network/Sub2Id
+
+  Subnet3:
+    Description: 'Third Subnet ID to be used for Interface endpoints'
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /app/network/Sub3Id
+
+  PrivateDNSenabled:
+    Description: 'Enable or disable private DNS for the VPC endpoint'
+    Type: String
+    AllowedValues:
+      - true
+      - false
+    Default: true
+
+Resources:
+  InterfaceVpcEndpoint:
+    Condition: CreateInterfaceEndpoint
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.${ServiceName}"
+      VpcId: !Ref VpcId
+      VpcEndpointType: Interface
+      SecurityGroupIds: 
+        - !Ref SecurityGroupId
+      PrivateDnsEnabled: !Ref PrivateDNSenabled
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: "*"
+            Action: "*"
+            Resource: "*"
+      SubnetIds:
+        - !Ref Subnet1
+        - !Ref Subnet2
+        - !Ref Subnet3
+
+  GatewayVpcEndpoint:
+    Condition: CreateGatewayEndpoint
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: "*"
+            Action: "*"
+            Resource: "*"
+      VpcEndpointType: Gateway
+      VpcId: !Ref VpcId
+      RouteTableIds:
+        - !Sub '{{resolve:ssm:/app/network/PrivateRouteTableArn:1}}'
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.${ServiceName}"
+
+Conditions:
+  CreateInterfaceEndpoint: !Equals [!Ref VpcEndpointType, 'Interface']
+  CreateGatewayEndpoint: !Equals [!Ref VpcEndpointType, 'Gateway']
+
+
+
 AHACloudWatchLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
