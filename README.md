@@ -17,6 +17,12 @@ AHACloudWatchLogGroup:
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 ```
+The reason for this approach is that the V2 template includes updated SSM parameter configurations, which are designed to work with the new Lambda code.
+
+If you directly upgrade to V2 without first updating the Lambda code, EventBridge-triggered SSM update events might be pushed before the Lambda function is updated. This mismatch can potentially cause issues.
+
+
+
 AWSTemplateFormatVersion: '2010-09-09'
 Description: "CloudFormation Template to set Netcool Server URL as an environment variable"
 
