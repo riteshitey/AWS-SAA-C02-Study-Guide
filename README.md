@@ -16,6 +16,291 @@ AHACloudWatchLogGroup:
 
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
+
+
+ECR Synch Product User Guide
+
+Introduction
+
+The ECR Synch product is an automation tool designed to synchronize Docker images from a Nexus repository to Amazon Elastic Container Registry (ECR). It ensures that Docker images used in AWS comply with organizational standards by pulling pre-scanned images from Nexus and pushing them to private ECR repositories in a controlled manner.
+
+This guide provides an overview of the product, prerequisites, detailed steps to use it, and examples to help users understand and operate the ECR Synch product.
+
+
+---
+
+Contents
+
+1. Overview
+
+
+2. Key Features
+
+
+3. Prerequisites
+
+
+4. How the Product Works
+
+
+5. SSM Parameter Format
+
+
+6. Step-by-Step Guide to Using ECR Synch
+
+
+7. Best Practices
+
+
+8. FAQs
+
+
+
+
+---
+
+1. Overview
+
+ECR (Elastic Container Registry) is an AWS-managed Docker repository service. Within the organization, ECR serves as a cache for Docker images that originate from Nexus repositories. The ECR Synch product:
+
+Pulls Docker images from Nexus repositories.
+
+Pushes these images to AWS ECR private repositories.
+
+Ensures compliance with security standards by requiring images to pass bank-standard scans.
+
+
+In Production Accounts:
+Only pre-approved and scanned images from production Nexus repositories can be synchronized.
+
+In Development Accounts:
+Images from both development and production Nexus repositories can be synchronized.
+
+
+---
+
+2. Key Features
+
+Automated Synchronization: Automatically syncs Docker images from Nexus to ECR at a defined schedule (default: hourly).
+
+SSM Parameter Integration: Uses Systems Manager (SSM) parameters to determine which images to synchronize.
+
+Flexible Configuration:
+
+Sync images on demand by updating SSM parameters.
+
+Set desired concurrency and frequency.
+
+
+Lambda-Driven: Executes the synchronization logic via AWS Lambda.
+
+VPC Integration (Optional): Adds ECR Docker and API endpoints to the development VPC.
+
+
+
+---
+
+3. Prerequisites
+
+To use the ECR Synch product, ensure the following:
+
+1. ECR Repository:
+
+Create the corresponding ECR private repository before setting up SSM parameters.
+
+The repository name follows the format: <nexus-env>-<nexus-namespace>.
+
+
+
+2. IAM Permissions:
+
+Lambda must have permissions to interact with Nexus, ECR, and SSM.
+
+
+
+3. Network Configuration:
+
+Lambda function must be configured to access the Nexus repository. This may require appropriate VPC and security group settings if Nexus is hosted on a private network.
+
+
+
+4. SSM Parameters:
+
+Ensure the SSM parameters are formatted correctly (explained below).
+
+
+
+
+
+---
+
+4. How the Product Works
+
+1. The product uses SSM parameters to define the images to be synchronized.
+
+
+2. A Lambda function is triggered:
+
+Automatically on a scheduled basis.
+
+Manually when an SSM parameter is created or updated.
+
+
+
+3. The Lambda function:
+
+Pulls the specified Docker image from Nexus using skopeo.
+
+Pushes the image to the corresponding ECR repository in AWS.
+
+
+
+4. The product logs the synchronization process to CloudWatch for monitoring and debugging.
+
+
+
+
+---
+
+5. SSM Parameter Format
+
+SSM parameters define the source image path in Nexus and the destination in ECR.
+
+Format
+
+/app/ecr/<nexus-env>/<nexus-namespace>/<optional-image-folder>/<image-name>/<version>
+
+Example
+
+For the image:
+
+nexus-amazon-dev-docker-registry.barclays.intranet/barclays-int-ngcb-sil/com.barclays.api.ngcb/sil-push-adapter:1.0.038
+
+1. SSM Parameter Name:
+
+/app/ecr/dev/barclays-int-ngcb-sil/com.barclays.api.ngcb/sil-push-adapter/1.0.038
+
+
+2. SSM Parameter Value:
+
+nexus-amazon-dev-docker-registry.barclays.intranet/barclays-int-ngcb-sil/com.barclays.api.ngcb/sil-push-adapter:1.0.038
+
+
+
+The product automatically derives the corresponding ECR private repository name as:
+
+dev-barclays-int-ngcb-sil
+
+
+---
+
+6. Step-by-Step Guide to Using ECR Synch
+
+Step 1: Create the ECR Private Repository
+
+1. Log in to AWS Management Console.
+
+
+2. Navigate to ECR → Repositories → Create Repository.
+
+
+3. Use the format <nexus-env>-<nexus-namespace> for the repository name.
+
+
+
+Step 2: Create the SSM Parameter
+
+1. Go to AWS Systems Manager → Parameter Store → Create Parameter.
+
+
+2. Set the parameter details:
+
+Name: /app/ecr/<nexus-env>/<nexus-namespace>/<optional-image-folder>/<image-name>/<version>
+
+Value: Full Nexus image path (e.g., nexus-amazon-dev-docker-registry.barclays.intranet/...).
+
+Type: String.
+
+
+
+
+Step 3: Monitor the Synchronization
+
+1. The product will automatically detect the new or updated SSM parameter.
+
+
+2. It will pull the image from Nexus and push it to the ECR repository.
+
+
+3. Use CloudWatch Logs to monitor the synchronization process.
+
+
+
+
+---
+
+7. Best Practices
+
+ECR Repository Naming:
+
+Always follow the <nexus-env>-<nexus-namespace> format for consistent repository naming.
+
+
+SSM Parameter Management:
+
+Use clear and descriptive names for SSM parameters.
+
+Avoid modifying the parameter directly without confirming the Nexus image path.
+
+
+Security:
+
+Ensure proper IAM roles and permissions for the Lambda function.
+
+Keep Nexus and ECR credentials secure.
+
+
+Testing:
+
+Test synchronization in a development environment before deploying to production.
+
+
+Monitoring:
+
+Regularly review CloudWatch logs for successful syncs and error handling.
+
+
+
+
+---
+
+8. FAQs
+
+Q: What happens if I forget to create the ECR repository before updating SSM parameters?
+
+The synchronization will fail. Always create the ECR repository before setting up SSM parameters.
+
+Q: Can I use this product to delete images from ECR?
+
+No, the product is designed for synchronizing images. Image deletion must be done manually.
+
+Q: Can I sync multiple images at the same time?
+
+Yes, the product supports concurrent synchronization based on the parameters provided.
+
+Q: How can I trigger an on-demand synchronization?
+
+Update the corresponding SSM parameter. The Lambda function will detect the change and initiate the sync.
+
+
+---
+
+Conclusion
+
+The ECR Synch product simplifies the process of synchronizing Docker images between Nexus and AWS ECR. By following the guidelines and examples provided in this document, users can effectively manage and synchronize their images while ensuring compliance with organizational standards.
+
+
+
 ```
 Resources:
   AHACloudWatchLogGroup:
