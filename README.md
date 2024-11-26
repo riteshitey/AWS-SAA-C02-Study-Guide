@@ -3,6 +3,115 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 
 Regarding the tainted state, I reviewed it last year, but I don’t quite recall the exact reason. However, after some discussions, Baskar advised against modifying the product at that time.
 
+
+ECR Synch Product - Quick User Guide
+
+Overview
+
+The ECR Synch product automates the process of synchronizing Docker images from a Nexus repository to AWS ECR. It ensures only scanned and compliant images are pushed to ECR, supporting both scheduled and on-demand synchronization.
+
+
+---
+
+Key Features
+
+Automatically synchronizes images from Nexus to ECR using Lambda.
+
+Triggers syncs on schedule or SSM parameter updates.
+
+Supports optional VPC integration for ECR endpoints.
+
+Ensures images are sourced from approved Nexus repositories.
+
+
+
+---
+
+Prerequisites
+
+1. ECR Repository: Create the ECR private repository with the format <nexus-env>-<nexus-namespace>.
+
+
+2. IAM Roles: Ensure Lambda has access to SSM, Nexus, and ECR.
+
+
+3. Network Access: Lambda must be able to connect to the Nexus repository.
+
+
+4. SSM Parameters: Properly formatted parameters must be created to define the images for synchronization.
+
+
+
+
+---
+
+SSM Parameter Format
+
+Format:
+
+/app/ecr/<nexus-env>/<nexus-namespace>/<optional-image-folder>/<image-name>/<version>
+
+Example:
+For Nexus image:
+
+nexus-amazon-dev-docker-registry.barclays.intranet/barclays-int-ngcb-sil/com.barclays.api.ngcb/sil-push-adapter:1.0.038
+
+SSM Name:
+/app/ecr/dev/barclays-int-ngcb-sil/com.barclays.api.ngcb/sil-push-adapter/1.0.038
+
+SSM Value:
+nexus-amazon-dev-docker-registry.barclays.intranet/barclays-int-ngcb-sil/com.barclays.api.ngcb/sil-push-adapter:1.0.038
+
+
+
+---
+
+Steps to Use
+
+1. Create ECR Repository:
+
+Go to AWS ECR → Create repository.
+
+Use the naming format <nexus-env>-<nexus-namespace>.
+
+
+
+2. Set Up SSM Parameters:
+
+Navigate to AWS Systems Manager → Parameter Store → Create Parameter.
+
+Use the formatted name and value for the desired image.
+
+
+
+3. Monitor Synchronization:
+
+Changes in SSM parameters automatically trigger Lambda.
+
+Use CloudWatch Logs to verify the synchronization process.
+
+
+
+
+
+---
+
+Best Practices
+
+Follow consistent naming for ECR repositories.
+
+Verify SSM parameter values against the Nexus image path.
+
+Monitor CloudWatch logs for status and troubleshooting.
+
+
+This guide provides the essentials for configuring and using the ECR Synch product efficiently.
+
+
+
+
+
+
 AHACloudWatchLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
