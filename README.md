@@ -4,6 +4,57 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 Regarding the tainted state, I reviewed it last year, but I don’t quite recall the exact reason. However, after some discussions, Baskar advised against modifying the product at that time.
 
 
+Lambda Function: Nexus to ECR Sync
+
+The Lambda function automates the process of syncing Docker images from Nexus to ECR. Here’s what it does step-by-step:
+
+1. Receive Event:
+The function starts by receiving an event that triggers the synchronization process. It logs the received event for debugging.
+
+
+2. Fetch SSM Parameters:
+Retrieves all SSM parameters under a specific path (ECR_SSM_PATH_PREFIX). These parameters define the Nexus images that need to be synced to ECR.
+
+
+3. Process Each Parameter:
+For each SSM parameter:
+
+Validate its format to ensure it follows the expected structure.
+
+Extract details such as environment, namespace, image path, and image tag.
+
+
+
+4. Invoke Docker Sync Lambda:
+Constructs a payload using the extracted details and invokes another Lambda function (DOCKER_PULL_PUSH_LAMBDA) to perform the actual image pull from Nexus and push to ECR.
+
+
+5. Track Synced Images:
+Maintains a list of the images that have been processed and their corresponding ECR repositories.
+
+
+6. Reconcile ECR Images:
+Compares the current images in ECR with the expected images (from SSM parameters). Any images in ECR that are not part of the expected list are deleted to maintain consistency.
+
+
+7. Error Handling:
+Logs any errors encountered during the process but continues evaluating other repositories or parameters to ensure the rest of the workflow executes.
+
+
+8. Exit Gracefully:
+Completes the sync process and logs any cleanup or status updates for visibility.
+
+
+
+
+---
+
+This function ensures Nexus images are kept in sync with ECR repositories while enforcing compliance and managing image versions.
+
+
+
+
+
 ```
 ECR Synch Product - Quick User Guide
 
