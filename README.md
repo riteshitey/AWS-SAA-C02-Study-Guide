@@ -17,6 +17,53 @@ AHACloudWatchLogGroup:
 As for the issue, the product went into a tainted state in non-prod, which led people to create VPC endpoints directly from the console. This resulted in a situation where the template was intended for a single VPC endpoint resource, but multiple endpoints were being created.
 
 ```
+Resources:
+  AHACloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/events/${FriendlyStackName}-logGroup"
+      RetentionInDays: 30
+      Tags:
+        - Key: !Ref DiscountMigratedTagKey
+          Value: !Ref DiscountMigratedTagValue
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+
+  AHACloudWatchLogSubscriptionFilter:
+    Type: AWS::Logs::SubscriptionFilter
+    Properties:
+      LogGroupName: !Ref AHACloudWatchLogGroup
+      FilterPattern: "" # Matches all logs
+      DestinationArn: !Ref AHAKinesisDataStream
+      RoleArn: !GetAtt AHASubscriptionFilterRole.Arn
+
+  AHASubscriptionFilterRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: logs.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: SubscriptionFilterPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: kinesis:PutRecord
+                Resource: !Ref AHAKinesisDataStream
+
+  AHAKinesisDataStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: !Sub "${FriendlyStackName}-dataStream"
+      ShardCount: 1
+
+
+
 The reason for this approach is that the V2 template includes updated SSM parameter configurations, which are designed to work with the new Lambda code.
 
 If you directly upgrade to V2 without first updating the Lambda code, EventBridge-triggered SSM update events might be pushed before the Lambda function is updated. This mismatch can potentially cause issues.
