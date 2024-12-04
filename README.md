@@ -3,8 +3,7 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 
 Regarding the tainted state, I reviewed it last year, but I don’t quite recall the exact reason. However, after some discussions, Baskar advised against modifying the product at that time.
 
-
-Here’s a more polished version of your question:
+Here’s a refined version of your question with the additional point included:
 
 
 ---
@@ -15,6 +14,12 @@ I’m trying to understand the ECR Sync product workflow. From my understanding,
 
 
 2. core-ecr-synch-docker-pull-push: Handles pulling the image from Nexus and syncing it to ECR.
+
+
+
+My question is about the schedule-trigger-rule set to run core-ecr-synch-collate-pull-request every hour. If syncing is already triggered by SSM parameter updates (create, update, delete), why is there a need for the scheduled rule? From the logs, it seems that the sync is triggered unnecessarily, causing all images to be re-synced with ECR repeatedly without any changes.
+
+Additionally, if an SSM parameter for an image is created or updated, wouldn’t it be more efficient to sync only that specific image instead of re-syncing all images? Could you clarify this design decision?
 
 
 
