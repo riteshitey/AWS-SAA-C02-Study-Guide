@@ -7,6 +7,28 @@ Here’s a refined version of your question with the additional point included:
 
 
 ---
+Here’s a concise and professional version of your cross-question:
+
+
+---
+
+Subject: Clarifications on ECR Sync Logic
+
+Thank you for your response. I wanted to clarify and cross-check a few points based on the code and observed behavior:
+
+1. Regarding "If because of some reason the image is deleted from Nexus, then it needs to be deleted from ECR as well", I couldn't find the logic in the code that handles this scenario. Could you confirm if this functionality is currently implemented or planned for future updates?
+
+
+2. On "This is also helpful while testing newly built docker images, app teams need to just push the images on Nexus, and automatically the image would be available in ECR", it seems this wouldn’t work unless an SSM parameter is created for the new image. The Lambda function operates solely based on SSM parameters and does not query Nexus directly for new images under a base path. Could you clarify this process or confirm if any additional steps are required by app teams?
+
+
+3. For "While syncing the image, first layer information is pulled, and if there are no changes, nothing happens", from what I observed in the logs, the entire image seems to
+
+
+
+
+
+
 
 I’m trying to understand the ECR Sync product workflow. From my understanding, there are two Lambda functions involved:
 
