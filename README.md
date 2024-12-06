@@ -1,6 +1,36 @@
 # AWS SAA-C02 Study Guide
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
+Here’s a concise and professional version of your cross-question:
+
+
+---
+
+Subject: Clarifications on ECR Sync Logic
+
+Thank you for your response. I wanted to clarify and cross-check a few points based on the code and observed behavior:
+
+1. Regarding "If because of some reason the image is deleted from Nexus, then it needs to be deleted from ECR as well", I couldn't find the logic in the code that handles this scenario. Could you confirm if this functionality is currently implemented or planned for future updates?
+
+
+2. On "This is also helpful while testing newly built docker images, app teams need to just push the images on Nexus, and automatically the image would be available in ECR", it seems this wouldn’t work unless an SSM parameter is created for the new image. The Lambda function operates solely based on SSM parameters and does not query Nexus directly for new images under a base path. Could you clarify this process or confirm if any additional steps are required by app teams?
+
+
+3. For "While syncing the image, first layer information is pulled, and if there are no changes, nothing happens", from what I observed in the logs, the entire image seems to be downloaded and pushed to ECR. Based on this Skopeo issue, it doesn’t appear that only layer information is fetched and compared. Could you provide more details on how this is optimized in the current implementation?
+
+
+
+Looking forward to your insights to better understand the logic.
+
+
+---
+
+This version ensures professionalism and clear communication without sounding confrontational.
+
+
+
+
+
 Regarding the tainted state, I reviewed it last year, but I don’t quite recall the exact reason. However, after some discussions, Baskar advised against modifying the product at that time.
 
 Here’s a refined version of your question with the additional point included:
