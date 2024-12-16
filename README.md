@@ -5,6 +5,59 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 # 6. Kinesis Data Stream Destinations Update
 KinesisDataStreamDestinations = source_table_config.get("KinesisDataStreamDestinations", [])
 
+if not KinesisDataStreamDestinations:
+    logger.info("No Kinesis Data Streams found in the source table configuration.")
+    Config_updated_Status["KinesisDataStreamDestinations"] = "No Kinesis Data Streams found in the source table configuration."
+else:
+    is_stream_destination_exist = False
+    update_results = []  # To store results for each stream
+
+    # Process all Kinesis Data Streams attached to the source table
+    for stream_destination in KinesisDataStreamDestinations:
+        if stream_destination.get("DestinationStatus") == "ACTIVE":
+            is_stream_destination_exist = True
+            try:
+                # Enable Kinesis Streaming Destination on the target table
+                stream_response = dynamodb.enable_kinesis_streaming_destination(
+                    TableName=destination_table_name,
+                    StreamArn=stream_destination["StreamArn"],
+                    EnableKinesisStreamingConfiguration={
+                        "ApproximateCreationDateTimePrecision": stream_destination.get(
+                            "ApproximateCreationDateTimePrecision", "MILLISECOND"
+                        )
+                    }
+                )
+                
+                logger.info(f"Successfully updated Kinesis Data Stream on destination table: {destination_table_name}")
+                logger.info(f"Response from Boto3: {stream_response}")
+                update_results.append({
+                    "StreamArn": stream_destination["StreamArn"],
+                    "Status": "Updated Successfully",
+                    "Response": stream_response
+                })
+            
+            except Exception as e:
+                error_message = f"Error updating Kinesis Data Stream {stream_destination['StreamArn']}: {e}"
+                logger.error(error_message)
+                update_results.append({
+                    "StreamArn": stream_destination["StreamArn"],
+                    "Status": "Failed",
+                    "Error": str(e)
+                })
+
+    # Log the overall results
+    if is_stream_destination_exist:
+        Config_updated_Status["KinesisDataStreamDestinations"] = update_results
+        logger.info(f"Update results: {update_results}")
+    else:
+        logger.info("No ACTIVE Kinesis Data Streams found on the source table.")
+        Config_updated_Status["KinesisDataStreamDestinations"] = "No ACTIVE Kinesis Data Streams found on source table."
+
+
+
+# 6. Kinesis Data Stream Destinations Update
+KinesisDataStreamDestinations = source_table_config.get("KinesisDataStreamDestinations", [])
+
 is_stream_destination_exist = False
 
 # Check if any destination stream is ACTIVE
