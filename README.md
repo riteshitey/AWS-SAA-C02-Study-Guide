@@ -2,6 +2,47 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 ```
+# 6. Kinesis Data Stream Destinations Update
+KinesisDataStreamDestinations = source_table_config.get("KinesisDataStreamDestinations", [])
+
+is_stream_destination_exist = False
+
+# Check if any destination stream is ACTIVE
+for stream_destination in KinesisDataStreamDestinations:
+    if stream_destination.get("DestinationStatus") == "ACTIVE":
+        is_stream_destination_exist = True
+        try:
+            # Enable Kinesis Streaming Destination on the target table
+            stream_response = dynamodb.enable_kinesis_streaming_destination(
+                TableName=destination_table_name,
+                StreamArn=stream_destination["StreamArn"],
+                EnableKinesisStreamingConfiguration={
+                    "ApproximateCreationDateTimePrecision": stream_destination.get(
+                        "ApproximateCreationDateTimePrecision", "MILLISECOND"
+                    )
+                }
+            )
+            
+            logger.info(f"Updated Kinesis Data Stream on destination table: {destination_table_name}")
+            logger.info(f"Response from Boto3: {stream_response}")
+            
+            # Update the configuration status
+            Config_updated_Status["KinesisDataStreamDestinations"] = f"Updated successfully: {stream_response}"
+        
+        except Exception as e:
+            Config_updated_Status["KinesisDataStreamDestinations"] = f"Error from Boto3: {e}"
+            logger.error(f"Failed to update Kinesis Data Stream {stream_destination}. Error: {e}")
+        break  # Stop after processing the first ACTIVE stream
+
+# Handle the case where no active Kinesis stream exists
+if not is_stream_destination_exist:
+    logger.info("No ACTIVE Kinesis Data Stream found on the source table.")
+    Config_updated_Status["KinesisDataStreamDestinations"] = "No ACTIVE Kinesis Data Stream found on source table."
+else:
+    logger.info(f"Kinesis Data Stream destinations updated: {KinesisDataStreamDestinations}")
+
+
+
 import boto3
 
 def list_dynamodb_tables():
