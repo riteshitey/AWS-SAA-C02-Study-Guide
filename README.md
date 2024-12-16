@@ -2,6 +2,62 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 
+import boto3
+
+def list_dynamodb_tables():
+    """
+    List all DynamoDB tables in the AWS account.
+    """
+    dynamodb_client = boto3.client('dynamodb')
+    tables = []
+    paginator = dynamodb_client.get_paginator('list_tables')
+    for page in paginator.paginate():
+        tables.extend(page['TableNames'])
+    return tables
+
+def check_kinesis_stream(table_name):
+    """
+    Check if a Kinesis Data Stream is attached to the specified DynamoDB table.
+    """
+    dynamodb_client = boto3.client('dynamodb')
+    try:
+        response = dynamodb_client.describe_kinesis_streaming_destination(TableName=table_name)
+        destinations = response.get('KinesisDataStreamDestinations', [])
+        if destinations:
+            return [(dest['StreamArn'], dest['StreamStatus']) for dest in destinations]
+        return None
+    except dynamodb_client.exceptions.ResourceNotFoundException:
+        print(f"Table {table_name} not found or no Kinesis streaming destination attached.")
+        return None
+    except Exception as e:
+        print(f"Error checking Kinesis stream for table {table_name}: {e}")
+        return None
+
+def main():
+    # Initialize AWS session (ensure AWS credentials are configured)
+    session = boto3.Session()
+
+    print("Fetching DynamoDB tables...")
+    tables = list_dynamodb_tables()
+    if not tables:
+        print("No DynamoDB tables found.")
+        return
+
+    print(f"Found {len(tables)} tables. Checking for Kinesis streams...\n")
+    for table in tables:
+        print(f"Checking table: {table}")
+        kinesis_info = check_kinesis_stream(table)
+        if kinesis_info:
+            print(f"  Kinesis Data Streams attached:")
+            for stream_arn, status in kinesis_info:
+                print(f"    Stream ARN: {stream_arn}, Status: {status}")
+        else:
+            print("  No Kinesis Data Streams attached.")
+
+if __name__ == "__main__":
+    main()
+
+
 Subject: Request for CIT Sign-Off: DynamoDB Backup and Restore Solution
 
 Dear Team,
