@@ -1,6 +1,22 @@
 # AWS SAA-C02 Study Guide
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
+
+Subject: Request for CIT Sign-Off: DynamoDB Backup and Restore Solution
+
+Dear Team,
+
+The development of the DynamoDB Backup and Restore solution has been successfully completed. A detailed walkthrough of the solution has already been provided to the team.
+
+You can find the relevant Confluence documentation linked below:
+[Insert Confluence Link]
+
+I kindly request the CIT team's sign-off on the solution.
+
+Best regards,
+[Your Name]
+
+
 Here’s a concise and professional version of your cross-question:
 
 
