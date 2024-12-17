@@ -2,6 +2,48 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 ```
+Here’s a refined and more professional version of your email:
+
+
+---
+
+Subject: Kinesis Data Stream Reattachment Issue Fixed in DynamoDB Restore Solution
+
+Hi Team,
+
+I have resolved the issue related to reattaching the Kinesis Data Stream to DynamoDB tables in PPE during the restore process using the DynamoDB-backup-restore solution.
+
+Lambda Artifact Latest Build Version: 2.0.3
+
+For further details, please refer to the release notes on the documentation page:
+Release Notes - DynamoDB Restore Solution
+
+If you encounter any issues or have concerns, please feel free to reach out.
+
+Thanks,
+Om
+
+
+---
+
+Improvements:
+
+1. Clear and concise subject line: Summarizes the purpose of the email.
+
+
+2. Improved structure: Divided the content into short, clear paragraphs.
+
+
+3. Professional tone: Removed informal phrases like "we were facing" and replaced them with clearer alternatives.
+
+
+4. Enhanced readability: Used bold headings and a clean link description.
+
+
+
+
+
+
 # 6. Kinesis Data Stream Destinations Update
 KinesisDataStreamDestinations = source_table_config.get("KinesisDataStreamDestinations", [])
 
