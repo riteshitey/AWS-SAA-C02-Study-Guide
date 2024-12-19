@@ -4,6 +4,23 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 ```
 Here’s a refined and more professional version of your email:
 
+if [owner] == "822099824944" {
+  if [logGroup] == "/aws/events/aha-dashboard-logGroup" {
+    
+    # Clean the message field to remove leading/trailing whitespace or newlines
+    mutate {
+      strip => ["message"]
+    }
+
+    # Parse the cleaned message to extract eventTypeCategory
+    grok {
+      match => {
+        "message" => '.*"eventTypeCategory":\s*"(?<event>[\w]+)"'
+      }
+    }
+
+  }
+}
 
 ---
 
