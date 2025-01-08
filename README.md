@@ -2,6 +2,22 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 ```
+Subject: Request to Correct Manager Assignment
+
+Dear HR,
+
+I recently noticed that my manager has been updated to Amit Khandelwal. Upon inquiring with my previous manager, Amit Gupta, I was informed that this change occurred due to a technical glitch in the organizational hierarchy.
+
+As per his suggestion, I am raising this query to request that my reporting structure be corrected and updated back to my previous manager, Amit Gupta.
+
+Thank you for your assistance.
+
+Best regards,
+[Your Name]
+
+
+
+
 Here’s a refined and more professional version of your email:
 
 if [owner] == "822099824944" {
