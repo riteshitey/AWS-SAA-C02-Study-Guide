@@ -1,6 +1,43 @@
 # AWS SAA-C02 Study Guide
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
+
+Hi Prabhakar,
+
+After manual changes or edits to the SSM parameter:
+
+Only the alarms that are already created or present will be updated.
+
+No new alarms will be created, as this is the expected behavior of the Auto Alarm Utility.
+
+
+To test this thoroughly, I suggest you try the following scenarios:
+
+Scenario 1: Updating the product version to V2
+
+1. Create infrastructure alarms for all profiles in the test environment.
+
+
+2. Update the product from V1 to V2 to trigger an update in the SSM parameters.
+Expected Output: The configuration of the existing alarms will be automatically updated. No new alarms will be created.
+
+
+
+Scenario 2: Updating the SSM parameter when the product is already on V2
+
+1. Ensure infrastructure alarms for all profiles are present in the test environment.
+
+
+2. Update the configuration in the SSM parameter manually.
+Expected Output: The configuration of the existing alarms will be automatically updated. No new alarms will be created.
+
+
+
+If you encounter any issues during the above test cases, please let me know, and I'll assist further.
+
+Regards,
+Om
+
 ```
 
 Here’s your reply written in points:
