@@ -2,6 +2,48 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 ```
+
+Here’s your reply written in points:
+
+
+---
+
+Subject: Re: Observation on SIT Testing
+
+Hi Prabhakar,
+
+Please find my response below:
+
+1. After manual changes or edits to the SSM parameter:
+
+Only the alarms that are already created or present will be updated.
+
+No new alarms will be created, as this is the expected behavior of the Auto Alarm Utility.
+
+
+
+2. For your testing scenario:
+
+Create infrastructure alarms for all profiles in the test environment.
+
+Update the product from V1 to V2 to trigger an update in the SSM parameters.
+
+This will automatically adjust the configuration of the existing alarms.
+
+
+
+3. If there are any issues during the above test case, please let me know, and I’ll assist further.
+
+
+
+Restricted-Internal
+
+Regards,
+Om
+
+
+
+
 Subject: Request to Correct Manager Assignment
 
 Dear HR,
