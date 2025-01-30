@@ -39,6 +39,28 @@ Regards,
 Om
 
 ```
+Hi Narendra,
+
+I have thoroughly tested the Amazon DocumentDB restoration process step by step and identified the following issue:
+
+1. During the restoration process, there is no option to specify the instance class and instance number in the AWS Backup parameters.
+
+
+2. As a result, the restored DocumentDB cluster is created, but neither the primary nor the replica instance is present in the cluster.
+
+
+
+I’ve included a screenshot in the documentation, providing further details on the issue. You can review it here:
+Observed Issue While Restoring with AWS Backup
+
+I believe it would be helpful to have a discussion before proceeding with production deployment for DocumentDB restore via AWS Backup.
+
+Looking forward to your feedback.
+
+Thanks,
+Om
+
+
 
 Here’s your reply written in points:
 
