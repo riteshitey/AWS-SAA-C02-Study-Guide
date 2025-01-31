@@ -2,6 +2,32 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 
+
+Subject: No Action Required for PROMAN API – CSM Intermediate Certificate Renewal
+
+Hi Team,
+
+1. There are no downstream calls from PROMAN, so no action is required to add certificates for it.
+
+
+2. For other teams consuming the PROMAN API:
+
+The End-to-End API Central Secrets Management (CSM) intermediate certificates were renewed on September 19, 2024, at 5:30 AM GMT+5:30, transitioning from CSM UK Infra 02 NP Issuing CA 1 to CSM UK Infra 02 NP Issuing CA 2.
+
+The API has been functioning smoothly for the past two months without any escalations, indicating that the Root Certificate is being used for the SSL handshake.
+
+As a result, there is no need to install the CSM Intermediate Certificate manually.
+
+
+
+
+Let me know if you have any concerns.
+
+Best,
+[Your Name]
+
+
+
 Hi Prabhakar,
 
 After manual changes or edits to the SSM parameter:
