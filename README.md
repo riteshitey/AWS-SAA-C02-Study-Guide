@@ -10,6 +10,20 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 *Notes*:
 If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. Be sure to also keep up with the ongoing discussions in <a href="https://reddit.com/r/AWSCertifications/">r/AWSCertifications</a> as you will find relevant exam tips, studying material, and advice from other exam takers. Before experimenting with AWS, it's very important to be sure that you know what is <a href="https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">free</a> and what isn't. Relevant Free Tier FAQs can be found <a href="https://aws.amazon.com/free/free-tier-faqs/">here</a>. Finally, Udemy often has their courses go on sale from time to time. It might be worth waiting to purchase either the Tutorial Dojo practice exam or Stephane Maarek's course depending on how urgently you need the content.
 
+import boto3
+
+dynamodb = boto3.client('dynamodb')
+tables = dynamodb.list_tables()['TableNames']
+
+total_size_bytes = sum(
+    dynamodb.describe_table(TableName=table)['Table']['TableSizeBytes']
+    for table in tables
+)
+
+total_size_gb = total_size_bytes / (1024 * 1024 * 1024)
+print(f"Total DynamoDB size: {total_size_gb:.2f} GB")
+
+
 
 aws dynamodb list-tables --query "TableNames[]" --output json | jq -r '.[]' | while read table; do
     aws dynamodb describe-table --table-name "$table" --query "Table.TableSizeBytes"
