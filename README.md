@@ -1,6 +1,32 @@
 # AWS SAA-C02 Study Guide
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
+```
+import boto3
+
+# Initialize the Service Catalog client
+client = boto3.client('servicecatalog')
+
+# Define the provisioned product name
+provisioned_product_name = 'your-provisioned-product-name'
+
+# Search for the provisioned product by name
+response = client.search_provisioned_products(
+    Filters={
+        'SearchQuery': [f'name:{provisioned_product_name}']
+    }
+)
+
+# Extract the PhysicalId (CloudFormation Stack ID) from the search results
+if response['ProvisionedProducts']:
+    provisioned_product = response['ProvisionedProducts'][0]
+    stack_id = provisioned_product.get('PhysicalId')
+    print(f"CloudFormation Stack ID: {stack_id}")
+else:
+    print("Provisioned product not found.")
+```
+
+
   1. Stephane Maarek's <a href="https://links.datacumulus.com/aws-certified-sa-associate-coupon">Ultimate AWS Certified Solutions Architect Associate 2021 course</a> (permanent discount available through this link) or A Cloud Guru's <a href="https://acloud.guru/learn/aws-certified-solutions-architect-associate">AWS Certified Solutions Architect Associate SAA-C02 course</a>
   2. The FAQs for the most critical services, included in the recommended reading list below
   3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
