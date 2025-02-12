@@ -6,6 +6,39 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 from jira import JIRA
 
 # Jira credentials and server URL
+JIRA_SERVER = "https://your-jira-instance.atlassian.net"
+JIRA_USER = "your-email@example.com"
+JIRA_API_TOKEN = "your-api-token"
+
+# Connect to Jira
+jira = JIRA(server=JIRA_SERVER, basic_auth=(JIRA_USER, JIRA_API_TOKEN))
+
+# Issue details
+issue_dict = {
+    "project": {"key": "YOUR_PROJECT_KEY"},
+    "summary": "Your story summary here",
+    "description": "Detailed description of the story",
+    "issuetype": {"name": "Story"},
+    "priority": {"name": "Minor"},
+    "versions": [],  # Affects Version/s (None)
+    "components": [{"name": "Ft_platform"}],
+    "labels": ["Apply", "applydev"],
+    "customfield_10001": "gitlab",  # Feature Link
+    "customfield_10002": 5,  # Story Points
+    "customfield_10003": "uncovered",  # Requirement Status
+    "customfield_10004": 80,  # Confidence
+    "customfield_10005": "core-enhance"  # Product
+}
+
+# Create issue
+new_issue = jira.create_issue(fields=issue_dict)
+
+print(f"Jira issue created: {new_issue.key}")
+
+
+from jira import JIRA
+
+# Jira credentials and server URL
 JIRA_URL = "https://your-jira-server.com"  # Change to your Jira instance
 JIRA_USER = "your-username"
 JIRA_PASSWORD = "your-password"
