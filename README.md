@@ -2,6 +2,39 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 ```
+from jira import JIRA
+
+# Jira credentials and URL
+JIRA_URL = "https://your-jira-instance.atlassian.net"
+JIRA_USER = "your-email@example.com"
+JIRA_API_TOKEN = "your-api-token"
+
+# Authenticate
+jira = JIRA(server=JIRA_URL, basic_auth=(JIRA_USER, JIRA_API_TOKEN))
+
+# Original issue key to be cloned
+original_issue_key = "PROJECT-123"
+
+# Fetch the original issue details
+original_issue = jira.issue(original_issue_key)
+
+# Fields to copy for the new issue
+new_issue_fields = {
+    "project": {"key": original_issue.fields.project.key},
+    "summary": f"Cloned: {original_issue.fields.summary}",
+    "description": original_issue.fields.description,
+    "issuetype": {"id": original_issue.fields.issuetype.id},
+    # Copying custom fields if needed
+    # "customfield_XXXX": original_issue.fields.customfield_XXXX
+}
+
+# Create the cloned issue
+cloned_issue = jira.create_issue(fields=new_issue_fields)
+
+print(f"Cloned Issue Key: {cloned_issue.key}")
+
+
+
 import boto3
 
 # Initialize the Service Catalog client
