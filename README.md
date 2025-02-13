@@ -1,6 +1,47 @@
 # AWS SAA-C02 Study Guide
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
+Subject: Discussion on DocumentDB Restore Challenges and Suggestions
+
+Hi Narendra, Product Technology Team, and All,
+
+Following up on my previous email, where I highlighted the issue with the current approach and suggested automating the restore process using Step Functions and a Lambda workflow, I encountered a few challenges during implementation and need your suggestions.
+
+Challenges:
+
+1. Managing DocumentDB User Passwords:
+
+DocumentDB user passwords are stored in AWS Secrets Manager and are automatically rotated at regular intervals.
+
+If the master password is rotated and we restore the cluster using an outdated master password, it could cause access issues.
+
+In addition to the master user, we also need to manage three more users.
+
+
+
+
+Suggestions on Restoring the Original Cluster:
+
+1. Approach from DynamoDB Restore Solution:
+
+In the DynamoDB restore solution, we replaced the existing table with the restored table.
+
+For DocumentDB, we can provision the cluster using a snapshot backup via a CloudFormation template.
+
+We need to decide which approach to prefer, as restoring from a snapshot requires terminating the existing cluster before creating a new one.
+
+
+
+
+I am setting up a call tomorrow to discuss these points. Looking forward to your inputs.
+
+Thanks,
+Om
+
+
+
+
+
 ```
 
 from jira import JIRA
