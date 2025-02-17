@@ -7,6 +7,25 @@ Hi Narendra, Product Technology Team, and All,
 
 Following up on my previous email, where I highlighted the issue with the current approach and suggested automating the restore process using Step Functions and a Lambda workflow, I encountered a few challenges during implementation and need your suggestions.
 
+
+Summary
+The team discussed DocumentDB restoration, debating DynamoDB replacement versus service catalog.  A solution will be finalized by Monday.
+ 
+Debate on using DynamoDB or service catalog for DocumentDB management.
+Concern about losing secret manager access if using service catalog.
+Analysis needed on consequences of direct replacement (like DynamoDB).
+Discussion on handling host value changes during restoration.
+Exploration of using existing Lambda functions for secret management.
+Master user credential retention is crucial.
+ 
+To-dos
+Robbie: Finalize solution and provide documentation by Monday.
+Robbie: Explain restoration steps in documentation.
+Analyze impact of replacing DocumentDB.
+Robbie: Complete OCTO documentation by Monday.
+
+
+
 Challenges:
 
 1. Managing DocumentDB User Passwords:
