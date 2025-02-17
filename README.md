@@ -1,6 +1,100 @@
 # AWS SAA-C02 Study Guide
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
+
+Here's a draft for your meeting minutes based on the conversation:
+
+
+---
+
+Meeting Minutes
+
+Date: [Insert Date]
+Attendees: Om, Robbie, [Other Names]
+Subject: Solution Design Discussion for DocumentDB
+
+Key Points Discussed:
+
+1. Next Steps:
+
+Final view of the solution to be shared by Monday.
+
+Om to sync with [her name] on Monday morning for coordination.
+
+Analyze and finalize the approach, considering both DynamoDB and Snapshot APIs.
+
+
+
+2. Approach Analysis:
+
+Discussion on using a snapshot-based solution for DocumentDB.
+
+Concern raised about losing secrets when terminating the service catalog.
+
+Evaluated two possible methods for managing DocumentDB restoration:
+a. Continue using service catalog (managing through CloudFormation).
+b. Replace the service directly like DynamoDB, though it may involve losing secrets from the service catalog.
+
+
+
+3. Secret Manager Handling:
+
+Focus on preserving the master user credentials during cluster restoration.
+
+The solution will rely on updating the secret values if the cluster host changes.
+
+For restoring from a snapshot, the password remains the same, but the hostname will change, which needs to be updated in the secret.
+
+Discussed the process to check if the secret version matches the backup state. If not, an update is required.
+
+Identified potential problems with secret management if the service catalog is terminated and recommendations were made to retain the secret outside of CloudFormation.
+
+
+
+4. Proposed Solution for Secret Management:
+
+Retain the master user credentials even when service catalog is terminated.
+
+If the snapshot ID is provided, skip secret creation to avoid errors during restoration.
+
+To avoid losing the ability to manage secrets, conditionally create the secret only when necessary, based on the presence of a snapshot ID.
+
+
+
+5. Next Steps:
+
+Om and Robbie will finalize the documentation with a solution overview.
+
+Om will work on adjustments to the CloudFormation template and secret management.
+
+Final version of the solution to be completed by Monday for presentation.
+
+
+
+6. Action Items:
+
+Robbie: Prepare documentation for the solution, focusing on the secret manager handling and restoration process.
+
+Om: Work on implementing the necessary changes to the template and document the process for reference.
+
+All: Sync again on Monday to finalize the approach and documentation.
+
+
+
+
+Conclusion:
+
+The team will continue working on the solution, focusing on the seamless handling of secrets and cluster restoration using both snapshots and the service catalog. Final updates and documentation are expected by Monday.
+
+
+
+---
+
+Let me know if you need any adjustments or additions!
+
+
+
+
 Subject: Discussion on DocumentDB Restore Challenges and Suggestions
 
 Hi Narendra, Product Technology Team, and All,
