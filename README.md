@@ -2,6 +2,55 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 
+
+Here's a professional and well-structured email that conveys your concerns while keeping the tone respectful and constructive:
+
+
+---
+
+Subject: Discussion on My Compensation Adjustment
+
+Dear [Manager’s Name],
+
+I hope you are doing well.
+
+I wanted to take a moment to discuss my recent compensation adjustment following my promotion to BA4. From an individual perspective, I was expecting a salary revision that reflects my contributions and the impact I have made within the team.
+
+Over the past 1.8 years, I have worked extensively on several key initiatives, including:
+
+1. DynamoDB Backup & Restore Solution – Designed and implemented a strategic backup and restore solution that enhanced operational efficiency.
+
+
+2. Subscription Filter Utility – Developed an alerting and monitoring enhancement that improved system observability.
+
+
+3. Auto Alarm Solution – Created a CloudWatch alarm automation that streamlined monitoring and reduced manual efforts.
+
+
+4. Tagging Utility for AWS Cost Optimization – Built a solution to automate tagging, which helped in optimizing cloud costs.
+
+
+5. Multi-region Implementation for the Arrow Card Project – Led the AWS service level POCs, bootstrapped the CIT AWS account, and modified pipelines for multi-region support.
+
+
+
+Considering my contributions and the recognition I have received across the team, I was expecting my compensation to be aligned accordingly. I understand the centralized decision regarding BA4 promotions, but I believe my efforts and impact should be factored into the evaluation.
+
+I would appreciate the opportunity to discuss this further and understand how my contributions are being valued in this process. Please let me know a convenient time to connect.
+
+Looking forward to your thoughts.
+
+Best regards,
+Om
+
+
+---
+
+This version keeps it professional, focuses on your contributions, and expresses your expectations in a structured manner. Let me know if you'd like any refinements!
+
+
+
+
 Here's a draft for your meeting minutes based on the conversation:
 
 
