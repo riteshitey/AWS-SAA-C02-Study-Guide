@@ -2,6 +2,50 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 
+Here’s your refined email with better wording, improved flow, and removed repetitions:
+
+
+---
+
+Subject: Discussion on Compensation Adjustment
+
+Hi Ankur,
+
+As we discussed earlier, I wanted to revisit the compensation adjustment, as I was not entirely satisfied with the numbers.
+
+I am looking at this from my individual perspective rather than the general policy where all BA3s were promoted to BA4 as per HR’s decision. Given my contributions and impact at NGCB, I was expecting a compensation review that aligns with my performance.
+
+Since joining as a BA3, I have worked diligently to deliver impactful solutions as a DevOps Engineer, many of which have been recognized across teams. Specifically, I have:
+
+1. Led the DynamoDB Backup and Restore solution, ensuring efficient backup and recovery mechanisms.
+
+
+2. Developed Auto Alarm and Monitoring Enhancements, improving alerting and observability across AWS services.
+
+
+3. Contributed to the Multi-region Implementation for the Arrow Card Project, enabling high availability and resilience.
+
+
+4. Built the Tagging Utility Solution, optimizing AWS cost and governance.
+
+
+5. Played a key role in AWS Service Level POCs and strategic decision-making for the Next Gen Amazon Barclaycard project.
+
+
+
+Considering these contributions and the recognition I have received, I was expecting a compensation adjustment that reflects my efforts and impact relative to my peers. While I understand the centralized BA4 promotion decision, I believe my work should be considered in the evaluation.
+
+I would appreciate your thoughts on this and look forward to your response.
+
+Best regards,
+Om
+
+
+---
+
+This version improves clarity, professionalism, and impact while maintaining a respectful and confident tone. Let me know if you need further refinements!
+
+
 
 Here's a professional and well-structured email that conveys your concerns while keeping the tone respectful and constructive:
 
