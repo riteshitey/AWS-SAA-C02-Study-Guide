@@ -7,6 +7,43 @@ Here's a draft for your meeting minutes based on the conversation:
 
 ---
 
+Subject: Discussion on Compensation Review
+
+Dear [Manager's Name],
+
+I hope you are doing well.
+
+I wanted to take a moment to express my thoughts regarding the recent salary discussion we had. From my individual perspective, I was expecting a compensation adjustment that aligns with my contributions and impact over the past 1.8 years at Barclays.
+
+Since joining as a BA3, I have worked diligently to deliver impactful solutions as a DevOps Engineer, some of which have been recognized across teams. Specifically, I have:
+
+1. Led the DynamoDB Backup and Restore solution, ensuring efficient backup and recovery mechanisms.
+
+
+2. Developed Auto Alarm and Monitoring Enhancements, improving alerting and observability across AWS services.
+
+
+3. Contributed to the Multi-region Implementation for the Arrow Card Project, enabling high availability and resilience.
+
+
+4. Built the Tagging Utility Solution, optimizing AWS cost and governance.
+
+
+5. Played a key role in AWS Service Level POCs and strategic decision-making for the Next Gen Amazon Barclaycard project.
+
+
+
+Given these contributions and my performance, I was expecting a compensation review that reflects my impact relative to my peers. My understanding from previous discussions was that my progression toward BA4 would be evaluated around mid-2025, and I wanted to ensure that my growth trajectory is being considered accordingly.
+
+I would appreciate the opportunity to discuss this further and understand the evaluation criteria that led to the current outcome. Please let me know a suitable time when we can have this conversation.
+
+Looking forward to your response.
+
+Best regards,
+Om
+
+
+
 Meeting Minutes
 
 Date: [Insert Date]
@@ -51,33 +88,6 @@ Identified potential problems with secret management if the service catalog is t
 
 
 
-4. Proposed Solution for Secret Management:
-
-Retain the master user credentials even when service catalog is terminated.
-
-If the snapshot ID is provided, skip secret creation to avoid errors during restoration.
-
-To avoid losing the ability to manage secrets, conditionally create the secret only when necessary, based on the presence of a snapshot ID.
-
-
-
-5. Next Steps:
-
-Om and Robbie will finalize the documentation with a solution overview.
-
-Om will work on adjustments to the CloudFormation template and secret management.
-
-Final version of the solution to be completed by Monday for presentation.
-
-
-
-6. Action Items:
-
-Robbie: Prepare documentation for the solution, focusing on the secret manager handling and restoration process.
-
-Om: Work on implementing the necessary changes to the template and document the process for reference.
-
-All: Sync again on Monday to finalize the approach and documentation.
 
 
 
