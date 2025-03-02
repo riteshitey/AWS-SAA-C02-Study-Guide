@@ -2,6 +2,74 @@
 This study guide will help you pass the newer AWS Certified Solutions Architect - Associate exam. Ideally, you should reference this guide while working through the following material:
 
 
+Here’s a full version of your 2025 performance objectives, tailored to your planned work on GitLab CI/CD, solving pipeline issues, and addressing AWS Config issues:
+
+
+---
+
+1. Drive Simplicity and Efficiency, Seek Out Every Opportunity to Automate
+
+Enhance automation capabilities in GitLab CI/CD pipelines, reducing manual interventions and improving deployment speed.
+
+Develop efficient and scalable solutions to resolve recurring pipeline failures, ensuring smooth delivery processes.
+
+Improve the Auto Alarm solution by refining alert configurations and integrating additional monitoring capabilities.
+
+Automate AWS infrastructure management tasks, minimizing operational overhead and increasing efficiency.
+
+
+2. Focus on Businesses and Projects Where We Can Excel
+
+Strengthen multi-region deployments by optimizing AWS service configurations for high availability and resilience.
+
+Support the Next Gen Consumer Banking initiative by refining CI/CD strategies for faster and more reliable releases.
+
+Conduct POCs and research on AWS best practices to improve system scalability and security.
+
+Provide proactive DevOps support to ensure seamless execution of critical business projects.
+
+
+3. Have Precision in Our Operations, Risk Management, and Controls
+
+Improve AWS Config compliance by identifying and resolving misconfigurations across accounts.
+
+Implement automated compliance monitoring to detect and remediate security vulnerabilities.
+
+Address pipeline stability issues by troubleshooting and optimizing GitLab CI/CD workflows.
+
+Enhance security controls in cloud environments by enforcing best practices for IAM roles, access policies, and audit mechanisms.
+
+
+4. Promote Diversity of Thought, Champion New Thinking, and Challenge the Status Quo
+
+Drive the adoption of GitLab CI/CD across teams by providing training and documentation.
+
+Lead the onboarding of teams onto modern DevOps practices, promoting efficient development workflows.
+
+Explore innovative solutions for optimizing AWS resource management and cloud cost efficiency.
+
+Participate in internal forums, hackathons, and knowledge-sharing sessions to foster innovation and learning.
+
+
+5. Provide World-Class Service to Our Customers and Clients Every Time
+
+Improve system reliability by refining observability tools such as CloudWatch dashboards and log analytics.
+
+Optimize incident response workflows, ensuring minimal downtime and quick recovery for business-critical applications.
+
+Enhance pipeline performance to reduce deployment failures and maintain seamless application delivery.
+
+Strengthen collaboration with teams to proactively address operational challenges and improve service quality.
+
+
+
+---
+
+These objectives align with your 2025 focus areas while also demonstrating continuous improvement and impact. Let me know if you need any refinements!
+
+
+
+
 
 
 
