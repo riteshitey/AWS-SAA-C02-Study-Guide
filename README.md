@@ -5,6 +5,23 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 Here’s a full version of your 2025 performance objectives, tailored to your planned work on GitLab CI/CD, solving pipeline issues, and addressing AWS Config issues:
 
 
+Subject: Confirmation on Toggle Management DynamoDB Usage
+
+Hi all,
+
+Could you please confirm whether the Toggle Management DynamoDB is being used in your account?
+
+Currently, I see the following accounts listed in the Toggle Management product.
+
+Once the product is updated to the V3 version (which includes AWS Backup tagging), you will need to provision it in the Production account.
+
+Looking forward to your confirmation.
+
+Best regards,
+[Your Name]
+
+
+
 ---
 
 1. Drive Simplicity and Efficiency, Seek Out Every Opportunity to Automate
