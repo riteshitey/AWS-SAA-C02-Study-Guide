@@ -5,6 +5,25 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 Here’s a full version of your 2025 performance objectives, tailored to your planned work on GitLab CI/CD, solving pipeline issues, and addressing AWS Config issues:
 
 
+
+Here’s a polite and professional way to reply to the email:
+
+
+---
+
+Subject: Re: Sprint Task Removal Inquiry
+
+Hi [Sender's Name],
+
+Apologies for the confusion. The task was not intentionally removed from the sprint. While creating JIRAs for the new sprint (CorePltfrm_StrategicBackup_sp2), I had copied one of the stories from CorePltfrm_StrategicBackup_sp1. As a result, the sprint value was also copied, and I later updated it from Sprint 1 to Sprint 2.
+
+This was an oversight, and I’ll ensure it doesn’t happen again. Let me know if you need any further clarification.
+
+Thanks,
+Om
+
+
+
 Subject: Confirmation on Toggle Management DynamoDB Usage
 
 Hi all,
