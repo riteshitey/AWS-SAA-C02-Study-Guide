@@ -22,6 +22,44 @@ Best regards,
 
 
 
+Subject: Clarification on Annual Leave Utilization and Carry Over Policy
+
+Hi [HR's Name],
+
+I hope you are doing well.
+
+I would like to understand how much annual leave I should utilize this year and how much I can carry forward to the next year. Here are my current leave details:
+
+Annual Leave for 2025: 15 days
+
+Carry Over Leave from Previous Years: 22 days
+
+Total Available Leave in 2025: 37 days
+
+
+Could you please clarify the following:
+
+1. How much leave should I use before the end of 2025 to avoid losing any days?
+
+
+2. What will happen to my carry-over leave (22 days) at the end of this year?
+
+
+3. How much leave can I carry forward to 2026 under the updated policy?
+
+
+4. If I am unable to use all my leave due to business needs, is there an option to extend the carry-over period?
+
+
+
+Looking forward to your guidance.
+
+Best regards,
+[Your Name]
+
+
+
+
 ---
 
 1. Drive Simplicity and Efficiency, Seek Out Every Opportunity to Automate
