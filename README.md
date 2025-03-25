@@ -7,6 +7,26 @@ Here’s a full version of your 2025 performance objectives, tailored to your pl
 
 
 Here’s a polite and professional way to reply to the email:
+Subject: Clarification on Carry Forward Leave Reduction in New Policy
+
+Hi [HR’s Name],
+
+Thank you for your detailed response.
+
+I went through the policy page you shared, but I couldn’t find any specific mention of what happens to the carry forward leave balance from previous years (before the new policy was introduced).
+
+Could you please clarify:
+
+Whether the old carry forward leave (from 2023-2024) is explicitly affected by the new policy?
+
+If so, where is this mentioned in the policy document?
+
+
+I appreciate your help in understanding this better.
+
+Best regards,
+Om Mapari
+
 
 
 ---
