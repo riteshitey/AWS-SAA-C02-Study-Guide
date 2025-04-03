@@ -5,6 +5,38 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 Here’s a full version of your 2025 performance objectives, tailored to your planned work on GitLab CI/CD, solving pipeline issues, and addressing AWS Config issues:
 
 
+```
+import boto3
+
+def delete_docdb_cluster(cluster_identifier):
+    # Initialize the DocumentDB client
+    docdb_client = boto3.client('docdb')
+
+    # Retrieve all DB instances in the specified cluster
+    response = docdb_client.describe_db_clusters(DBClusterIdentifier=cluster_identifier)
+    cluster_members = response['DBClusters'][0]['DBClusterMembers']
+
+    # Delete all instances
+    for member in cluster_members:
+        instance_id = member['DBInstanceIdentifier']
+        print(f"Deleting instance: {instance_id}")
+        docdb_client.delete_db_instance(
+            DBInstanceIdentifier=instance_id,
+            SkipFinalSnapshot=True  # Set to False if you want a final snapshot
+        )
+
+    # Delete the DB cluster
+    print(f"Deleting DB cluster: {cluster_identifier}")
+    docdb_client.delete_db_cluster(
+        DBClusterIdentifier=cluster_identifier,
+        SkipFinalSnapshot=True  # Set to False if you want a final snapshot
+    )
+
+# Example usage
+delete_docdb_cluster('your-cluster-identifier')
+```
+
+
 
 Here’s a polite and professional way to reply to the email:
 Subject: Clarification on Carry Forward Leave Reduction in New Policy
