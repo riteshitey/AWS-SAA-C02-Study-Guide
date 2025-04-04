@@ -5,6 +5,34 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
 Here’s a full version of your 2025 performance objectives, tailored to your planned work on GitLab CI/CD, solving pipeline issues, and addressing AWS Config issues:
 
 
+Absolutely! Here's a concise and clear draft you can send:
+
+
+---
+
+Subject: Clarification on Carry Forward Leave Limit for 2026
+
+Dear Sangeetha,
+
+Thank you for your detailed response.
+
+I just need a small clarification regarding the carry forward of annual leave into 2026. As per your message, only 5 days per completed year of service are eligible for encashment at the time of exit.
+
+Could you please confirm if this 5 days per year rule also applies to the number of leaves I can carry forward into 2026 for usage, or is it applicable only for encashment purposes at the time of leaving Barclays?
+
+I’d appreciate your clarification to plan my leaves accordingly.
+
+Best regards,
+Om Mapari
+
+
+---
+
+Let me know if you'd like a more formal or casual version too.
+
+
+
+
 ```
 import boto3
 
